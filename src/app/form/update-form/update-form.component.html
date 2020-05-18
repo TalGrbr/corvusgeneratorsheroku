@@ -1,0 +1,55 @@
+<button (click)="addNewDropBoxQuestion()">Add new DropBox</button>
+<button (click)="addNewTextBoxQuestion()">Add new TextBox</button>
+<br><br>
+<form [formGroup]="formForm">
+  <div formArrayName="questions">
+    <div *ngFor="let q of formForm.get('questions')['controls']; let i=index">
+      <fieldset>
+        <legend><h3>Question {{i + 1}}; Type: {{q.get('questionType').value}}</h3></legend>
+        <div [formGroupName]="i">
+          <span><button (click)="deleteQuestion(i)">Delete Question</button></span>
+          <br>
+          <label>Question Name: </label>
+          <input formControlName="questionName"/>
+          <br>
+          <label>Required?</label>
+          <input formControlName="required" type="checkbox">
+          <br>
+          <label>Order:</label>
+          <input formControlName="order" type="number">
+          <div formArrayName="questionLabels">
+            <fieldset>
+              <legend><h4>QuestionLabel</h4></legend>
+              <div *ngIf="q.get('questionType').value === 'dropBox'">
+                <label>Forums:</label>
+                <input formControlName="forums"/>
+                <br>
+              </div>
+
+              <div *ngIf="q.get('questionType').value === 'textBox'">
+                <label>Question desc:</label>
+                <input formControlName="desc"/>
+                <br>
+                <label>Question box type:</label>
+                <select formControlName="boxType">
+                  <option value="text">text</option>
+                  <option value="number">number</option>
+                  <option value="url">url</option>
+                  <option value="email">email</option>
+                </select>
+                <br>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <br>
+  <button (submit)="onUpdateFormSubmit()">Update Form</button>
+</form>
+
+<pre>{{formForm.value | json}}</pre>
+<br>
+<h3>Update Template</h3>
+<app-update-template [questionsForm]="formForm" [curTemplate]="'hello'"></app-update-template>

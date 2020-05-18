@@ -1,0 +1,28 @@
+<ng-container *ngFor="let name of getQuestionsNames()">
+  <button *ngIf="name" (click)="copyQuestionNameTag(name)">{{name}}</button>
+</ng-container>
+
+<editor
+  apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
+  id="bbCodeEditor"
+  [(ngModel)]="editorContent"
+  [initialValue]="curTemplate"
+  [init]="{
+        height: 500,
+        menubar: true,
+        plugins: [
+          'advlist autolink lists link image charmap print preview anchor',
+          'searchreplace visualblocks code fullscreen',
+          'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar:
+          'undo redo | bold italic underline |' +
+          'fontselect fontsizeselect |' +
+          'alignleft aligncenter alignright alignjustify | ' +
+          'numlist bullist |' +
+          'forecolor backcolor |'+
+          'ltr rtl |' +
+          'table media link image |' +
+          'outdent indent | removeformat | preview'
+   }"></editor>
+<button (submit)="onTemplateSubmit()">Save Template</button>

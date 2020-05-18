@@ -1,0 +1,38 @@
+<div [formGroup]="form">
+  <label [attr.for]="question.key">{{question.label}}</label>
+
+  <div [ngSwitch]="question.controlType">
+
+    <input *ngSwitchCase="'textbox'" [formControlName]="question.key"
+           [id]="question.key" [type]="question.boxType">
+
+    <select [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key">
+      <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
+    </select>
+
+    <editor
+      *ngSwitchCase="'bbcode'"
+      apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
+      id="bbCodeEditor"
+      [formControlName]="question.key"
+      [init]="{
+        height: 500,
+        menubar: true,
+        plugins: [
+          'advlist autolink lists link image charmap print preview anchor',
+          'searchreplace visualblocks code fullscreen',
+          'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar:
+          'undo redo | bold italic underline |' +
+          'fontselect fontsizeselect |' +
+          'alignleft aligncenter alignright alignjustify | ' +
+          'numlist bullist |' +
+          'forecolor backcolor |'+
+          'ltr rtl |' +
+          'table media link image |' +
+          'outdent indent | removeformat | preview'
+   }"></editor>
+</div>
+<div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div>
+</div>
