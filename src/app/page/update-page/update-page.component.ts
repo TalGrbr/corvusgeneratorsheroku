@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {QuestionControlService} from '../../form/form-services/question-control.service';
-import {JsonQuestionFormServiceService} from '../../form/form-services/json-question-form-service.service';
+import {JsonQuestionFormService} from '../../form/form-services/json-question-form.service';
 
 @Component({
   selector: 'app-update-page',
@@ -15,7 +15,7 @@ export class UpdatePageComponent implements OnInit {
   @Input() template: string;
   @Input() questionsForm: string;
   @Input() pageData: string;
-  jqfs = new JsonQuestionFormServiceService(new QuestionControlService(this.fb));
+  jqfs = new JsonQuestionFormService(new QuestionControlService(this.fb));
 
   constructor(private fb: FormBuilder) {
   }

@@ -8,7 +8,7 @@ import {BBcodeQuestion} from '../question-types/question-bbcode-box';
 @Injectable({
   providedIn: 'root'
 })
-export class JsonQuestionFormServiceService {
+export class JsonQuestionFormService {
 
   constructor(private qcs: QuestionControlService) {
   }

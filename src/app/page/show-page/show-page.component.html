@@ -1,2 +1,10 @@
-<!-- Show the current form -->
-<app-dynamic-form [questions]="questions$ | async"></app-dynamic-form>
+<!-- Show the current page -->
+<a [innerHTML]="page.title"></a>
+<p [innerHTML]="page.about"></p>
+<ng-container *ngFor="let remark of page.remarks">
+  &bull;<a [innerHTML]="remark"></a>
+  <br>
+</ng-container>
+<app-dynamic-form *ngIf="page.showForm" [questions]="questions$ | async"></app-dynamic-form>
+<button>Submit</button>
+<p>results</p>
