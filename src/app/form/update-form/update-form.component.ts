@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {QuestionBase} from '../question-types/question-base';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {QuestionControlService} from '../form-services/question-control.service';
@@ -13,6 +13,8 @@ export class UpdateFormComponent implements OnInit {
   @Input() questions: QuestionBase<string>[];
   formForm: FormGroup;
   readonly maxOrder = 50;
+  @Input() template: string;
+  @Output() contentEvent = new EventEmitter<string>();
 
   constructor(private fb: FormBuilder, private qcs: QuestionControlService) {
   }
@@ -83,7 +85,14 @@ export class UpdateFormComponent implements OnInit {
     return [start, ...this.range(start + 1, end)];
   }
 
-  onUpdateFormSubmit() {
-    // TODO: update on server side the current form
+  updateTemplate(value: string) {
+    this.template = value;
+    this.formForm.value['template'] = this.template;
+    this.contentEvent.emit(JSON.stringify(this.formForm.value));
+  }
+
+  formChanged() {
+    this.formForm.value['template'] = this.template;
+    this.contentEvent.emit(JSON.stringify(this.formForm.value));
   }
 }

@@ -5,6 +5,7 @@
 <editor
   apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
   id="bbCodeEditor"
+  (onFocusOut)="updateEmitter()"
   [(ngModel)]="editorContent"
   [initialValue]="curTemplate"
   [init]="{
@@ -25,4 +26,3 @@
           'table media link image |' +
           'outdent indent | removeformat | preview'
    }"></editor>
-<button (submit)="onTemplateSubmit()">Save Template</button>

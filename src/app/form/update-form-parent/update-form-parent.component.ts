@@ -7,10 +7,10 @@ import {QuestionControlService} from '../form-services/question-control.service'
 
 @Component({
   selector: 'app-update-form-page',
-  templateUrl: './update-form-page.component.html',
-  styleUrls: ['./update-form-page.component.css']
+  templateUrl: './update-form-parent.component.html',
+  styleUrls: ['./update-form-parent.component.css']
 })
-export class UpdateFormPageComponent implements OnInit {
+export class UpdateFormParentComponent implements OnInit {
   questions$: Observable<QuestionBase<any>[]>;
 
   constructor(qs: QuestionService) {

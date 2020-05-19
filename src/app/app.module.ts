@@ -10,13 +10,14 @@ import {RouterModule} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
 import {MainComponent} from './main/main.component';
 import {UpdateFormComponent} from './form/update-form/update-form.component';
-import {UpdateFormPageComponent} from './form/update-form-page/update-form-page.component';
+import {UpdateFormParentComponent} from './form/update-form-parent/update-form-parent.component';
 
 import {EditorModule} from '@tinymce/tinymce-angular';
 import { UpdateTemplateComponent } from './update-template/update-template.component';
 import { ShowPageComponent } from './page/show-page/show-page.component';
 import { CreatePageComponent } from './page/create-page/create-page.component';
 import { UpdatePageComponent } from './page/update-page/update-page.component';
+import { UpdatePageParentComponent } from './page/update-page-parent/update-page-parent.component';
 
 @NgModule({
   declarations: [
@@ -26,11 +27,12 @@ import { UpdatePageComponent } from './page/update-page/update-page.component';
     CreateFormComponent,
     MainComponent,
     UpdateFormComponent,
-    UpdateFormPageComponent,
+    UpdateFormParentComponent,
     UpdateTemplateComponent,
     ShowPageComponent,
     CreatePageComponent,
-    UpdatePageComponent
+    UpdatePageComponent,
+    UpdatePageParentComponent
   ],
   imports: [
     BrowserModule,

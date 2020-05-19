@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
@@ -9,6 +9,8 @@ import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 export class CreateFormComponent implements OnInit {
   formForm: FormGroup;
   readonly maxOrder = 50;
+  template: string;
+  @Output() contentEvent = new EventEmitter<string>();
 
   constructor(private fb: FormBuilder) {
     this.formForm = this.fb.group({
@@ -68,10 +70,10 @@ export class CreateFormComponent implements OnInit {
 
   }
 
-  formSubmitted() {
-    // TODO: take data from form, from each question create question object and add it to an array
-    // TODO: after having a full form, send it to the server to store it
-    let formValue = this.formForm.value;
+  updateTemplate(value: string) {
+    this.template = value;
+    this.formForm.value['template'] = this.template;
+    this.contentEvent.emit(JSON.stringify(this.formForm.value));
   }
 
   getFormOrders() {
@@ -98,5 +100,10 @@ export class CreateFormComponent implements OnInit {
       return [start];
     }
     return [start, ...this.range(start + 1, end)];
+  }
+
+  formChanged() {
+    this.formForm.value['template'] = this.template;
+    this.contentEvent.emit(JSON.stringify(this.formForm.value));
   }
 }

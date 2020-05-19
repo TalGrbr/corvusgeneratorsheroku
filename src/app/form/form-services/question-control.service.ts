@@ -20,7 +20,7 @@ export class QuestionControlService {
     return new FormGroup(group);
   }
 
-  toFormFormGroup(questions: QuestionBase<string>[]) {
+   toFormFormGroup(questions: QuestionBase<string>[]) {
     let formForm = this.fb.group({
       questions: this.fb.array([])
     });

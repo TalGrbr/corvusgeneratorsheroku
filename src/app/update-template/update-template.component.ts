@@ -1,8 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {QuestionBase} from '../form/question-types/question-base';
 import {copy} from '../utilities/copyToClipBoard';
 import {FormGroup} from '@angular/forms';
 import {QuestionControlService} from '../form/form-services/question-control.service';
+import {toBBCode} from '../utilities/htmlToBBCode';
 
 @Component({
   selector: 'app-update-template',
@@ -13,12 +14,14 @@ export class UpdateTemplateComponent implements OnInit {
   @Input() questionsForm: FormGroup;
   @Input() curTemplate: string;
   editorContent = '';
+  @Output() editorContentEvent = new EventEmitter<string>();
 
   constructor() {
   }
 
   ngOnInit(): void {
     this.editorContent = this.curTemplate;
+    this.editorContentEvent.emit(this.editorContent);
   }
 
   getQuestionsNames() {
@@ -31,13 +34,11 @@ export class UpdateTemplateComponent implements OnInit {
     return names;
   }
 
-  onTemplateSubmit() {
-    // TODO: update on server side the corresponding template
-    // DONT FORGET TO TRANSLATE TO BBCODE
+  copyQuestionNameTag(name: any) {
+    copy('%' + name + '%');
   }
 
-  copyQuestionNameTag(name: any) {
-    //alert(this.editorContent); WORKING
-    copy('%' + name + '%');
+  updateEmitter() {
+    this.editorContentEvent.emit(toBBCode(this.editorContent));
   }
 }

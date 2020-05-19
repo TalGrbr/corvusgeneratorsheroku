@@ -1,8 +1,9 @@
+<h1>Create Form</h1>
 <button (click)="addNewDropBoxQuestion()">Add new DropBox</button>
 <button (click)="addNewTextBoxQuestion()">Add new TextBox</button>
 <button (click)="addEditor()">Add new Editor</button>
 <br><br>
-<form [formGroup]="formForm">
+<form [formGroup]="formForm" (focusout)="formChanged()">
   <div formArrayName="questions">
     <div *ngFor="let q of formForm.get('questions')['controls']; let i=index">
       <fieldset>
@@ -21,13 +22,13 @@
           <div formArrayName="questionLabels" *ngIf="q.get('questionLabels')">
             <fieldset>
               <legend><h4>QuestionLabel</h4></legend>
-              <div [formControlName]="'1'" *ngIf="q.get('questionType').value === 'dropBox'">
+              <div *ngIf="q.get('questionType').value === 'dropBox'">
                 <label>Forums:</label>
                 <input formControlName="forums"/>
                 <br>
               </div>
 
-              <div [formControlName]="'2'" *ngIf="q.get('questionType').value === 'textBox'">
+              <div *ngIf="q.get('questionType').value === 'textBox'">
                 <label>Question desc:</label>
                 <input formControlName="desc"/>
                 <br>
@@ -47,10 +48,9 @@
     </div>
   </div>
   <br>
-<button (submit)="formSubmitted()">Submit form</button>
 </form>
 
 <pre>{{formForm.value | json}}</pre>
 
 <h3>Create Template</h3>
-<app-update-template [questionsForm]="formForm" [curTemplate]="'hello from create'"></app-update-template>
+<app-update-template [questionsForm]="formForm" [curTemplate]="'hello from create'" (editorContentEvent)="updateTemplate($event)"></app-update-template>

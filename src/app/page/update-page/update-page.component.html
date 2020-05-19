@@ -1,1 +1,82 @@
-<p>update-page works!</p>
+<h1>Update Page</h1>
+<form [formGroup]="pageDataForm" (ngSubmit)="onPageSubmit()">
+  <label>
+    Page name:
+    <input type="text" formControlName="name" required>
+  </label>
+  <br>
+  <label>
+    Page main color:
+    <input type="text" formControlName="color">
+  </label>
+  <br>
+  <label>
+    Page title:
+    <input type="text" formControlName="title" required>
+  </label>
+  <br>
+  <label>
+    About:
+    <editor
+      apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
+      formControlName="about"
+      [init]="{
+        height: 200,
+        width:800,
+        menubar: false,
+        plugins: [
+          'advlist autolink lists link image charmap print preview anchor',
+          'searchreplace visualblocks code fullscreen',
+          'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar:
+          'undo redo | bold italic underline |' +
+          'fontselect fontsizeselect |' +
+          'alignleft aligncenter alignright alignjustify | ' +
+          'numlist bullist |' +
+          'forecolor backcolor |'+
+          'ltr rtl |' +
+          'table media link image |' +
+          'outdent indent | removeformat | preview'
+   }"></editor>
+  </label>
+  <br>
+  <div formArrayName="remarks">
+    <h3>Remarks</h3>
+    <button (click)="addRemark()">Add remark</button>
+
+    <div *ngFor="let remark of remarks.controls; let i=index">
+      <button (click)="deleteRemark(i)">Remove remark</button>
+      <label>
+        Remark {{i}}:
+        <editor
+          apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
+          [formControlName]="i"
+          [initialValue]="remark.value"
+          [init]="{
+        height: 150,
+        width: 800,
+        menubar: false,
+        plugins: [
+          'advlist autolink lists link image charmap print preview anchor',
+          'searchreplace visualblocks code fullscreen',
+          'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar:
+          'undo redo | bold italic underline |' +
+          'fontselect fontsizeselect |' +
+          'alignleft aligncenter alignright alignjustify | ' +
+          'forecolor backcolor |'+
+          'ltr rtl |' +
+          'link|' +
+          'removeformat | preview'
+   }"></editor>
+      </label>
+    </div>
+  </div>
+  <h3>Update Form</h3>
+  <app-update-form (contentEvent)="updateFormValue($event)" [template]="template" [questions]="jqfs.getQuestionsFromJson(questionsForm)"></app-update-form>
+  <button>Submit</button>
+</form>
+
+{{totalValue | json}}
