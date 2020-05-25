@@ -6,9 +6,7 @@ export class Page {
   remarks: Array<string>;
   showForm: boolean;
 
-  constructor(adminIds: Array<number>,
-              modsIds: Array<number>,
-              options: {
+  constructor(options: {
                 name?: string,
                 color?: string,
                 title?: string,
@@ -21,6 +19,6 @@ export class Page {
     this.title = options.title || 'Page Title';
     this.about = options.about || 'Page Description';
     this.remarks = options.remarks || new Array<string>();
-    this.showForm = options.showForm || true;
+    this.showForm = options.showForm;
   }
 }

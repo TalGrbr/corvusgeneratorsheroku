@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { JsonQuestionFormServiceService } from './json-question-form-service.service';
+import { JsonQuestionFormService } from './json-question-form.service';
 
 describe('JsonQuestionFormServiceService', () => {
-  let service: JsonQuestionFormServiceService;
+  let service: JsonQuestionFormService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(JsonQuestionFormServiceService);
+    service = TestBed.inject(JsonQuestionFormService);
   });
 
   it('should be created', () => {

@@ -10,8 +10,6 @@ import {UpdatePageParentComponent} from './page/update-page-parent/update-page-p
 
 const routes: Routes = [
   {path: '', redirectTo: '/main', pathMatch: 'full'},
-  {path: 'createForm', component: CreateFormComponent},
-  {path: 'updateForm', component: UpdateFormParentComponent},
   {path: 'showPage', component: ShowPageComponent},
   {path: 'main', component: MainComponent},
   {path: 'createPage', component: CreatePageComponent},
