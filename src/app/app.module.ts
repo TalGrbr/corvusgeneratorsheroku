@@ -13,11 +13,13 @@ import {UpdateFormComponent} from './form/update-form/update-form.component';
 import {UpdateFormParentComponent} from './form/update-form-parent/update-form-parent.component';
 
 import {EditorModule} from '@tinymce/tinymce-angular';
-import { UpdateTemplateComponent } from './update-template/update-template.component';
-import { ShowPageComponent } from './page/show-page/show-page.component';
-import { CreatePageComponent } from './page/create-page/create-page.component';
-import { UpdatePageComponent } from './page/update-page/update-page.component';
-import { UpdatePageParentComponent } from './page/update-page-parent/update-page-parent.component';
+import {UpdateTemplateComponent} from './update-template/update-template.component';
+import {ShowPageComponent} from './page/show-page/show-page.component';
+import {CreatePageComponent} from './page/create-page/create-page.component';
+import {UpdatePageComponent} from './page/update-page/update-page.component';
+import {UpdatePageParentComponent} from './page/update-page-parent/update-page-parent.component';
+
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { UpdatePageParentComponent } from './page/update-page-parent/update-page
     FormsModule,
     RouterModule,
     AppRoutingModule,
-    EditorModule
+    EditorModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
