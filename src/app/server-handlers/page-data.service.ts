@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Page} from '../page/Page';
+import {JsonQuestionFormService} from '../form/form-services/json-question-form.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PageDataService {
-  private API_SERVER = 'http://localhost:8000/main';
-
+  private API_SERVER = 'http://localhost:8000/showPage';
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
@@ -16,8 +16,9 @@ export class PageDataService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public sendGetRequest() {
-    return this.httpClient.get(this.API_SERVER);
+  public sendGetRequest(pageName: string) {
+    console.log('requesting page: ' + this.API_SERVER + '?name=' + pageName);
+    return this.httpClient.get(this.API_SERVER + '?name=' + pageName);
   }
 
   public sendPostRequest() {

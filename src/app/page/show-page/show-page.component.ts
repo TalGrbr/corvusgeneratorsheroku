@@ -4,6 +4,8 @@ import {QuestionBase} from '../../form/question-types/question-base';
 import {QuestionService} from '../../form/form-services/question.service';
 import {Page} from '../Page';
 import {Title} from '@angular/platform-browser';
+import {PageDataService} from '../../server-handlers/page-data.service';
+import {JsonQuestionFormService} from '../../form/form-services/json-question-form.service';
 
 @Component({
   selector: 'app-show-page',
@@ -11,27 +13,32 @@ import {Title} from '@angular/platform-browser';
   styleUrls: ['./show-page.component.css']
 })
 export class ShowPageComponent implements OnInit {
-  questions$: Observable<QuestionBase<any>[]>;
-  page: Page;
+  questions: QuestionBase<any>[];
+  page = new Page({});
   template: string;
   payload: JSON;
   result = '';
 
-  constructor(service: QuestionService, private titleService: Title) {
-    this.questions$ = service.getQuestions();
-    this.template = '%Article%';
-    this.page = new Page({
-      name: 'test name',
-      color: '#00000',
-      title: 'test title',
-      about: '<b>test about</b>',
-      remarks: ['<b>remark1</b>', 'remark2'],
-      showForm: true
+  constructor(private titleService: Title, pds: PageDataService, jqf: JsonQuestionFormService) {
+    let self = this;
+    pds.sendGetRequest('pageName').subscribe((data: any) => {
+      console.log('data from server: ' + JSON.stringify(data));
+      self.page = new Page({
+        name: data.name,
+        color: data.color,
+        title: data.title,
+        about: data.about,
+        remarks: data.remarks,
+        showForm: data.showForm
+      });
+      self.template = data.template;
+      self.questions = jqf.getQuestionsFromJson(data.questions);
     });
     titleService.setTitle(this.page.name);
   }
 
   ngOnInit(): void {
+
   }
 
   updatePayload(value: string) {
@@ -52,10 +59,17 @@ export class ShowPageComponent implements OnInit {
     Object.keys(translationDict).forEach(key => {
       this.result = this.template.replace(key, translationDict[key]);
     });
+
+    this.sendDataToServer();
+  }
+
+  private sendDataToServer() {
+
   }
 
   private getValuesAsArray() {
     let values = [];
+    console.log('payload ' + JSON.stringify(this.payload));
     Object.keys(this.payload).forEach(i => {
       values.push(this.payload[i]);
     });
@@ -64,16 +78,9 @@ export class ShowPageComponent implements OnInit {
 
   private getNamesToChange() {
     let names = [];
-    let namesObserver = {
-      next: qList => qList.forEach(q => names.push(q.label)),
-      error: err => console.error('Observer got an error: ' + err),
-      complete: () => console.log('Observer got a complete notification'),
-    };
-
-    this.questions$.subscribe(namesObserver);
-    for (let name of names) {
-      names[names.indexOf(name)] = '%' + name + '%';
-    }
+    this.questions.forEach(q => {
+      names.push('%' + q.getLabel() + '%');
+    });
     return names;
   }
 }

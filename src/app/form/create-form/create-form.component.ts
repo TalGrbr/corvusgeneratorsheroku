@@ -105,5 +105,14 @@ export class CreateFormComponent implements OnInit {
   formChanged() {
     this.formForm.value['template'] = this.template;
     this.contentEvent.emit(JSON.stringify(this.formForm.value));
+    this.updateQuestionsKeys();
+  }
+
+  private updateQuestionsKeys() {
+    let formValue = this.formForm.value;
+    let questions = formValue.questions;
+    questions.forEach(q => {
+      q['key'] = q['order'].toString();
+    });
   }
 }

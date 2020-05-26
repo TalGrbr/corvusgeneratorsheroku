@@ -3,7 +3,7 @@
 <button (click)="addNewTextBoxQuestion()">Add new TextBox</button>
 <button (click)="addEditor()">Add new Editor</button>
 <br><br>
-<form [formGroup]="formForm" (focusout)="formChanged()">
+<form [formGroup]="formForm" (change)="formChanged()">
   <div formArrayName="questions">
     <div *ngFor="let q of formForm.get('questions')['controls']; let i=index">
       <fieldset>

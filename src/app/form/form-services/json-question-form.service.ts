@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import {QuestionBase} from '../question-types/question-base';
 import {DropdownQuestion} from '../question-types/question-dropdown';
 import {QuestionControlService} from './question-control.service';
@@ -8,6 +8,7 @@ import {BBcodeQuestion} from '../question-types/question-bbcode-box';
 @Injectable({
   providedIn: 'root'
 })
+
 export class JsonQuestionFormService {
 
   constructor(private qcs: QuestionControlService) {
@@ -15,18 +16,17 @@ export class JsonQuestionFormService {
 
   getQuestionsFromJson(json) {
     let questions: QuestionBase<string> [] = [];
-    json = JSON.parse(json);
-    json = json['questions'];
+    //json = JSON.parse(json);
+    //json = json['questions'];
     (Object.keys(json)).forEach(i => {
       let element = json[i];
-      console.log(element);
       if (element.questionType === 'dropBox') {
         questions.push(new DropdownQuestion({
           key: element.key || this.qcs.labelToKey(element.questionName),
           label: element.questionName,
           order: element.order,
           required: element.hasOwnProperty('required') ? element.required : false,
-          options: element.questionLabels.forums
+          options: element.questionLabels.forums.split(',')
         }));
       } else if (element.questionType === 'textBox') {
         questions.push(new TextboxQuestion({
@@ -47,6 +47,6 @@ export class JsonQuestionFormService {
       }
     });
     console.log('questions length: ' + questions.length);
-    return questions;
+    return questions.sort((a, b) => a.order - b.order);
   }
 }

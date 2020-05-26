@@ -41,6 +41,9 @@ export class CreatePageComponent implements OnInit {
     let formJsonValue = JSON.parse(this.formValue);
     this.totalValue = this.pageDataForm.getRawValue();
     this.totalValue['questions'] = formJsonValue.questions;
+    if (formJsonValue.questions.length > 0) {
+      this.totalValue['showForm'] = true;
+    }
     this.totalValue['template'] = formJsonValue.template;
 
     //TODO send this to server

@@ -25,6 +25,7 @@ export class MainFormComponent implements OnInit {
 
   onFormSubmitted() {
     this.payLoad = this.form.getRawValue();
+    alert(JSON.stringify(this.payLoad));
     if (this.payLoad.hasOwnProperty('article')) {
       this.payLoad.article = toBBCode(this.form.get('article').value);
     }

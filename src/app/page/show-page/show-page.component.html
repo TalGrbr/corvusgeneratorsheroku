@@ -5,6 +5,6 @@
   &bull;<a [innerHTML]="remark"></a>
   <br>
 </ng-container>
-<app-dynamic-form *ngIf="page.showForm" [questions]="questions$ | async" (payLoadEvent)="updatePayload($event)"></app-dynamic-form>
+<app-dynamic-form *ngIf="page.showForm" [questions]="questions" (payLoadEvent)="updatePayload($event)"></app-dynamic-form>
 <br>
 <textarea [hidden]="result.length == 0"> {{result}}</textarea>
