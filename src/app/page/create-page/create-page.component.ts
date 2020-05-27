@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Page} from '../Page';
 import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {PageDataService} from '../../server-handlers/page-data.service';
 
 @Component({
   selector: 'app-create-page',
@@ -12,8 +13,10 @@ export class CreatePageComponent implements OnInit {
   pageDataForm: FormGroup;
   formValue: string;
   totalValue: string;
+  private pds: PageDataService;
 
-  constructor(private fb: FormBuilder) {
+
+  constructor(private fb: FormBuilder, pds: PageDataService) {
     this.pageDataForm = this.fb.group({
       name: [''],
       color: [''],
@@ -23,6 +26,7 @@ export class CreatePageComponent implements OnInit {
         this.fb.control('')
       ])
     });
+    this.pds = pds;
   }
 
   get remarks() {
@@ -46,7 +50,7 @@ export class CreatePageComponent implements OnInit {
     }
     this.totalValue['template'] = formJsonValue.template;
 
-    //TODO send this to server
+    this.pds.postPageToServer(this.totalValue).subscribe();
   }
 
   updateFormValue(value: string) {

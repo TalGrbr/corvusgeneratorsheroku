@@ -43,7 +43,7 @@
   <br>
   <div formArrayName="remarks">
     <h3>Remarks</h3>
-    <button (click)="addRemark()">Add remark</button>
+    <button type="button" (click)="addRemark()">Add remark</button>
 
     <div *ngFor="let remark of remarks.controls; let i=index">
       <label>

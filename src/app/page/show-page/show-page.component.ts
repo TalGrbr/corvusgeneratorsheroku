@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {QuestionBase} from '../../form/question-types/question-base';
 import {QuestionService} from '../../form/form-services/question.service';
@@ -6,6 +6,7 @@ import {Page} from '../Page';
 import {Title} from '@angular/platform-browser';
 import {PageDataService} from '../../server-handlers/page-data.service';
 import {JsonQuestionFormService} from '../../form/form-services/json-question-form.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-show-page',
@@ -13,15 +14,17 @@ import {JsonQuestionFormService} from '../../form/form-services/json-question-fo
   styleUrls: ['./show-page.component.css']
 })
 export class ShowPageComponent implements OnInit {
+  private readonly showPageName;
   questions: QuestionBase<any>[];
   page = new Page({});
   template: string;
   payload: JSON;
   result = '';
 
-  constructor(private titleService: Title, pds: PageDataService, jqf: JsonQuestionFormService) {
+  constructor(private titleService: Title, pds: PageDataService, jqf: JsonQuestionFormService, private route: ActivatedRoute) {
+    this.showPageName = this.route.snapshot.paramMap.get('name');
     let self = this;
-    pds.sendGetRequest('pageName').subscribe((data: any) => {
+    pds.getPageFromServer(this.showPageName).subscribe((data: any) => {
       console.log('data from server: ' + JSON.stringify(data));
       self.page = new Page({
         name: data.name,
@@ -57,19 +60,13 @@ export class ShowPageComponent implements OnInit {
 
     console.log(translationDict);
     Object.keys(translationDict).forEach(key => {
-      this.result = this.template.replace(key, translationDict[key]);
+      this.template = this.template.replace(key, translationDict[key]);
     });
-
-    this.sendDataToServer();
-  }
-
-  private sendDataToServer() {
-
+    this.result = this.template;
   }
 
   private getValuesAsArray() {
     let values = [];
-    console.log('payload ' + JSON.stringify(this.payload));
     Object.keys(this.payload).forEach(i => {
       values.push(this.payload[i]);
     });

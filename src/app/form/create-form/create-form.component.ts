@@ -73,6 +73,7 @@ export class CreateFormComponent implements OnInit {
   updateTemplate(value: string) {
     this.template = value;
     this.formForm.value['template'] = this.template;
+    this.updateQuestionsKeys();
     this.contentEvent.emit(JSON.stringify(this.formForm.value));
   }
 
@@ -104,8 +105,8 @@ export class CreateFormComponent implements OnInit {
 
   formChanged() {
     this.formForm.value['template'] = this.template;
-    this.contentEvent.emit(JSON.stringify(this.formForm.value));
     this.updateQuestionsKeys();
+    this.contentEvent.emit(JSON.stringify(this.formForm.value));
   }
 
   private updateQuestionsKeys() {

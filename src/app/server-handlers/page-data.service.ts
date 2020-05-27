@@ -7,7 +7,7 @@ import {JsonQuestionFormService} from '../form/form-services/json-question-form.
   providedIn: 'root'
 })
 export class PageDataService {
-  private API_SERVER = 'http://localhost:8000/showPage';
+  private API_SERVER = 'http://localhost:8000';
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
@@ -16,14 +16,18 @@ export class PageDataService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public sendGetRequest(pageName: string) {
-    console.log('requesting page: ' + this.API_SERVER + '?name=' + pageName);
-    return this.httpClient.get(this.API_SERVER + '?name=' + pageName);
+  public getPageFromServer(pageName: string) {
+    //console.log('requesting page: ' + this.API_SERVER + '/showPage?name=' + pageName);
+    return this.httpClient.get(this.API_SERVER + '/showPage?name=' + pageName);
   }
 
-  public sendPostRequest() {
-    const page = new Page({name: 'name', showForm: true, remarks: ['1', '2'], about: 'about', title: 'title', color: 'black'});
-    console.log(JSON.stringify(page));
-    return this.httpClient.post(this.API_SERVER, JSON.stringify(page), this.httpOptions);
+  public getAllPages(){
+    return this.httpClient.get(this.API_SERVER + '/pages');
+  }
+
+  public postPageToServer(page) {
+    // const page = new Page({name: 'name', showForm: true, remarks: ['1', '2'], about: 'about', title: 'title', color: 'black'});
+    // console.log(JSON.stringify(page));
+    return this.httpClient.post(this.API_SERVER + '/savePage?name=' + page.name, page, this.httpOptions);
   }
 }

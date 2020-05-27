@@ -1,5 +1,5 @@
 <ng-container *ngFor="let name of getQuestionsNames()">
-  <button *ngIf="name" (click)="copyQuestionNameTag(name)">{{name}}</button>
+  <button type="button" *ngIf="name" (click)="copyQuestionNameTag(name)">{{name}}</button>
 </ng-container>
 
 <editor

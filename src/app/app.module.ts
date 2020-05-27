@@ -21,6 +21,7 @@ import {UpdatePageParentComponent} from './page/update-page-parent/update-page-p
 
 import { HttpClientModule } from '@angular/common/http';
 import {QuestionControlService} from './form/form-services/question-control.service';
+import { ChoosePageComponent } from './page/choose-page/choose-page.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {QuestionControlService} from './form/form-services/question-control.serv
     ShowPageComponent,
     CreatePageComponent,
     UpdatePageComponent,
-    UpdatePageParentComponent
+    UpdatePageParentComponent,
+    ChoosePageComponent
   ],
   imports: [
     BrowserModule,
