@@ -76,7 +76,8 @@
     </div>
   </div>
   <h3>Update Form</h3>
-  <app-update-form (contentEvent)="updateFormValue($event)" [template]="template" [questions]="jqfs.getQuestionsFromJson(questionsForm)"></app-update-form>
+  <app-update-form (contentEvent)="updateFormValue($event)" [template]="template"
+                   [questions]="jqfs.getQuestionsFromJson(questionsForm)"></app-update-form>
   <button>Submit</button>
 </form>
 
