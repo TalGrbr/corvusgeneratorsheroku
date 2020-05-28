@@ -24,10 +24,12 @@ export class CreateFormComponent implements OnInit {
       this.fb.group({
         questionType: ['dropBox'],
         questionName: [''],
+        desc: [''],
         order: this.getNextOrder(),
         required: false,
         questionLabels: this.fb.group({
-          forums: ['']
+          values: [''],
+          keys: ['']
         })
       })
     );
@@ -41,8 +43,8 @@ export class CreateFormComponent implements OnInit {
         questionName: [''],
         order: this.getNextOrder(),
         required: false,
+        desc: [''],
         questionLabels: this.fb.group({
-          desc: [''],
           boxType: ['']
         })
       })
@@ -55,6 +57,7 @@ export class CreateFormComponent implements OnInit {
       this.fb.group({
         questionType: 'bbCode',
         questionName: [''],
+        desc: [''],
         order: this.getNextOrder(),
         required: false
       })
@@ -107,6 +110,7 @@ export class CreateFormComponent implements OnInit {
     this.formForm.value['template'] = this.template;
     this.updateQuestionsKeys();
     this.contentEvent.emit(JSON.stringify(this.formForm.value));
+    //alert(JSON.stringify(this.formForm.value));
   }
 
   private updateQuestionsKeys() {

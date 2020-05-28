@@ -19,19 +19,23 @@
           <br>
           <label>Order:</label>
           <input formControlName="order" type="number">
+          <br>
+          <label>Question desc:</label>
+          <input formControlName="desc"/>
+          <br>
           <div formArrayName="questionLabels" *ngIf="q.get('questionLabels')">
             <fieldset>
               <legend><h4>QuestionLabel</h4></legend>
               <div *ngIf="q.get('questionType').value === 'dropBox'">
                 <label>Forums:</label>
-                <input formControlName="forums"/>
+                <input formControlName="keys"/>
+                <br>
+                <label>Values:</label>
+                <input formControlName="values"/>
                 <br>
               </div>
 
               <div *ngIf="q.get('questionType').value === 'textBox'">
-                <label>Question desc:</label>
-                <input formControlName="desc"/>
-                <br>
                 <label>Question box type:</label>
                 <select formControlName="boxType">
                   <option value="text">text</option>

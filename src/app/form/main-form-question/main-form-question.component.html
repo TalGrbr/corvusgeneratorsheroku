@@ -8,7 +8,7 @@
     <ng-container *ngSwitchCase="'dropdown'">
       <label>Forums: </label>
       <select [id]="question.key" [formControlName]="question.key">
-        <option *ngFor="let opt of question.options" [value]="opt">{{opt}}</option>
+        <option *ngFor="let opt of question.options" [value]="opt.value">{{opt.key}}</option>
       </select>
     </ng-container>
     <editor
@@ -35,6 +35,7 @@
           'outdent indent | removeformat | preview',
           forced_root_block : ''
    }"></editor>
+    <a>{{question.desc}}</a>
   </div>
   <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div>
 </div>

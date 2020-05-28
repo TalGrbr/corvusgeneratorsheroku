@@ -22,6 +22,7 @@ import {UpdatePageParentComponent} from './page/update-page-parent/update-page-p
 import { HttpClientModule } from '@angular/common/http';
 import {QuestionControlService} from './form/form-services/question-control.service';
 import { ChoosePageComponent } from './page/choose-page/choose-page.component';
+import { SafeHtmlPipe } from './page/pipes/safe-html.pipe';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ChoosePageComponent } from './page/choose-page/choose-page.component';
     CreatePageComponent,
     UpdatePageComponent,
     UpdatePageParentComponent,
-    ChoosePageComponent
+    ChoosePageComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,

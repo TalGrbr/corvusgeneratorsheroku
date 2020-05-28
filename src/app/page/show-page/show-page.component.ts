@@ -7,6 +7,7 @@ import {Title} from '@angular/platform-browser';
 import {PageDataService} from '../../server-handlers/page-data.service';
 import {JsonQuestionFormService} from '../../form/form-services/json-question-form.service';
 import {ActivatedRoute} from '@angular/router';
+import {Utils} from '../../utilities/Utils';
 
 @Component({
   selector: 'app-show-page',
@@ -25,7 +26,13 @@ export class ShowPageComponent implements OnInit {
     this.showPageName = this.route.snapshot.paramMap.get('name');
     let self = this;
     pds.getPageFromServer(this.showPageName).subscribe((data: any) => {
-      console.log('data from server: ' + JSON.stringify(data));
+      //console.log('data from server: ' + JSON.stringify(data));
+      data = JSON.parse(JSON.stringify(data)
+        .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
+        .join(Utils.DOUBLE_QUOTES)
+        .split(Utils.SINGLE_QUOTES_REPLACEMENT)
+        .join(Utils.SINGLE_QUOTES));
+      //console.log('data from server after change: ' + JSON.stringify(data));
       self.page = new Page({
         name: data.name,
         color: data.color,
@@ -41,7 +48,6 @@ export class ShowPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
   updatePayload(value: string) {
@@ -58,7 +64,7 @@ export class ShowPageComponent implements OnInit {
       translationDict[names[index]] = values[index];
     });
 
-    console.log(translationDict);
+    //console.log(translationDict);
     Object.keys(translationDict).forEach(key => {
       this.template = this.template.replace(key, translationDict[key]);
     });

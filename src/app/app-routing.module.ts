@@ -10,7 +10,7 @@ import {ChoosePageComponent} from './page/choose-page/choose-page.component';
 
 
 const routes: Routes = [
-  {path: '', redirectTo: '/main', pathMatch: 'full'},
+  {path: '', redirectTo: 'main', pathMatch: 'full'},
   {path: 'showPage/:name', component: ShowPageComponent},
   {path: 'main', component: MainComponent},
   {path: 'createPage', component: CreatePageComponent},

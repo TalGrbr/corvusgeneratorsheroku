@@ -26,7 +26,8 @@ export class JsonQuestionFormService {
           label: element.questionName,
           order: element.order,
           required: element.hasOwnProperty('required') ? element.required : false,
-          options: element.questionLabels.forums.split(',')
+          desc: element.desc,
+          options: this.zipForDropDown(element.questionLabels.keys.split(','), element.questionLabels.values.split(','))
         }));
       } else if (element.questionType === 'textBox') {
         questions.push(new TextboxQuestion({
@@ -34,7 +35,7 @@ export class JsonQuestionFormService {
           label: element.questionName,
           order: element.order,
           required: element.hasOwnProperty('required') ? element.required : false,
-          desc: element.questionLabels.desc,
+          desc: element.desc,
           boxType: element.questionLabels.boxType
         }));
       } else if (element.questionType === 'bbCode') {
@@ -42,11 +43,20 @@ export class JsonQuestionFormService {
           key: element.key,
           label: element.questionName,
           order: element.order,
+          desc: element.desc,
           required: element.hasOwnProperty('required') ? element.required : false,
         }));
       }
     });
-    console.log('questions length: ' + questions.length);
+    //console.log('questions length: ' + questions.length);
     return questions.sort((a, b) => a.order - b.order);
+  }
+
+  private zipForDropDown(keys, values) {
+    let options = [];
+    for (let i = 0; i < keys.length; i++) {
+      options.push({key: keys[i], value: values[i]});
+    }
+    return options;
   }
 }

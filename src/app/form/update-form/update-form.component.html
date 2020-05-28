@@ -1,5 +1,6 @@
 <button (click)="addNewDropBoxQuestion()">Add new DropBox</button>
 <button (click)="addNewTextBoxQuestion()">Add new TextBox</button>
+<button type="button" (click)="addEditor()">Add new Editor</button>
 <br><br>
 <form [formGroup]="formForm" (focusout)="formChanged()">
   <div formArrayName="questions">
@@ -15,6 +16,9 @@
           <label>Required?</label>
           <input formControlName="required" type="checkbox">
           <br>
+          <label>Question desc:</label>
+          <input formControlName="desc"/>
+          <br>
           <label>Order:</label>
           <input formControlName="order" type="number">
           <div formArrayName="questionLabels">
@@ -22,14 +26,13 @@
               <legend><h4>QuestionLabel</h4></legend>
               <div *ngIf="q.get('questionType').value === 'dropBox'">
                 <label>Forums:</label>
-                <input formControlName="forums"/>
+                <input formControlName="keys"/>
+                <label>Forums:</label>
+                <input formControlName="values"/>
                 <br>
               </div>
 
               <div *ngIf="q.get('questionType').value === 'textBox'">
-                <label>Question desc:</label>
-                <input formControlName="desc"/>
-                <br>
                 <label>Question box type:</label>
                 <select formControlName="boxType">
                   <option value="text">text</option>

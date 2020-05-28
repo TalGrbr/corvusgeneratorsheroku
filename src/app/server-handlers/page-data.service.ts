@@ -30,4 +30,8 @@ export class PageDataService {
     // console.log(JSON.stringify(page));
     return this.httpClient.post(this.API_SERVER + '/savePage?name=' + page.name, page, this.httpOptions);
   }
+
+  postUpdatePageToServer(oldPageName, newPage) {
+    return this.httpClient.post(this.API_SERVER + '/updatePage?name=' + oldPageName, newPage, this.httpOptions);
+  }
 }
