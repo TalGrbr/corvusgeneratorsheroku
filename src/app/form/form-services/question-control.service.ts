@@ -20,12 +20,11 @@ export class QuestionControlService {
     return new FormGroup(group);
   }
 
-   toFormFormGroup(questions: QuestionBase<string>[]) {
+  toFormFormGroup(questions: QuestionBase<string>[]) {
     let formForm = this.fb.group({
       questions: this.fb.array([])
     });
     let control = formForm.controls.questions as FormArray;
-
     questions.forEach(question => {
       if (question instanceof TextboxQuestion) {
         control.push(
@@ -48,13 +47,12 @@ export class QuestionControlService {
             order: question.order,
             required: question.required,
             questionLabels: this.fb.group({
-              forums: question.options
+              forums: question.options.toString()
             })
           })
         );
       }
     });
-
     return formForm;
   }
 

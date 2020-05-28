@@ -1,1 +1,3 @@
-<app-update-page [template]="template" [questionsForm]="questionsForm" [pageData]="pageData"></app-update-page>
+<ng-container *ngIf="template$ && questionsForm$ && pageData$">
+<app-update-page [template]="template$ | async" [questionsForm]="questionsForm$ | async" [pageData]="pageData$ | async"></app-update-page>
+</ng-container>

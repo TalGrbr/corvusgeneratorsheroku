@@ -1,4 +1,6 @@
 <!-- Show the current page -->
+<a routerLink="/updatePage/{{showPageName}}">Update this page</a>
+<br>
 <a [innerHTML]="page.title"></a>
 <p [innerHTML]="page.about"></p>
 <ng-container *ngFor="let remark of page.remarks">

@@ -13,7 +13,7 @@ export class UpdatePageComponent implements OnInit {
   formValue: string;
   totalValue: string;
   @Input() template: string;
-  @Input() questionsForm: string;
+  @Input() questionsForm: any;
   @Input() pageData: string;
   jqfs = new JsonQuestionFormService(new QuestionControlService(this.fb));
 
@@ -21,6 +21,7 @@ export class UpdatePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('pagedata: ' + this.pageData);
     let newPageData = JSON.parse(this.pageData);
     this.pageDataForm = this.fb.group({
       name: [newPageData['name']],

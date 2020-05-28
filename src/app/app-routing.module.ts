@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: 'showPage/:name', component: ShowPageComponent},
   {path: 'main', component: MainComponent},
   {path: 'createPage', component: CreatePageComponent},
-  {path: 'updatePage', component: UpdatePageParentComponent},
+  {path: 'updatePage/:name', component: UpdatePageParentComponent},
   {path: 'choosePage', component: ChoosePageComponent}
 ];
 

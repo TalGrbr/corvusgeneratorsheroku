@@ -14,7 +14,7 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./show-page.component.css']
 })
 export class ShowPageComponent implements OnInit {
-  private readonly showPageName;
+  readonly showPageName;
   questions: QuestionBase<any>[];
   page = new Page({});
   template: string;
@@ -37,7 +37,7 @@ export class ShowPageComponent implements OnInit {
       self.template = data.template;
       self.questions = jqf.getQuestionsFromJson(data.questions);
     });
-    titleService.setTitle(this.page.name);
+    titleService.setTitle(this.showPageName);
   }
 
   ngOnInit(): void {
