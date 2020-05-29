@@ -1,5 +1,8 @@
 <h1>Update Page</h1>
-
+<a routerLink="/showPage/{{curName}}">
+  go back to page: {{curName}}
+</a>
+<button type="button" (click)="deleteClicked()">Delete this page</button>
 <form [formGroup]="pageDataForm" (ngSubmit)="onPageSubmit()">
   <label>
     Page name:

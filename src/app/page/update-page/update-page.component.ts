@@ -4,6 +4,7 @@ import {QuestionControlService} from '../../form/form-services/question-control.
 import {JsonQuestionFormService} from '../../form/form-services/json-question-form.service';
 import {Utils} from '../../utilities/Utils';
 import {PageDataService} from '../../server-handlers/page-data.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-update-page',
@@ -18,10 +19,11 @@ export class UpdatePageComponent implements OnInit {
   @Input() questionsForm: any;
   @Input() pageData: string;
   private oldName = '';
+  curName = this.oldName;
   jqfs = new JsonQuestionFormService(new QuestionControlService(this.fb));
   private pds: PageDataService;
 
-  constructor(private fb: FormBuilder, pds: PageDataService) {
+  constructor(private fb: FormBuilder, pds: PageDataService, private router: Router) {
     this.pds = pds;
   }
 
@@ -29,6 +31,7 @@ export class UpdatePageComponent implements OnInit {
     //console.log('pagedata: ' + this.pageData);
     let newPageData = JSON.parse(this.pageData);
     this.oldName = newPageData.name;
+    this.curName = this.oldName;
     this.pageDataForm = this.fb.group({
       name: [newPageData['name']],
       color: [newPageData['color']],
@@ -46,6 +49,8 @@ export class UpdatePageComponent implements OnInit {
   onPageSubmit() {
     let formJsonValue = JSON.parse(this.formValue);
     this.totalValue = this.pageDataForm.getRawValue();
+    this.curName = this.totalValue['name'];
+
     this.totalValue['questions'] = formJsonValue.questions;
     if (formJsonValue.questions.length > 0) {
       this.totalValue['showForm'] = true;
@@ -77,5 +82,11 @@ export class UpdatePageComponent implements OnInit {
 
   updateFormValue(value: string) {
     this.formValue = value;
+  }
+
+  deleteClicked() {
+    this.pds.postDeletePageToServer(this.curName).subscribe(_ => {
+      this.router.navigate(['choosePage']);
+    });
   }
 }

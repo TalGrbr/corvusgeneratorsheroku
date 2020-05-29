@@ -1,6 +1,3 @@
 <ng-container *ngIf="template$ && questionsForm$ && pageData$">
-  <a routerLink="/showPage/{{showPageName}}">
-    go back to page: {{showPageName}}
-  </a>
 <app-update-page [template]="template$ | async" [questionsForm]="questionsForm$ | async" [pageData]="pageData$ | async"></app-update-page>
 </ng-container>

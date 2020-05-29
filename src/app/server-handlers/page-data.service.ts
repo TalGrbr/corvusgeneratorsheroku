@@ -21,7 +21,7 @@ export class PageDataService {
     return this.httpClient.get(this.API_SERVER + '/showPage?name=' + pageName);
   }
 
-  public getAllPages(){
+  public getAllPages() {
     return this.httpClient.get(this.API_SERVER + '/pages');
   }
 
@@ -33,5 +33,9 @@ export class PageDataService {
 
   postUpdatePageToServer(oldPageName, newPage) {
     return this.httpClient.post(this.API_SERVER + '/updatePage?name=' + oldPageName, newPage, this.httpOptions);
+  }
+
+  postDeletePageToServer(pageNameToDelete) {
+    return this.httpClient.post(this.API_SERVER + '/deletePage?name=' + pageNameToDelete, this.httpOptions);
   }
 }
