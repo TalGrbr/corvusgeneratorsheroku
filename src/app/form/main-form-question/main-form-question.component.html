@@ -5,11 +5,12 @@
 
     <input *ngSwitchCase="'textbox'" [formControlName]="question.key"
            [id]="question.key" [type]="question.boxType">
-
-    <select [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key">
-      <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
-    </select>
-
+    <ng-container *ngSwitchCase="'dropdown'">
+      <label>Forums: </label>
+      <select [id]="question.key" [formControlName]="question.key">
+        <option *ngFor="let opt of question.options" [value]="opt.value">{{opt.key}}</option>
+      </select>
+    </ng-container>
     <editor
       *ngSwitchCase="'bbcode'"
       apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
@@ -31,8 +32,10 @@
           'forecolor backcolor |'+
           'ltr rtl |' +
           'table media link image |' +
-          'outdent indent | removeformat | preview'
+          'outdent indent | removeformat | preview',
+          forced_root_block : ''
    }"></editor>
-</div>
-<div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div>
+    <a>{{question.desc}}</a>
+  </div>
+  <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div>
 </div>

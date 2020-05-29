@@ -31,8 +31,10 @@ export class UpdateFormComponent implements OnInit {
         questionName: [''],
         order: this.getNextOrder(),
         required: false,
+        desc: [''],
         questionLabels: this.fb.group({
-          forums: ['']
+          values: [''],
+          keys: ['']
         })
       })
     );
@@ -46,10 +48,23 @@ export class UpdateFormComponent implements OnInit {
         questionName: [''],
         order: this.getNextOrder(),
         required: false,
+        desc: [''],
         questionLabels: this.fb.group({
-          desc: [''],
           boxType: ['']
         })
+      })
+    );
+  }
+
+  addEditor() {
+    let control = this.formForm.controls.questions as FormArray;
+    control.push(
+      this.fb.group({
+        questionType: 'bbCode',
+        questionName: [''],
+        desc: [''],
+        order: this.getNextOrder(),
+        required: false
       })
     );
   }
@@ -95,4 +110,6 @@ export class UpdateFormComponent implements OnInit {
     this.formForm.value['template'] = this.template;
     this.contentEvent.emit(JSON.stringify(this.formForm.value));
   }
+
+
 }

@@ -1,4 +1,8 @@
 <h1>Update Page</h1>
+<a routerLink="/showPage/{{curName}}">
+  go back to page: {{curName}}
+</a>
+<button type="button" (click)="deleteClicked()">Delete this page</button>
 <form [formGroup]="pageDataForm" (ngSubmit)="onPageSubmit()">
   <label>
     Page name:
@@ -37,7 +41,9 @@
           'forecolor backcolor |'+
           'ltr rtl |' +
           'table media link image |' +
-          'outdent indent | removeformat | preview'
+          'outdent indent | removeformat | preview',
+          forced_root_block : ''
+
    }"></editor>
   </label>
   <br>
@@ -69,13 +75,15 @@
           'forecolor backcolor |'+
           'ltr rtl |' +
           'link|' +
-          'removeformat | preview'
+          'removeformat | preview',
+        forced_root_block : ''
    }"></editor>
       </label>
     </div>
   </div>
   <h3>Update Form</h3>
-  <app-update-form (contentEvent)="updateFormValue($event)" [template]="template" [questions]="jqfs.getQuestionsFromJson(questionsForm)"></app-update-form>
+  <app-update-form (contentEvent)="updateFormValue($event)" [template]="template"
+                   [questions]="jqfs.getQuestionsFromJson(questionsForm)"></app-update-form>
   <button>Submit</button>
 </form>
 

@@ -37,13 +37,14 @@
           'forecolor backcolor |'+
           'ltr rtl |' +
           'table media link image |' +
-          'outdent indent | removeformat | preview'
+          'outdent indent | removeformat | preview',
+          forced_root_block : ''
    }"></editor>
   </label>
   <br>
   <div formArrayName="remarks">
     <h3>Remarks</h3>
-    <button (click)="addRemark()">Add remark</button>
+    <button type="button" (click)="addRemark()">Add remark</button>
 
     <div *ngFor="let remark of remarks.controls; let i=index">
       <label>
@@ -67,7 +68,8 @@
           'forecolor backcolor |'+
           'ltr rtl |' +
           'link|' +
-          'removeformat | preview'
+          'removeformat | preview',
+          forced_root_block : ''
    }"></editor>
       </label>
     </div>

@@ -1,9 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {QuestionBase} from '../../form/question-types/question-base';
 import {QuestionService} from '../../form/form-services/question.service';
 import {Page} from '../Page';
 import {Title} from '@angular/platform-browser';
+import {PageDataService} from '../../server-handlers/page-data.service';
+import {JsonQuestionFormService} from '../../form/form-services/json-question-form.service';
+import {ActivatedRoute} from '@angular/router';
+import {Utils} from '../../utilities/Utils';
 
 @Component({
   selector: 'app-show-page',
@@ -11,24 +15,36 @@ import {Title} from '@angular/platform-browser';
   styleUrls: ['./show-page.component.css']
 })
 export class ShowPageComponent implements OnInit {
-  questions$: Observable<QuestionBase<any>[]>;
-  page: Page;
+  readonly showPageName;
+  questions: QuestionBase<any>[];
+  page = new Page({});
   template: string;
   payload: JSON;
   result = '';
 
-  constructor(service: QuestionService, private titleService: Title) {
-    this.questions$ = service.getQuestions();
-    this.template = '%Article%';
-    this.page = new Page({
-      name: 'test name',
-      color: '#00000',
-      title: 'test title',
-      about: '<b>test about</b>',
-      remarks: ['<b>remark1</b>', 'remark2'],
-      showForm: true
+  constructor(private titleService: Title, pds: PageDataService, jqf: JsonQuestionFormService, private route: ActivatedRoute) {
+    this.showPageName = this.route.snapshot.paramMap.get('name');
+    let self = this;
+    pds.getPageFromServer(this.showPageName).subscribe((data: any) => {
+      //console.log('data from server: ' + JSON.stringify(data));
+      data = JSON.parse(JSON.stringify(data)
+        .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
+        .join(Utils.DOUBLE_QUOTES)
+        .split(Utils.SINGLE_QUOTES_REPLACEMENT)
+        .join(Utils.SINGLE_QUOTES));
+      //console.log('data from server after change: ' + JSON.stringify(data));
+      self.page = new Page({
+        name: data.name,
+        color: data.color,
+        title: data.title,
+        about: data.about,
+        remarks: data.remarks,
+        showForm: data.showForm
+      });
+      self.template = data.template;
+      self.questions = jqf.getQuestionsFromJson(data.questions);
     });
-    titleService.setTitle(this.page.name);
+    titleService.setTitle(this.showPageName);
   }
 
   ngOnInit(): void {
@@ -48,10 +64,11 @@ export class ShowPageComponent implements OnInit {
       translationDict[names[index]] = values[index];
     });
 
-    console.log(translationDict);
+    //console.log(translationDict);
     Object.keys(translationDict).forEach(key => {
-      this.result = this.template.replace(key, translationDict[key]);
+      this.template = this.template.replace(key, translationDict[key]);
     });
+    this.result = this.template;
   }
 
   private getValuesAsArray() {
@@ -64,16 +81,9 @@ export class ShowPageComponent implements OnInit {
 
   private getNamesToChange() {
     let names = [];
-    let namesObserver = {
-      next: qList => qList.forEach(q => names.push(q.label)),
-      error: err => console.error('Observer got an error: ' + err),
-      complete: () => console.log('Observer got a complete notification'),
-    };
-
-    this.questions$.subscribe(namesObserver);
-    for (let name of names) {
-      names[names.indexOf(name)] = '%' + name + '%';
-    }
+    this.questions.forEach(q => {
+      names.push('%' + q.getLabel() + '%');
+    });
     return names;
   }
 }

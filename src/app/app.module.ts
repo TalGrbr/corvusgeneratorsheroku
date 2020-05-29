@@ -20,6 +20,9 @@ import {UpdatePageComponent} from './page/update-page/update-page.component';
 import {UpdatePageParentComponent} from './page/update-page-parent/update-page-parent.component';
 
 import { HttpClientModule } from '@angular/common/http';
+import {QuestionControlService} from './form/form-services/question-control.service';
+import { ChoosePageComponent } from './page/choose-page/choose-page.component';
+import { SafeHtmlPipe } from './page/pipes/safe-html.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,9 @@ import { HttpClientModule } from '@angular/common/http';
     ShowPageComponent,
     CreatePageComponent,
     UpdatePageComponent,
-    UpdatePageParentComponent
+    UpdatePageParentComponent,
+    ChoosePageComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
@@ -45,7 +50,7 @@ import { HttpClientModule } from '@angular/common/http';
     EditorModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [QuestionControlService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

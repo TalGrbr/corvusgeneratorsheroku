@@ -6,14 +6,16 @@ import {ShowPageComponent} from './page/show-page/show-page.component';
 import {MainComponent} from './main/main.component';
 import {CreatePageComponent} from './page/create-page/create-page.component';
 import {UpdatePageParentComponent} from './page/update-page-parent/update-page-parent.component';
+import {ChoosePageComponent} from './page/choose-page/choose-page.component';
 
 
 const routes: Routes = [
-  {path: '', redirectTo: '/main', pathMatch: 'full'},
-  {path: 'showPage', component: ShowPageComponent},
+  {path: '', redirectTo: 'main', pathMatch: 'full'},
+  {path: 'showPage/:name', component: ShowPageComponent},
   {path: 'main', component: MainComponent},
   {path: 'createPage', component: CreatePageComponent},
-  {path: 'updatePage', component: UpdatePageParentComponent}
+  {path: 'updatePage/:name', component: UpdatePageParentComponent},
+  {path: 'choosePage', component: ChoosePageComponent}
 ];
 
 @NgModule({

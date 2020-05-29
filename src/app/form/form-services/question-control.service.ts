@@ -20,12 +20,11 @@ export class QuestionControlService {
     return new FormGroup(group);
   }
 
-   toFormFormGroup(questions: QuestionBase<string>[]) {
+  toFormFormGroup(questions: QuestionBase<string>[]) {
     let formForm = this.fb.group({
       questions: this.fb.array([])
     });
     let control = formForm.controls.questions as FormArray;
-
     questions.forEach(question => {
       if (question instanceof TextboxQuestion) {
         control.push(
@@ -34,8 +33,8 @@ export class QuestionControlService {
             questionName: question.label,
             order: question.order,
             required: question.required,
+            desc: question.desc,
             questionLabels: this.fb.group({
-              desc: question.desc,
               boxType: question.boxType
             })
           })
@@ -47,14 +46,14 @@ export class QuestionControlService {
             questionName: question.label,
             order: question.order,
             required: question.required,
+            desc: question.desc,
             questionLabels: this.fb.group({
-              forums: question.options
+              keys: this.getKeysFromListDict(question.options),
+              values: this.getValuesFromListDict(question.options)
             })
-          })
-        );
+          }));
       }
     });
-
     return formForm;
   }
 
@@ -67,6 +66,26 @@ export class QuestionControlService {
       key += l[0].toUpperCase() + l.substr(1);
     });
     return key;
+  }
+
+  private getKeysFromListDict(dict) {
+    let list = [];
+    dict.forEach(element => {
+      //alert(element.key);
+      list.push(element.key);
+    });
+    //alert('keys: ' + JSON.stringify(list));
+    return list.toString();
+  }
+
+  private getValuesFromListDict(dict) {
+    let list = [];
+    dict.forEach(element => {
+      //alert(typeof element.value);
+      list.push(element.value);
+    });
+    //alert('values: ' + JSON.stringify(list));
+    return list.toString();
   }
 
   optionStringToDict(options: string) {

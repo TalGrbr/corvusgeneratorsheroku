@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Page} from '../Page';
 import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {PageDataService} from '../../server-handlers/page-data.service';
+import {Utils} from '../../utilities/Utils';
 
 @Component({
   selector: 'app-create-page',
@@ -12,8 +14,9 @@ export class CreatePageComponent implements OnInit {
   pageDataForm: FormGroup;
   formValue: string;
   totalValue: string;
+  private pds: PageDataService;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, pds: PageDataService) {
     this.pageDataForm = this.fb.group({
       name: [''],
       color: [''],
@@ -23,6 +26,7 @@ export class CreatePageComponent implements OnInit {
         this.fb.control('')
       ])
     });
+    this.pds = pds;
   }
 
   get remarks() {
@@ -41,9 +45,19 @@ export class CreatePageComponent implements OnInit {
     let formJsonValue = JSON.parse(this.formValue);
     this.totalValue = this.pageDataForm.getRawValue();
     this.totalValue['questions'] = formJsonValue.questions;
+    if (formJsonValue.questions.length > 0) {
+      this.totalValue['showForm'] = true;
+    }
     this.totalValue['template'] = formJsonValue.template;
+    this.totalValue = JSON.parse((JSON.stringify(this.totalValue))
+      .split(Utils.DOUBLE_QUOTES)
+      .join(Utils.DOUBLE_QUOTES_REPLACEMENT)
+      .split(Utils.SINGLE_QUOTES)
+      .join(Utils.SINGLE_QUOTES_REPLACEMENT)
+    );
 
-    //TODO send this to server
+    // console.log(JSON.stringify(this.totalValue));
+    this.pds.postPageToServer(this.totalValue).subscribe();
   }
 
   updateFormValue(value: string) {

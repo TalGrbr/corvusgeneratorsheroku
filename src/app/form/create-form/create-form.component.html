@@ -1,15 +1,15 @@
 <h1>Create Form</h1>
-<button (click)="addNewDropBoxQuestion()">Add new DropBox</button>
-<button (click)="addNewTextBoxQuestion()">Add new TextBox</button>
-<button (click)="addEditor()">Add new Editor</button>
+<button type="button" (click)="addNewDropBoxQuestion()">Add new DropBox</button>
+<button type="button" (click)="addNewTextBoxQuestion()">Add new TextBox</button>
+<button type="button" (click)="addEditor()">Add new Editor</button>
 <br><br>
-<form [formGroup]="formForm" (focusout)="formChanged()">
+<form [formGroup]="formForm" (change)="formChanged()">
   <div formArrayName="questions">
     <div *ngFor="let q of formForm.get('questions')['controls']; let i=index">
       <fieldset>
         <legend><h3>Question {{i + 1}}; Type: {{q.get('questionType').value}}</h3></legend>
         <div [formGroupName]="i">
-          <span><button (click)="deleteQuestion(i)">Delete Question</button></span>
+          <span><button type="button" (click)="deleteQuestion(i)">Delete Question</button></span>
           <br>
           <label>Question Name: </label>
           <input formControlName="questionName"/>
@@ -19,19 +19,23 @@
           <br>
           <label>Order:</label>
           <input formControlName="order" type="number">
+          <br>
+          <label>Question desc:</label>
+          <input formControlName="desc"/>
+          <br>
           <div formArrayName="questionLabels" *ngIf="q.get('questionLabels')">
             <fieldset>
               <legend><h4>QuestionLabel</h4></legend>
               <div *ngIf="q.get('questionType').value === 'dropBox'">
                 <label>Forums:</label>
-                <input formControlName="forums"/>
+                <input formControlName="keys"/>
+                <br>
+                <label>Values:</label>
+                <input formControlName="values"/>
                 <br>
               </div>
 
               <div *ngIf="q.get('questionType').value === 'textBox'">
-                <label>Question desc:</label>
-                <input formControlName="desc"/>
-                <br>
                 <label>Question box type:</label>
                 <select formControlName="boxType">
                   <option value="text">text</option>

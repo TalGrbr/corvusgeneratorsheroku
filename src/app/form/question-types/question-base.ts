@@ -7,6 +7,7 @@ export class QuestionBase<T> {
   controlType: string;
   boxType: string;
   options: { key: string, value: string }[];
+  desc: string;
 
   constructor(options: {
     value?: T,
@@ -15,6 +16,7 @@ export class QuestionBase<T> {
     required?: boolean,
     order?: number,
     controlType?: string,
+    desc?: string
   } = {}) {
     this.value = options.value;
     this.key = options.key || '';
@@ -22,6 +24,7 @@ export class QuestionBase<T> {
     this.required = !!options.required;
     this.order = options.order === undefined ? 1 : options.order;
     this.controlType = options.controlType || '';
+    this.desc = options.desc || '';
   }
 
   getLabel() {
