@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-create-form',
@@ -11,6 +11,7 @@ export class CreateFormComponent implements OnInit {
   readonly maxOrder = 50;
   template: string;
   @Output() contentEvent = new EventEmitter<string>();
+  @Output() validationEvent = new EventEmitter<boolean>();
 
   constructor(private fb: FormBuilder) {
     this.formForm = this.fb.group({
@@ -23,16 +24,23 @@ export class CreateFormComponent implements OnInit {
     control.push(
       this.fb.group({
         questionType: ['dropBox'],
-        questionName: [''],
-        desc: [''],
+        questionName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(30)
+        ]),
+        desc: new FormControl('', [
+          Validators.maxLength(30)
+        ]),
         order: this.getNextOrder(),
         required: false,
         questionLabels: this.fb.group({
-          values: [''],
-          keys: ['']
+          values: new FormControl(''),
+          keys: new FormControl('')
         })
       })
     );
+    this.validationEvent.emit(this.formForm.valid);
   }
 
   addNewTextBoxQuestion() {
@@ -40,15 +48,24 @@ export class CreateFormComponent implements OnInit {
     control.push(
       this.fb.group({
         questionType: 'textBox',
-        questionName: [''],
+        questionName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(30)
+        ]),
         order: this.getNextOrder(),
         required: false,
-        desc: [''],
+        desc: new FormControl('', [
+          Validators.maxLength(30)
+        ]),
         questionLabels: this.fb.group({
-          boxType: ['']
+          boxType: new FormControl('', [
+            Validators.required
+          ])
         })
       })
     );
+    this.validationEvent.emit(this.formForm.valid);
   }
 
   addEditor() {
@@ -56,12 +73,19 @@ export class CreateFormComponent implements OnInit {
     control.push(
       this.fb.group({
         questionType: 'bbCode',
-        questionName: [''],
-        desc: [''],
+        questionName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(30)
+        ]),
+        desc: new FormControl('', [
+          Validators.maxLength(30)
+        ]),
         order: this.getNextOrder(),
         required: false
       })
     );
+    this.validationEvent.emit(this.formForm.valid);
   }
 
   deleteQuestion(index) {
@@ -77,6 +101,7 @@ export class CreateFormComponent implements OnInit {
     this.template = value;
     this.formForm.value['template'] = this.template;
     this.updateQuestionsKeys();
+    this.validationEvent.emit(this.formForm.valid);
     this.contentEvent.emit(JSON.stringify(this.formForm.value));
   }
 
@@ -110,6 +135,7 @@ export class CreateFormComponent implements OnInit {
     this.formForm.value['template'] = this.template;
     this.updateQuestionsKeys();
     this.contentEvent.emit(JSON.stringify(this.formForm.value));
+    this.validationEvent.emit(this.formForm.valid);
     //alert(JSON.stringify(this.formForm.value));
   }
 

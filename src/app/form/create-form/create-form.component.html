@@ -33,6 +33,7 @@
                 <label>Values:</label>
                 <input formControlName="values"/>
                 <br>
+                <span>*To add options-group, start key and value with '~~'</span>
               </div>
 
               <div *ngIf="q.get('questionType').value === 'textBox'">
@@ -57,4 +58,4 @@
 <pre>{{formForm.value | json}}</pre>
 
 <h3>Create Template</h3>
-<app-update-template [questionsForm]="formForm" [curTemplate]="'hello from create'" (editorContentEvent)="updateTemplate($event)"></app-update-template>
+<app-update-template [questionsForm]="formForm" (editorContentEvent)="updateTemplate($event)"></app-update-template>

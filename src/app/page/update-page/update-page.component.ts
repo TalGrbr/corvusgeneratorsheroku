@@ -22,6 +22,7 @@ export class UpdatePageComponent implements OnInit {
   curName = this.oldName;
   jqfs = new JsonQuestionFormService(new QuestionControlService(this.fb));
   private pds: PageDataService;
+  questionsAreValid = true;
 
   constructor(private fb: FormBuilder, pds: PageDataService, private router: Router) {
     this.pds = pds;
@@ -64,7 +65,9 @@ export class UpdatePageComponent implements OnInit {
     );
 
     // console.log(JSON.stringify(this.totalValue));
-    this.pds.postUpdatePageToServer(this.oldName, this.totalValue).subscribe();
+    this.pds.postUpdatePageToServer(this.oldName, this.totalValue).subscribe(data => alert(data['successBody']), error => {
+      alert(error.error.errBody);
+    });
   }
 
   get remarks() {
@@ -85,8 +88,13 @@ export class UpdatePageComponent implements OnInit {
   }
 
   deleteClicked() {
-    this.pds.postDeletePageToServer(this.curName).subscribe(_ => {
+    this.pds.postDeletePageToServer(this.curName).subscribe(data => {
+      alert(data['successBody']);
       this.router.navigate(['choosePage']);
-    });
+    }, error => alert(error.error.errBody));
+  }
+
+  updateQuestionsValidation(isValid: boolean) {
+    this.questionsAreValid = isValid;
   }
 }

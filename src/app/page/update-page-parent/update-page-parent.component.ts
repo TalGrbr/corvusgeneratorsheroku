@@ -26,6 +26,7 @@ export class UpdatePageParentComponent implements OnInit {
     let self = this;
     pds.getPageFromServer(this.showPageName).subscribe((data: any) => {
       //console.log('data from server: ' + JSON.stringify(data));
+      data = data.body;
       self.pageData$ = of(JSON.stringify(new Page({
           name: data.name,
           color: data.color,
@@ -46,7 +47,7 @@ export class UpdatePageParentComponent implements OnInit {
             .split(Utils.SINGLE_QUOTES_REPLACEMENT)
             .join(Utils.SINGLE_QUOTES)
         ));
-    });
+    }, error => alert(error.error.errorBody));
     titleService.setTitle('Update ' + this.showPageName);
   }
 

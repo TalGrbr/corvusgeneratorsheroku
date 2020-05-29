@@ -6,9 +6,12 @@
     <input *ngSwitchCase="'textbox'" [formControlName]="question.key"
            [id]="question.key" [type]="question.boxType">
     <ng-container *ngSwitchCase="'dropdown'">
-      <label>Forums: </label>
       <select [id]="question.key" [formControlName]="question.key">
-        <option *ngFor="let opt of question.options" [value]="opt.value">{{opt.key}}</option>
+        <ng-container *ngFor="let opt of question.options">
+          <optgroup *ngIf="opt.key.startsWith('~~')" label="{{opt.key.substr(2)}}">
+          </optgroup>
+          <option *ngIf="!opt.key.startsWith('~~')" [value]="opt.value">{{opt.key}}</option>
+        </ng-container>
       </select>
     </ng-container>
     <editor

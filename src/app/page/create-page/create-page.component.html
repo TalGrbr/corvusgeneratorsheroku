@@ -74,8 +74,8 @@
       </label>
     </div>
   </div>
-  <app-create-form (contentEvent)="updateFormValue($event)"></app-create-form>
-  <button>Submit</button>
+  <app-create-form (contentEvent)="updateFormValue($event)" (validationEvent)="updateQuestionsValidation($event)"></app-create-form>
+  <button [disabled]="!pageDataForm.valid || !questionsAreValid">Submit</button>
 </form>
 
 {{totalValue | json}}

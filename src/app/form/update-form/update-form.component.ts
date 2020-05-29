@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {QuestionBase} from '../question-types/question-base';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {QuestionControlService} from '../form-services/question-control.service';
 
 @Component({
@@ -15,6 +15,7 @@ export class UpdateFormComponent implements OnInit {
   readonly maxOrder = 50;
   @Input() template: string;
   @Output() contentEvent = new EventEmitter<string>();
+  @Output() validationEvent = new EventEmitter<boolean>();
 
   constructor(private fb: FormBuilder, private qcs: QuestionControlService) {
   }
@@ -28,16 +29,23 @@ export class UpdateFormComponent implements OnInit {
     control.push(
       this.fb.group({
         questionType: ['dropBox'],
-        questionName: [''],
+        questionName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(30)
+        ]),
         order: this.getNextOrder(),
         required: false,
-        desc: [''],
+        desc: new FormControl('', [
+          Validators.maxLength(30)
+        ]),
         questionLabels: this.fb.group({
           values: [''],
           keys: ['']
         })
       })
     );
+    this.validationEvent.emit(this.formForm.valid);
   }
 
   addNewTextBoxQuestion() {
@@ -45,15 +53,24 @@ export class UpdateFormComponent implements OnInit {
     control.push(
       this.fb.group({
         questionType: 'textBox',
-        questionName: [''],
+        questionName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(30)
+        ]),
         order: this.getNextOrder(),
         required: false,
-        desc: [''],
+        desc: new FormControl('', [
+          Validators.maxLength(30)
+        ]),
         questionLabels: this.fb.group({
-          boxType: ['']
+          boxType: new FormControl('', [
+            Validators.required
+          ])
         })
       })
     );
+    this.validationEvent.emit(this.formForm.valid);
   }
 
   addEditor() {
@@ -61,12 +78,19 @@ export class UpdateFormComponent implements OnInit {
     control.push(
       this.fb.group({
         questionType: 'bbCode',
-        questionName: [''],
-        desc: [''],
+        questionName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(30)
+        ]),
+        desc: new FormControl('', [
+          Validators.maxLength(30)
+        ]),
         order: this.getNextOrder(),
         required: false
       })
     );
+    this.validationEvent.emit(this.formForm.valid);
   }
 
   deleteQuestion(index) {
@@ -103,11 +127,13 @@ export class UpdateFormComponent implements OnInit {
   updateTemplate(value: string) {
     this.template = value;
     this.formForm.value['template'] = this.template;
+    this.validationEvent.emit(this.formForm.valid);
     this.contentEvent.emit(JSON.stringify(this.formForm.value));
   }
 
   formChanged() {
     this.formForm.value['template'] = this.template;
+    this.validationEvent.emit(this.formForm.valid);
     this.contentEvent.emit(JSON.stringify(this.formForm.value));
   }
 

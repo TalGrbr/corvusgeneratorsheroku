@@ -18,11 +18,11 @@ export class PageDataService {
 
   public getPageFromServer(pageName: string) {
     //console.log('requesting page: ' + this.API_SERVER + '/showPage?name=' + pageName);
-    return this.httpClient.get(this.API_SERVER + '/showPage?name=' + pageName);
+    return this.httpClient.get(this.API_SERVER + '/showPage?name=' + pageName, { observe: 'response' });
   }
 
   public getAllPages() {
-    return this.httpClient.get(this.API_SERVER + '/pages');
+    return this.httpClient.get(this.API_SERVER + '/pages', { observe: 'response' });
   }
 
   public postPageToServer(page) {

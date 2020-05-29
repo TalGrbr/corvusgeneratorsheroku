@@ -23,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {QuestionControlService} from './form/form-services/question-control.service';
 import { ChoosePageComponent } from './page/choose-page/choose-page.component';
 import { SafeHtmlPipe } from './page/pipes/safe-html.pipe';
+import {ForbiddenValidatorDirective} from './utilities/custom-validators/forbidden-name.directive';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { SafeHtmlPipe } from './page/pipes/safe-html.pipe';
     UpdatePageComponent,
     UpdatePageParentComponent,
     ChoosePageComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    ForbiddenValidatorDirective
   ],
   imports: [
     BrowserModule,
