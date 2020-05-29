@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
 import {Observable} from 'rxjs';
 import {QuestionBase} from '../../form/question-types/question-base';
 import {QuestionService} from '../../form/form-services/question.service';
@@ -22,28 +23,32 @@ export class ShowPageComponent implements OnInit {
   payload: JSON;
   result = '';
 
-  constructor(private titleService: Title, pds: PageDataService, jqf: JsonQuestionFormService, private route: ActivatedRoute) {
+  constructor(private titleService: Title, pds: PageDataService, jqf: JsonQuestionFormService, private route: ActivatedRoute, private location: Location) {
     this.showPageName = this.route.snapshot.paramMap.get('name');
     let self = this;
     pds.getPageFromServer(this.showPageName).subscribe((data: any) => {
-      //console.log('data from server: ' + JSON.stringify(data));
-      data = JSON.parse(JSON.stringify(data)
-        .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
-        .join(Utils.DOUBLE_QUOTES)
-        .split(Utils.SINGLE_QUOTES_REPLACEMENT)
-        .join(Utils.SINGLE_QUOTES));
-      //console.log('data from server after change: ' + JSON.stringify(data));
-      self.page = new Page({
-        name: data.name,
-        color: data.color,
-        title: data.title,
-        about: data.about,
-        remarks: data.remarks,
-        showForm: data.showForm
+        //console.log('data from server: ' + JSON.stringify(data));
+        data = JSON.parse(JSON.stringify(data.body)
+          .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
+          .join(Utils.DOUBLE_QUOTES)
+          .split(Utils.SINGLE_QUOTES_REPLACEMENT)
+          .join(Utils.SINGLE_QUOTES));
+        //console.log('data from server after change: ' + JSON.stringify(data));
+        self.page = new Page({
+          name: data.name,
+          color: data.color,
+          title: data.title,
+          about: data.about,
+          remarks: data.remarks,
+          showForm: data.showForm
+        });
+        self.template = data.template;
+        self.questions = jqf.getQuestionsFromJson(data.questions);
+      },
+      err => {
+        alert(err.error.errorBody);
+        location.back();
       });
-      self.template = data.template;
-      self.questions = jqf.getQuestionsFromJson(data.questions);
-    });
     titleService.setTitle(this.showPageName);
   }
 

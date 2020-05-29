@@ -82,9 +82,9 @@
     </div>
   </div>
   <h3>Update Form</h3>
-  <app-update-form (contentEvent)="updateFormValue($event)" [template]="template"
-                   [questions]="jqfs.getQuestionsFromJson(questionsForm)"></app-update-form>
-  <button>Submit</button>
+  <app-update-form (contentEvent)="updateFormValue($event)" (validationEvent)="updateQuestionsValidation($event)"
+                   [template]="template" [questions]="jqfs.getQuestionsFromJson(questionsForm)"></app-update-form>
+  <button [disabled]="!pageDataForm.valid || !questionsAreValid">Submit</button>
 </form>
 
 {{totalValue | json}}

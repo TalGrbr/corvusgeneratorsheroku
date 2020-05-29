@@ -1,5 +1,5 @@
-<button (click)="addNewDropBoxQuestion()">Add new DropBox</button>
-<button (click)="addNewTextBoxQuestion()">Add new TextBox</button>
+<button type="button" (click)="addNewDropBoxQuestion()">Add new DropBox</button>
+<button type="button" (click)="addNewTextBoxQuestion()">Add new TextBox</button>
 <button type="button" (click)="addEditor()">Add new Editor</button>
 <br><br>
 <form [formGroup]="formForm" (focusout)="formChanged()">
@@ -25,11 +25,12 @@
             <fieldset>
               <legend><h4>QuestionLabel</h4></legend>
               <div *ngIf="q.get('questionType').value === 'dropBox'">
-                <label>Forums:</label>
+                <label>Keys:</label>
                 <input formControlName="keys"/>
-                <label>Forums:</label>
+                <label>Values:</label>
                 <input formControlName="values"/>
                 <br>
+                <span>*To add options-group, start key and value with '~~'</span>
               </div>
 
               <div *ngIf="q.get('questionType').value === 'textBox'">

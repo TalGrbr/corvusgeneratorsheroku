@@ -54,8 +54,12 @@ export class JsonQuestionFormService {
 
   private zipForDropDown(keys, values) {
     let options = [];
-    for (let i = 0; i < keys.length; i++) {
-      options.push({key: keys[i], value: values[i]});
+    for (let i = 0; i < values.length; i++) {
+      if (keys[i]) {
+        options.push({key: keys[i], value: values[i]});
+      } else {
+        options.push({key: values[i], value: values[i]});
+      }
     }
     return options;
   }

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Page} from '../Page';
-import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PageDataService} from '../../server-handlers/page-data.service';
 import {Utils} from '../../utilities/Utils';
 
@@ -15,16 +15,25 @@ export class CreatePageComponent implements OnInit {
   formValue: string;
   totalValue: string;
   private pds: PageDataService;
+  questionsAreValid = false;
 
   constructor(private fb: FormBuilder, pds: PageDataService) {
     this.pageDataForm = this.fb.group({
-      name: [''],
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(30)
+      ]),
       color: [''],
-      title: [''],
-      about: [''],
-      remarks: this.fb.array([
-        this.fb.control('')
-      ])
+      title: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(30)
+      ]),
+      about: new FormControl('', [
+        Validators.maxLength(100)
+      ]),
+      remarks: this.fb.array([])
     });
     this.pds = pds;
   }
@@ -34,7 +43,7 @@ export class CreatePageComponent implements OnInit {
   }
 
   addRemark() {
-    this.remarks.push(this.fb.control(''));
+    this.remarks.push(this.fb.control('', [Validators.maxLength(75), Validators.required]));
   }
 
   ngOnInit(): void {
@@ -57,10 +66,18 @@ export class CreatePageComponent implements OnInit {
     );
 
     // console.log(JSON.stringify(this.totalValue));
-    this.pds.postPageToServer(this.totalValue).subscribe();
+    this.pds.postPageToServer(this.totalValue).subscribe(data => {
+      alert(data['successBody']);
+    }, error => {
+      alert(error.error.errBody);
+    });
   }
 
   updateFormValue(value: string) {
     this.formValue = value;
+  }
+
+  updateQuestionsValidation(isValid: boolean) {
+    this.questionsAreValid = isValid;
   }
 }
