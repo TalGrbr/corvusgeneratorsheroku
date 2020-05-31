@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 
 import {QuestionService} from './form/form-services/question.service';
+import {AuthService} from './users/Auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,10 @@ import {QuestionService} from './form/form-services/question.service';
 })
 export class AppComponent {
 
-  constructor() {
+  constructor(public authService: AuthService) {
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

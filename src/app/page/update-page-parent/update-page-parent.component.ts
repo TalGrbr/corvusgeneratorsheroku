@@ -47,7 +47,7 @@ export class UpdatePageParentComponent implements OnInit {
             .split(Utils.SINGLE_QUOTES_REPLACEMENT)
             .join(Utils.SINGLE_QUOTES)
         ));
-    }, error => alert(error.error.errorBody));
+    }, error => alert(error.error.message));
     titleService.setTitle('Update ' + this.showPageName);
   }
 

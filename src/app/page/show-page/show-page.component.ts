@@ -46,7 +46,7 @@ export class ShowPageComponent implements OnInit {
         self.questions = jqf.getQuestionsFromJson(data.questions);
       },
       err => {
-        alert(err.error.errorBody);
+        alert(err.error.message);
         location.back();
       });
     titleService.setTitle(this.showPageName);

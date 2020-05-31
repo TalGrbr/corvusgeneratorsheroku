@@ -19,11 +19,15 @@ import {CreatePageComponent} from './page/create-page/create-page.component';
 import {UpdatePageComponent} from './page/update-page/update-page.component';
 import {UpdatePageParentComponent} from './page/update-page-parent/update-page-parent.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {QuestionControlService} from './form/form-services/question-control.service';
-import { ChoosePageComponent } from './page/choose-page/choose-page.component';
-import { SafeHtmlPipe } from './page/pipes/safe-html.pipe';
+import {ChoosePageComponent} from './page/choose-page/choose-page.component';
+import {SafeHtmlPipe} from './page/pipes/safe-html.pipe';
 import {ForbiddenValidatorDirective} from './utilities/custom-validators/forbidden-name.directive';
+import {AddUserComponent} from './users/add-user/add-user.component';
+import {LoginComponent} from './users/login/login.component';
+import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
+import {AuthInterceptor} from './users/Auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -41,7 +45,10 @@ import {ForbiddenValidatorDirective} from './utilities/custom-validators/forbidd
     UpdatePageParentComponent,
     ChoosePageComponent,
     SafeHtmlPipe,
-    ForbiddenValidatorDirective
+    ForbiddenValidatorDirective,
+    AddUserComponent,
+    LoginComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +59,14 @@ import {ForbiddenValidatorDirective} from './utilities/custom-validators/forbidd
     EditorModule,
     HttpClientModule
   ],
-  providers: [QuestionControlService],
+  providers: [
+    QuestionControlService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -6,7 +6,14 @@
     <a routerLink="choosePage">Choose Page</a>
     <------->
     <a routerLink="createPage">Create Page</a>
+    <------->
+    <a routerLink="addUser">Add User</a>
+    <ng-container *ngIf="!this.authService.isLoggedIn">
+      <------->
+      <a routerLink="login">Login</a>
+    </ng-container>
   </nav>
+  <button (click)="logout()" *ngIf="this.authService.isLoggedIn" type="button">Logout</button>
   <router-outlet></router-outlet>
   <br>
   <br>

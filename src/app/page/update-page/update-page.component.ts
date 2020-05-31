@@ -65,8 +65,8 @@ export class UpdatePageComponent implements OnInit {
     );
 
     // console.log(JSON.stringify(this.totalValue));
-    this.pds.postUpdatePageToServer(this.oldName, this.totalValue).subscribe(data => alert(data['successBody']), error => {
-      alert(error.error.errBody);
+    this.pds.postUpdatePageToServer(this.oldName, this.totalValue).subscribe(data => alert(data['message']), error => {
+      alert(error.error.message);
     });
   }
 
@@ -89,9 +89,9 @@ export class UpdatePageComponent implements OnInit {
 
   deleteClicked() {
     this.pds.postDeletePageToServer(this.curName).subscribe(data => {
-      alert(data['successBody']);
+      alert(data['message']);
       this.router.navigate(['choosePage']);
-    }, error => alert(error.error.errBody));
+    }, error => alert(error.error.message));
   }
 
   updateQuestionsValidation(isValid: boolean) {

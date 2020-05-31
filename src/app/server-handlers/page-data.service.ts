@@ -8,7 +8,7 @@ import {JsonQuestionFormService} from '../form/form-services/json-question-form.
 })
 export class PageDataService {
   private API_SERVER = 'http://localhost:8000';
-  httpOptions = {
+  private httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
 

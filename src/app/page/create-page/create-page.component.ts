@@ -67,9 +67,9 @@ export class CreatePageComponent implements OnInit {
 
     // console.log(JSON.stringify(this.totalValue));
     this.pds.postPageToServer(this.totalValue).subscribe(data => {
-      alert(data['successBody']);
+      alert(data['message']);
     }, error => {
-      alert(error.error.errBody);
+      alert(error.error.message);
     });
   }
 

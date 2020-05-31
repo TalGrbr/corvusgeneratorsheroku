@@ -24,7 +24,7 @@ export class ChoosePageComponent implements OnInit {
         });
       },
       error => {
-        alert(error.error.errorBody);
+        alert(error.error.message);
       });
   }
 
