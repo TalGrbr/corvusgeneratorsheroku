@@ -1,0 +1,12 @@
+<div>
+  <form [formGroup]="addUserForm" (ngSubmit)="registerUser()">
+    <ng-container>
+      <label for="username">Username: </label>
+      <input type="text" id="username" formControlName="username">
+      <br>
+      <span>* initial password is 123456789</span>
+    </ng-container>
+    <br>
+    <button type="submit">Submit</button>
+  </form>
+</div>
