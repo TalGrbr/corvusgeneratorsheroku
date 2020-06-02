@@ -27,7 +27,7 @@ import {ForbiddenValidatorDirective} from './utilities/custom-validators/forbidd
 import {AddUserComponent} from './users/add-user/add-user.component';
 import {LoginComponent} from './users/login/login.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
-import {AuthInterceptor} from './users/Auth/auth.interceptor';
+import {AuthInterceptor} from './users/Auth/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [

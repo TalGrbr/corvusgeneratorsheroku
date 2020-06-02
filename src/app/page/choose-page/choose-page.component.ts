@@ -14,14 +14,17 @@ export class ChoosePageComponent implements OnInit {
     pds.getAllPages().subscribe((data: any) => {
         this.pages = new Array<JSON>();
         //data.contents.forEach(content => console.log('type ' + typeof content));
-        data.body.contents.forEach(content => {
-          this.pages.push(JSON.parse(content
-            .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
-            .join(Utils.DOUBLE_QUOTES)
-            .split(Utils.SINGLE_QUOTES_REPLACEMENT)
-            .join(Utils.SINGLE_QUOTES)
-          ));
-        });
+        //console.log(data);
+        if (data.body.contents) {
+          data.body.contents.forEach(content => {
+            this.pages.push(JSON.parse(content
+              .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
+              .join(Utils.DOUBLE_QUOTES)
+              .split(Utils.SINGLE_QUOTES_REPLACEMENT)
+              .join(Utils.SINGLE_QUOTES)
+            ));
+          });
+        }
       },
       error => {
         alert(error.error.message);

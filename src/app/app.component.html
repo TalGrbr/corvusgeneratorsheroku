@@ -1,5 +1,9 @@
+<h2>pam pam pam</h2>
 <div>
-  <h2>pam pam pam</h2>
+  Hello {{this.authService.getUsername()}}
+  <button (click)="logout()" *ngIf="this.authService.isLoggedIn" type="button">Logout</button>
+</div>
+<div>
   <nav>
     <a routerLink="main">Main</a>
     <------->
@@ -13,7 +17,7 @@
       <a routerLink="login">Login</a>
     </ng-container>
   </nav>
-  <button (click)="logout()" *ngIf="this.authService.isLoggedIn" type="button">Logout</button>
+  <br>
   <router-outlet></router-outlet>
   <br>
   <br>

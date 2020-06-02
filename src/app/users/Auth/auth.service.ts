@@ -13,15 +13,15 @@ import {User} from '../user';
 })
 
 export class AuthService {
+  private _currentUser;
   API_URL = 'http://localhost:8000';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
-  currentUser = {};
 
   constructor(private httpClient: HttpClient, public router: Router) {
   }
 
   register(username): Observable<any> {
-    return this.httpClient.post(`${this.API_URL}/registerUser?username=` + username, {observe: 'response'}).pipe(
+    return this.httpClient.post(`${this.API_URL}/registerUser?username=` + username, {bearer: this.getUsername()}, {observe: 'response'}).pipe(
       catchError(this.handleError)
     );
   }
@@ -30,14 +30,25 @@ export class AuthService {
     return this.httpClient.post<any>(`${this.API_URL}/loginUser`, user)
       .subscribe((res: any) => {
         localStorage.setItem('access_token', res.token);
-        this.currentUser = res;
-        console.log(res.message);
+        this.currentUser = {username: res.username, role: res.role};
         this.router.navigate(['main']);
       }, error => {
-        if (error.status === 403) {
+        if (error.error.message) {
           alert(error.error.message);
+        } else {
+          alert('unknown server error');
         }
       });
+  }
+
+
+  set currentUser(value) {
+    this._currentUser = value;
+    localStorage.setItem('cur_user', JSON.stringify(this._currentUser));
+  }
+
+  get currentUser() {
+    return JSON.parse(localStorage.getItem('cur_user')) || '';
   }
 
   getAccessToken() {
@@ -50,18 +61,10 @@ export class AuthService {
   }
 
   logout() {
-    if (localStorage.removeItem('access_token') == null) {
+    this.currentUser = null;
+    if (localStorage.removeItem('access_token') == null && localStorage.removeItem('cur_user') == null) {
       this.router.navigate(['main']);
     }
-  }
-
-  getUserProfile(id): Observable<any> {
-    return this.httpClient.get(`${this.API_URL}/users/profile/${id}`, {headers: this.headers}).pipe(
-      map((res: Response) => {
-        return res || {};
-      }),
-      catchError(this.handleError)
-    );
   }
 
   handleError(error: HttpErrorResponse) {
@@ -74,5 +77,13 @@ export class AuthService {
       msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     return throwError(msg);
+  }
+
+  getUsername() {
+    return this.currentUser['username'] || 'Guest';
+  }
+
+  getRole() {
+    return this.currentUser['role'] || 'Guest';
   }
 }
