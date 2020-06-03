@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   register(username): Observable<any> {
-    return this.httpClient.post(`${this.API_URL}/registerUser?username=` + username, {bearer: this.getUsername()}, {observe: 'response'}).pipe(
+    return this.httpClient.post(`${this.API_URL}/registerUser?username=` + username, {observe: 'response'}).pipe(
       catchError(this.handleError)
     );
   }
@@ -30,7 +30,8 @@ export class AuthService {
     return this.httpClient.post<any>(`${this.API_URL}/loginUser`, user)
       .subscribe((res: any) => {
         localStorage.setItem('access_token', res.token);
-        this.currentUser = {username: res.username, role: res.role};
+        // this.currentUser = {username: res.username, role: res.role};
+        this.setCurrentUser({username: res.username, role: res.role});
         this.router.navigate(['main']);
       }, error => {
         if (error.error.message) {
@@ -42,7 +43,7 @@ export class AuthService {
   }
 
 
-  set currentUser(value) {
+  private setCurrentUser(value) {
     this._currentUser = value;
     localStorage.setItem('cur_user', JSON.stringify(this._currentUser));
   }
@@ -56,12 +57,13 @@ export class AuthService {
   }
 
   get isLoggedIn(): boolean {
-    let authToken = localStorage.getItem('access_token');
-    return (authToken !== null);
+    // let authToken = localStorage.getItem('access_token');
+    return (localStorage.getItem('access_token') !== null);
   }
 
   logout() {
-    this.currentUser = null;
+    // this.currentUser = null;
+    this.setCurrentUser(null); // TODO: check if this works
     if (localStorage.removeItem('access_token') == null && localStorage.removeItem('cur_user') == null) {
       this.router.navigate(['main']);
     }

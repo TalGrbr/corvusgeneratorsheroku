@@ -3,6 +3,8 @@
   go back to page: {{curName}}
 </a>
 <button type="button" (click)="deleteClicked()">Delete this page</button>
+<br>
+<a routerLink="/manageMods/{{curName}}">Manage Mods</a>
 <form [formGroup]="pageDataForm" (ngSubmit)="onPageSubmit()">
   <label>
     Page name:

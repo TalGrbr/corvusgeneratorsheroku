@@ -5,10 +5,10 @@ import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add-user',
-  templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.css']
+  templateUrl: './manage-users.component.html',
+  styleUrls: ['./manage-users.component.css']
 })
-export class AddUserComponent implements OnInit {
+export class ManageUsersComponent implements OnInit {
   addUserForm: FormGroup;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {

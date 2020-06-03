@@ -24,10 +24,11 @@ import {QuestionControlService} from './form/form-services/question-control.serv
 import {ChoosePageComponent} from './page/choose-page/choose-page.component';
 import {SafeHtmlPipe} from './page/pipes/safe-html.pipe';
 import {ForbiddenValidatorDirective} from './utilities/custom-validators/forbidden-name.directive';
-import {AddUserComponent} from './users/add-user/add-user.component';
+import {ManageUsersComponent} from './users/manage-users/manage-users.component';
 import {LoginComponent} from './users/login/login.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {AuthInterceptor} from './users/Auth/interceptors/auth.interceptor';
+import { ManageModsComponent } from './users/manage-mods/manage-mods.component';
 
 @NgModule({
   declarations: [
@@ -46,9 +47,10 @@ import {AuthInterceptor} from './users/Auth/interceptors/auth.interceptor';
     ChoosePageComponent,
     SafeHtmlPipe,
     ForbiddenValidatorDirective,
-    AddUserComponent,
+    ManageUsersComponent,
     LoginComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ManageModsComponent
   ],
   imports: [
     BrowserModule,

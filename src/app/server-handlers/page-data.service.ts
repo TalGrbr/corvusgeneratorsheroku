@@ -29,22 +29,18 @@ export class PageDataService {
   public postPageToServer(page) {
     // const page = new Page({name: 'name', showForm: true, remarks: ['1', '2'], about: 'about', title: 'title', color: 'black'});
     // console.log(JSON.stringify(page));
-    return this.httpClient.post(this.API_SERVER + '/savePage?name=' + page.name, {
+    return this.httpClient.post(this.API_SERVER + '/savePage', {
       data: page,
-      bearer: this.authService.getUsername()
     }, this.httpOptions);
   }
 
   postUpdatePageToServer(oldPageName, newPage) {
     return this.httpClient.post(this.API_SERVER + '/updatePage?name=' + oldPageName, {
       content: newPage,
-      bearer: this.authService.getUsername()
     }, this.httpOptions);
   }
 
   postDeletePageToServer(pageNameToDelete) {
-    return this.httpClient.post(this.API_SERVER + '/deletePage?name=' + pageNameToDelete, {
-      bearer: this.authService.getUsername()
-    }, this.httpOptions);
+    return this.httpClient.post(this.API_SERVER + '/deletePage?name=' + pageNameToDelete, this.httpOptions);
   }
 }

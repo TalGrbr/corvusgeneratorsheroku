@@ -3,6 +3,7 @@ import {Page} from '../Page';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PageDataService} from '../../server-handlers/page-data.service';
 import {Utils} from '../../utilities/Utils';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-page',
@@ -17,7 +18,7 @@ export class CreatePageComponent implements OnInit {
   private pds: PageDataService;
   questionsAreValid = false;
 
-  constructor(private fb: FormBuilder, pds: PageDataService) {
+  constructor(private fb: FormBuilder, pds: PageDataService, private router: Router) {
     this.pageDataForm = this.fb.group({
       name: new FormControl('', [
         Validators.required,
@@ -68,6 +69,7 @@ export class CreatePageComponent implements OnInit {
     // console.log(JSON.stringify(this.totalValue));
     this.pds.postPageToServer(this.totalValue).subscribe(data => {
       alert(data['message']);
+      this.router.navigate(['showPage/' + this.totalValue['name']]);
     }, error => {
       alert(error.error.message);
     });
