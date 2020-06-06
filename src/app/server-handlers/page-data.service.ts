@@ -26,6 +26,10 @@ export class PageDataService {
     return this.httpClient.get(this.API_SERVER + '/pages', {observe: 'response'});
   }
 
+  public getRelatedPages(){
+    return this.httpClient.get(this.API_SERVER + '/pagesByUser', {observe: 'response'});
+  }
+
   public postPageToServer(page) {
     // const page = new Page({name: 'name', showForm: true, remarks: ['1', '2'], about: 'about', title: 'title', color: 'black'});
     // console.log(JSON.stringify(page));
@@ -42,5 +46,9 @@ export class PageDataService {
 
   postDeletePageToServer(pageNameToDelete) {
     return this.httpClient.post(this.API_SERVER + '/deletePage?name=' + pageNameToDelete, this.httpOptions);
+  }
+
+  public isPageNameValid(pageName) {
+    return this.httpClient.get(this.API_SERVER + '/isPageNameAvailable?name=' + pageName, {observe: 'response'});
   }
 }

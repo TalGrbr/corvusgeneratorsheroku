@@ -4,6 +4,7 @@ import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angul
 import {PageDataService} from '../../server-handlers/page-data.service';
 import {Utils} from '../../utilities/Utils';
 import {Router} from '@angular/router';
+import {TakenValidator} from '../../utilities/custom-validators/taken-validator';
 
 @Component({
   selector: 'app-create-page',
@@ -24,7 +25,7 @@ export class CreatePageComponent implements OnInit {
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(30)
-      ]),
+      ], [TakenValidator(pds, 'page name')]),
       color: [''],
       title: new FormControl('', [
         Validators.required,

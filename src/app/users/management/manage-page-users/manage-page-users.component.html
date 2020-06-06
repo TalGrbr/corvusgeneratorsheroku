@@ -1,0 +1,23 @@
+<a routerLink="/updatePage/{{pageName}}">
+  go back to update page: {{pageName}}
+</a>
+<div>
+  Current Users:
+  <div *ngFor="let curUser of curPageUsers">
+    <ng-container *ngIf="curUser.trim().length > 0">
+      curUser: {{curUser}}
+    </ng-container>
+    <br>
+  </div>
+
+  Available Users:
+  <div *ngFor="let user of allUsers">
+    <ng-container *ngIf="user.trim().length > 0">
+      user: {{user}}
+    </ng-container>
+  </div>
+  <br>
+  New Users:
+  <input type="text" [(ngModel)]="newPageUsers">
+  <button type="submit" (click)="updatePageUsers()">Save</button>
+</div>

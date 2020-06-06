@@ -24,11 +24,17 @@ import {QuestionControlService} from './form/form-services/question-control.serv
 import {ChoosePageComponent} from './page/choose-page/choose-page.component';
 import {SafeHtmlPipe} from './page/pipes/safe-html.pipe';
 import {ForbiddenValidatorDirective} from './utilities/custom-validators/forbidden-name.directive';
-import {ManageUsersComponent} from './users/manage-users/manage-users.component';
+import {ManageUsersComponent} from './users/management/manage-users/manage-users.component';
 import {LoginComponent} from './users/login/login.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {AuthInterceptor} from './users/Auth/interceptors/auth.interceptor';
-import { ManageModsComponent } from './users/manage-mods/manage-mods.component';
+import { ManageModsComponent } from './users/management/manage-mods/manage-mods.component';
+import { ManageSubAdminsComponent } from './users/management/manage-sub-admins/manage-sub-admins.component';
+import { ManageAdminsComponent } from './users/management/manage-admins/manage-admins.component';
+import { ManagePageAdminComponent } from './users/management/manage-page-admin/manage-page-admin.component';
+import { ManagePageUsersComponent } from './users/management/manage-page-users/manage-page-users.component';
+import { UpdatePasswordComponent } from './users/update-password/update-password.component';
+import {TakenValidator} from './utilities/custom-validators/taken-validator';
 
 @NgModule({
   declarations: [
@@ -50,7 +56,12 @@ import { ManageModsComponent } from './users/manage-mods/manage-mods.component';
     ManageUsersComponent,
     LoginComponent,
     PageNotFoundComponent,
-    ManageModsComponent
+    ManageModsComponent,
+    ManageSubAdminsComponent,
+    ManageAdminsComponent,
+    ManagePageAdminComponent,
+    ManagePageUsersComponent,
+    UpdatePasswordComponent
   ],
   imports: [
     BrowserModule,

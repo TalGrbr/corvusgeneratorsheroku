@@ -29,6 +29,9 @@ export class UpdateTemplateComponent implements OnInit {
     if (this.questionsForm) {
       this.questionsForm.get('questions')['controls'].forEach(q => {
         names.push(q.get('questionName').value);
+        if (q.get('questionType').value === 'dropBox') {
+          names.push(q.get('questionName').value + '-key');
+        }
       });
     }
     return names;

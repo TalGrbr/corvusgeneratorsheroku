@@ -30,6 +30,7 @@ export class AuthService {
     return this.httpClient.post<any>(`${this.API_URL}/loginUser`, user)
       .subscribe((res: any) => {
         localStorage.setItem('access_token', res.token);
+        localStorage.setItem('init_pass', res.init_pass);
         // this.currentUser = {username: res.username, role: res.role};
         this.setCurrentUser({username: res.username, role: res.role});
         this.router.navigate(['main']);
@@ -64,8 +65,17 @@ export class AuthService {
   logout() {
     // this.currentUser = null;
     this.setCurrentUser(null); // TODO: check if this works
-    if (localStorage.removeItem('access_token') == null && localStorage.removeItem('cur_user') == null) {
+    if (localStorage.removeItem('access_token') == null &&
+      localStorage.removeItem('cur_user') == null &&
+      localStorage.removeItem('init_pass') == null) {
       this.router.navigate(['main']);
+    }
+  }
+
+  public getInitPass() {
+    const initPass = localStorage.getItem('init_pass');
+    if (initPass) {
+      return initPass;
     }
   }
 
@@ -85,7 +95,11 @@ export class AuthService {
     return this.currentUser['username'] || 'Guest';
   }
 
-  getRole() {
-    return this.currentUser['role'] || 'Guest';
+  public getPageRole(pageName) {
+    return this.httpClient.get(this.API_URL + '/getRoleInPage?name=' + pageName, {observe: 'response'});
+  }
+
+  public getWebsiteRole() {
+    return this.httpClient.get(this.API_URL + '/getRole', {observe: 'response'});
   }
 }

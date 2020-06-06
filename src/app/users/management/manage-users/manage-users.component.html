@@ -1,0 +1,41 @@
+<div>
+  <strong>Available Users:</strong>
+  <br>
+  <ng-container *ngFor="let user of allAvailableUsers">
+    {{user}}
+    <br>
+  </ng-container>
+</div>
+<div>
+  <form [formGroup]="addUserForm" (ngSubmit)="registerUser()">
+    <strong>Add User</strong>
+    <br>
+    <ng-container>
+      <label for="username">Username: </label>
+      <input type="text" id="username" formControlName="username">
+      <div *ngIf="addUserForm.invalid && addUserForm.get('username').errors.availability">
+        Username taken
+      </div>
+      <br>
+      <span>* initial password is 123456789</span>
+    </ng-container>
+    <br>
+    <button type="submit" [disabled]="!addUserForm.valid">Submit</button>
+  </form>
+</div>
+<br>
+<ng-container *ngIf="isVisible(['admin', 'master'])">
+  <strong>All Users:</strong>
+  <div *ngFor="let user of allUsers">
+    <ng-container *ngIf="user.trim().length > 0">
+      user: {{user}}
+    </ng-container>
+  </div>
+  <br>
+  <div>
+    <strong>Reset Password</strong>
+    <input type="text" [(ngModel)]="usernameToResetPassword">
+    <br>
+    <button type="submit" (click)="resetPassword()">Reset Password</button>
+  </div>
+</ng-container>

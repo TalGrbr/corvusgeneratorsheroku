@@ -25,6 +25,26 @@ export class ManagementDataService {
       pageName, {observe: 'response'});
   }
 
+  public getAllPageUsers(pageName) {
+    return this.httpClient.get(this.API_SERVER + '/getPageUsers?name=' + pageName, {observe: 'response'});
+  }
+
+  public updatePageUsers(newUsers: string[], pageName) {
+    return this.httpClient.post(
+      this.API_SERVER + '/updatePageUsers?name=' + pageName,
+      {content: newUsers.toString()},
+      {observe: 'response'}
+    );
+  }
+
+  public removeUser(user) {
+    return this.httpClient.post(
+      this.API_SERVER + '/removeUser',
+      {content: user.toString()},
+      {observe: 'response'}
+    );
+  }
+
   public getAllAdmins() {
     return this.httpClient.get(this.API_SERVER + '/admins', {observe: 'response'});
   }
@@ -36,14 +56,14 @@ export class ManagementDataService {
   public getPageAdmin(pageName) {
     return this.httpClient.get(
       this.API_SERVER +
-      '/getPageAdmin?page=' +
+      '/getPageAdmin?name=' +
       pageName, {observe: 'response'});
   }
 
   public getAllPageSubAdmins(pageName) {
     return this.httpClient.get(
       this.API_SERVER +
-      '/getPageSubAdmins?page=' +
+      '/getPageSubAdmins?name=' +
       pageName, {observe: 'response'});
   }
 
@@ -55,7 +75,7 @@ export class ManagementDataService {
     );
   }
 
-  public updatePageSubAdmins(newSubAdmins: [], pageName) {
+  public updatePageSubAdmins(newSubAdmins: string[], pageName) {
     return this.httpClient.post(
       this.API_SERVER + '/updatePageSubAdmins?name=' + pageName,
       {content: newSubAdmins.toString()},
@@ -71,7 +91,38 @@ export class ManagementDataService {
     );
   }
 
+  public removeAdmin(admin) {
+    return this.httpClient.post(
+      this.API_SERVER + '/removeAdmin',
+      {content: admin.toString()},
+      {observe: 'response'}
+    );
+  }
+
   public getAllAvailableUsers() {
     return this.httpClient.get(this.API_SERVER + '/getAllAvailableUsers', {observe: 'response'});
+  }
+
+  public getAllUsers() {
+    return this.httpClient.get(this.API_SERVER + '/users', {observe: 'response'});
+  }
+
+  public updatePassword(username, newPassword) {
+    return this.httpClient.post(this.API_SERVER + '/updatePassword', {
+      content: {
+        username: username,
+        password: newPassword
+      }
+    }, {observe: 'response'});
+  }
+
+  public resetPassword(username) {
+    return this.httpClient.post(this.API_SERVER + '/resetPassword', {
+      content: username
+    }, {observe: 'response'});
+  }
+
+  public isUsernameValid(username) {
+    return this.httpClient.get(this.API_SERVER + '/isUsernameAvailable?name=' + username, {observe: 'response'});
   }
 }

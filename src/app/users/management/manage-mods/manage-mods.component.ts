@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AuthService} from '../Auth/auth.service';
+import {AuthService} from '../../Auth/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ManagementDataService} from '../../server-handlers/management-data.service';
+import {ManagementDataService} from '../../../server-handlers/management-data.service';
 
 @Component({
   selector: 'app-manage-mods',
@@ -16,10 +16,9 @@ export class ManageModsComponent implements OnInit {
 
   constructor(private mds: ManagementDataService, private route: ActivatedRoute) {
     this.pageName = this.route.snapshot.paramMap.get('name');
-    let self = this;
     mds.getAllPageMods(this.pageName).subscribe((data: any) => {
       if (data.body.content) {
-        self.oldMods = data.body.content.toString().split(',').map((item) => {
+        this.oldMods = data.body.content.toString().split(',').map((item) => {
           return item.trim();
         });
       }

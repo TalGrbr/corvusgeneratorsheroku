@@ -54,7 +54,7 @@ export function toBBCode(html) {
   html = html.replace(/\[img]\//gi, '[img]');
   html = html.replace(/\[url=\//gi, '[url=');
 
-  html = html.replace(/(\S)\n/gi, '$1 ');
+  // html = html.replace(/(\S)\n/gi, '$1 ');
 
   return html;
 }

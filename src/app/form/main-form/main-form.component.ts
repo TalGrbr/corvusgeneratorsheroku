@@ -28,7 +28,28 @@ export class MainFormComponent implements OnInit {
     if (this.payLoad.hasOwnProperty('article')) {
       this.payLoad.article = toBBCode(this.form.get('article').value);
     }
+    this.addDropBoxKeys();
     this.payLoad = JSON.stringify(this.payLoad);
     this.payLoadEvent.emit(this.payLoad);
+  }
+
+  private addDropBoxKeys() {
+    const dropBoxQuestions = this.getQuestionsByType('dropdown');
+    dropBoxQuestions.forEach(q => {
+      let temp = ((q.options).filter(elm => elm['value'] === this.payLoad[q.label]))[0];
+      if (temp) {
+        this.payLoad[q.label + '-key'] = temp['key'];
+      }
+    });
+  }
+
+  private getQuestionsByType(type) {
+    let questionsByType = [];
+    this.questions.forEach(q => {
+      if (q.controlType === type) {
+        questionsByType.push(q);
+      }
+    });
+    return questionsByType;
   }
 }

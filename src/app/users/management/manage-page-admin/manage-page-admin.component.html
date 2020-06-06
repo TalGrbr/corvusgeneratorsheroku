@@ -1,0 +1,14 @@
+<div>
+  Current Admin for page {{pageName}}: {{oldAdmin}}
+</div>
+<br>
+Available Admins:
+<div *ngFor="let admin of availableAdmins">
+  <ng-container *ngIf="admin.trim().length > 0">
+    admin: {{admin}}
+  </ng-container>
+</div>
+<br>
+Set New Admin:
+<input type="text" [(ngModel)]="newAdmin">
+<button type="submit" (click)="updateAdmin()">Save</button>

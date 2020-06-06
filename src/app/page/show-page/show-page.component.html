@@ -1,5 +1,5 @@
 <!-- Show the current page -->
-<a routerLink="/updatePage/{{showPageName}}">Update this page</a>
+<a routerLink="/updatePage/{{showPageName}}">Update this page</a> Role in this page: {{role}}
 <br>
 <a [innerHTML]="page.title | safeHtml"></a>
 <p [innerHTML]="page.about | safeHtml"></p>

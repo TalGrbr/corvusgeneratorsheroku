@@ -1,10 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {QuestionControlService} from '../../form/form-services/question-control.service';
 import {JsonQuestionFormService} from '../../form/form-services/json-question-form.service';
 import {Utils} from '../../utilities/Utils';
 import {PageDataService} from '../../server-handlers/page-data.service';
 import {Router} from '@angular/router';
+import {TakenValidator} from '../../utilities/custom-validators/taken-validator';
 
 @Component({
   selector: 'app-update-page',
@@ -18,6 +19,7 @@ export class UpdatePageComponent implements OnInit {
   @Input() template: string;
   @Input() questionsForm: any;
   @Input() pageData: string;
+  @Input() role: string;
   private oldName = '';
   curName = this.oldName;
   jqfs = new JsonQuestionFormService(new QuestionControlService(this.fb));
@@ -34,9 +36,9 @@ export class UpdatePageComponent implements OnInit {
     this.oldName = newPageData.name;
     this.curName = this.oldName;
     this.pageDataForm = this.fb.group({
-      name: [newPageData['name']],
+      name: [newPageData['name'], [Validators.required], [TakenValidator(this.pds, 'page name')]],
       color: [newPageData['color']],
-      title: [newPageData['title']],
+      title: [newPageData['title'], [Validators.required]],
       about: [newPageData['about']],
       remarks: this.fb.array([])
     });
@@ -50,7 +52,6 @@ export class UpdatePageComponent implements OnInit {
   onPageSubmit() {
     let formJsonValue = JSON.parse(this.formValue);
     this.totalValue = this.pageDataForm.getRawValue();
-    this.curName = this.totalValue['name'];
 
     this.totalValue['questions'] = formJsonValue.questions;
     if (formJsonValue.questions.length > 0) {
@@ -65,7 +66,10 @@ export class UpdatePageComponent implements OnInit {
     );
 
     // console.log(JSON.stringify(this.totalValue));
-    this.pds.postUpdatePageToServer(this.oldName, this.totalValue).subscribe(data => alert(data['message']), error => {
+    this.pds.postUpdatePageToServer(this.oldName, this.totalValue).subscribe(data => {
+      alert(data['message']);
+      this.curName = this.totalValue['name'];
+    }, error => {
       alert(error.error.message);
     });
   }
@@ -96,5 +100,9 @@ export class UpdatePageComponent implements OnInit {
 
   updateQuestionsValidation(isValid: boolean) {
     this.questionsAreValid = isValid;
+  }
+
+  isVisible(roles) {
+    return roles.includes(this.role);
   }
 }

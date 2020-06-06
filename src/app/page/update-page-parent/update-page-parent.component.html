@@ -1,3 +1,4 @@
 <ng-container *ngIf="template$ && questionsForm$ && pageData$">
-<app-update-page [template]="template$ | async" [questionsForm]="questionsForm$ | async" [pageData]="pageData$ | async"></app-update-page>
+  <app-update-page [template]="template$ | async" [questionsForm]="questionsForm$ | async"
+                   [pageData]="pageData$ | async" [role]="role"></app-update-page>
 </ng-container>
