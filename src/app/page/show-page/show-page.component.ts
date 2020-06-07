@@ -9,6 +9,7 @@ import {PageDataService} from '../../server-handlers/page-data.service';
 import {JsonQuestionFormService} from '../../form/form-services/json-question-form.service';
 import {ActivatedRoute} from '@angular/router';
 import {Utils} from '../../utilities/Utils';
+import {AuthService} from '../../users/Auth/auth.service';
 
 @Component({
   selector: 'app-show-page',
@@ -17,24 +18,32 @@ import {Utils} from '../../utilities/Utils';
 })
 export class ShowPageComponent implements OnInit {
   readonly showPageName;
+  role;
   questions: QuestionBase<any>[];
   page = new Page({});
   template: string;
   payload: JSON;
   result = '';
 
-  constructor(private titleService: Title, pds: PageDataService, jqf: JsonQuestionFormService, private route: ActivatedRoute, private location: Location) {
+  constructor(private titleService: Title,
+              pds: PageDataService,
+              jqf: JsonQuestionFormService,
+              private route: ActivatedRoute,
+              private location: Location,
+              private authService: AuthService) {
     this.showPageName = this.route.snapshot.paramMap.get('name');
-    let self = this;
+    this.authService.getPageRole(this.showPageName).subscribe(data => this.role = data.body['role']);
     pds.getPageFromServer(this.showPageName).subscribe((data: any) => {
         //console.log('data from server: ' + JSON.stringify(data));
         data = JSON.parse(JSON.stringify(data.body)
           .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
           .join(Utils.DOUBLE_QUOTES)
           .split(Utils.SINGLE_QUOTES_REPLACEMENT)
-          .join(Utils.SINGLE_QUOTES));
-        //console.log('data from server after change: ' + JSON.stringify(data));
-        self.page = new Page({
+          .join(Utils.SINGLE_QUOTES)
+          .split(Utils.NEW_LINE_REPLACEMENT)
+          .join(Utils.NEW_LINE));
+        // console.log('data from server after change: ' + JSON.stringify(data));
+        this.page = new Page({
           name: data.name,
           color: data.color,
           title: data.title,
@@ -42,11 +51,12 @@ export class ShowPageComponent implements OnInit {
           remarks: data.remarks,
           showForm: data.showForm
         });
-        self.template = data.template;
-        self.questions = jqf.getQuestionsFromJson(data.questions);
+        this.template = data.template;
+        this.questions = jqf.getQuestionsFromJson(data.questions);
       },
       err => {
-        alert(err.error.errorBody);
+        console.log(err);
+        alert(err.error.message);
         location.back();
       });
     titleService.setTitle(this.showPageName);
@@ -61,33 +71,30 @@ export class ShowPageComponent implements OnInit {
   }
 
   onSubmit() {
-    let names = this.getNamesToChange();
-    let values = this.getValuesAsArray();
-    let translationDict = {};
+    let translationDict = this.getTranslationDict();
 
-    names.forEach((name, index) => {
-      translationDict[names[index]] = values[index];
-    });
-
-    //console.log(translationDict);
     Object.keys(translationDict).forEach(key => {
       this.template = this.template.replace(key, translationDict[key]);
     });
     this.result = this.template;
   }
 
-  private getValuesAsArray() {
-    let values = [];
-    Object.keys(this.payload).forEach(i => {
-      values.push(this.payload[i]);
+  private getTranslationDict() {
+    let translationDict = {};
+    const names = this.getNamesToChange();
+    names.forEach(name => {
+      translationDict[name] = this.payload[name.substr(1, name.length - 2)];
     });
-    return values;
+    return translationDict;
   }
 
   private getNamesToChange() {
     let names = [];
     this.questions.forEach(q => {
       names.push('%' + q.getLabel() + '%');
+      if (q.controlType === 'dropdown') {
+        names.push('%' + q.getLabel() + '-key%');
+      }
     });
     return names;
   }

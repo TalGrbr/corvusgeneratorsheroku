@@ -1,0 +1,23 @@
+<a routerLink="/updatePage/{{pageName}}">
+  go back to update page: {{pageName}}
+</a>
+<div>
+  Current Mods:
+  <div *ngFor="let oldMod of oldMods">
+    <ng-container *ngIf="oldMod.trim().length > 0">
+      oldMod: {{oldMod}}
+    </ng-container>
+    <br>
+  </div>
+
+  Available Users:
+  <div *ngFor="let user of availableUsers">
+    <ng-container *ngIf="user.trim().length > 0">
+      user: {{user}}
+    </ng-container>
+  </div>
+  <br>
+  New Mods:
+  <input type="text" [(ngModel)]="newMods">
+  <button type="submit" (click)="updateMods()">Save</button>
+</div>

@@ -1,6 +1,6 @@
 <div>
   <form [formGroup]="form" (submit)="onFormSubmitted()" style="background-color: aquamarine; border: blueviolet; border-bottom-width: thick">
-    <div *ngFor="let question of questions" class="form-row">
+    <div *ngFor="let question of questions">
       <app-question [question]="question" [form]="form"></app-question>
     </div>
     <button>Submit</button>

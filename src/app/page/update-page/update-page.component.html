@@ -2,7 +2,16 @@
 <a routerLink="/showPage/{{curName}}">
   go back to page: {{curName}}
 </a>
-<button type="button" (click)="deleteClicked()">Delete this page</button>
+<button type="button" *ngIf="isVisible(['admin', 'master'])" (click)="deleteClicked()">Delete this page</button>
+<br>
+<a *ngIf="isVisible(['mod', 'sub_admin', 'admin', 'master'])" routerLink="/managePageUsers/{{curName}}">Manage Users</a>
+<br>
+<a *ngIf="isVisible(['sub_admin', 'admin', 'master'])" routerLink="/manageMods/{{curName}}">Manage Mods</a>
+<br>
+<a *ngIf="isVisible(['admin', 'master'])" routerLink="/manageSubAdmins/{{curName}}">Manage Sub Admins</a>
+<br>
+<a *ngIf="isVisible(['master'])" routerLink="/managePageAdmin/{{curName}}">Manage Admin</a>
+
 <form [formGroup]="pageDataForm" (ngSubmit)="onPageSubmit()">
   <label>
     Page name:
@@ -49,7 +58,7 @@
   <br>
   <div formArrayName="remarks">
     <h3>Remarks</h3>
-    <button (click)="addRemark()">Add remark</button>
+    <button type="button" (click)="addRemark()">Add remark</button>
 
     <div *ngFor="let remark of remarks.controls; let i=index">
       <button (click)="deleteRemark(i)">Remove remark</button>

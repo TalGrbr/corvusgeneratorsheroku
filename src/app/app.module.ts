@@ -19,11 +19,22 @@ import {CreatePageComponent} from './page/create-page/create-page.component';
 import {UpdatePageComponent} from './page/update-page/update-page.component';
 import {UpdatePageParentComponent} from './page/update-page-parent/update-page-parent.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {QuestionControlService} from './form/form-services/question-control.service';
-import { ChoosePageComponent } from './page/choose-page/choose-page.component';
-import { SafeHtmlPipe } from './page/pipes/safe-html.pipe';
+import {ChoosePageComponent} from './page/choose-page/choose-page.component';
+import {SafeHtmlPipe} from './page/pipes/safe-html.pipe';
 import {ForbiddenValidatorDirective} from './utilities/custom-validators/forbidden-name.directive';
+import {ManageUsersComponent} from './users/management/manage-users/manage-users.component';
+import {LoginComponent} from './users/login/login.component';
+import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
+import {AuthInterceptor} from './users/Auth/interceptors/auth.interceptor';
+import { ManageModsComponent } from './users/management/manage-mods/manage-mods.component';
+import { ManageSubAdminsComponent } from './users/management/manage-sub-admins/manage-sub-admins.component';
+import { ManageAdminsComponent } from './users/management/manage-admins/manage-admins.component';
+import { ManagePageAdminComponent } from './users/management/manage-page-admin/manage-page-admin.component';
+import { ManagePageUsersComponent } from './users/management/manage-page-users/manage-page-users.component';
+import { UpdatePasswordComponent } from './users/update-password/update-password.component';
+import {TakenValidator} from './utilities/custom-validators/taken-validator';
 
 @NgModule({
   declarations: [
@@ -41,7 +52,16 @@ import {ForbiddenValidatorDirective} from './utilities/custom-validators/forbidd
     UpdatePageParentComponent,
     ChoosePageComponent,
     SafeHtmlPipe,
-    ForbiddenValidatorDirective
+    ForbiddenValidatorDirective,
+    ManageUsersComponent,
+    LoginComponent,
+    PageNotFoundComponent,
+    ManageModsComponent,
+    ManageSubAdminsComponent,
+    ManageAdminsComponent,
+    ManagePageAdminComponent,
+    ManagePageUsersComponent,
+    UpdatePasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +72,14 @@ import {ForbiddenValidatorDirective} from './utilities/custom-validators/forbidd
     EditorModule,
     HttpClientModule
   ],
-  providers: [QuestionControlService],
+  providers: [
+    QuestionControlService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

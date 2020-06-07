@@ -1,6 +1,7 @@
-<div *ngFor="let page of pages">
-  <a routerLink="/showPage/{{page['name']}}">
-    {{page['name']}}
-  </a>
+<span *ngIf="!pagesAndRoles || pagesAndRoles.length === 0">No pages found</span>
+<div *ngFor="let pageAndRole of pagesAndRoles">
+  <a routerLink="/showPage/{{pageAndRole['page']}}">
+    {{pageAndRole['page'].trim()}}
+  </a> [{{pageAndRole['role']}}]
   <br>
 </div>

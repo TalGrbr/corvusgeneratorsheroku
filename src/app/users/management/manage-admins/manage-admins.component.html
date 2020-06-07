@@ -1,0 +1,34 @@
+<strong>Current Admins:</strong>
+<div *ngFor="let admin of allAdmins">
+  <ng-container *ngIf="admin.trim().length > 0">
+    admin: {{admin}}
+  </ng-container>
+</div>
+<br>
+
+<strong>Available Users:</strong>
+<div *ngFor="let user of availableUsers">
+  <ng-container *ngIf="user.trim().length > 0">
+    user: {{user}}
+  </ng-container>
+</div>
+<br>
+<strong>Add New Admin:</strong>
+<input type="text" [(ngModel)]="newAdmin">
+<button type="submit" (click)="addAdmin()">Save</button>
+<br>
+<strong>Remove Admin:</strong>
+<input type="text" [(ngModel)]="adminToRemove">
+<button type="submit" (click)="removeAdmin()">Do it</button>
+<br>
+<strong>All Users:</strong>
+<div *ngFor="let user of allUsers">
+  <ng-container *ngIf="user.trim().length > 0">
+    user: {{user}}
+  </ng-container>
+</div>
+<br>
+<strong>Delete User:</strong>
+  <input type="text" [(ngModel)]="userToRemove">
+  <button type="submit" (click)="removeUser()">Delete</button>
+

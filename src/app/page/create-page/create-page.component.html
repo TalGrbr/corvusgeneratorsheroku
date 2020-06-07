@@ -76,6 +76,7 @@
   </div>
   <app-create-form (contentEvent)="updateFormValue($event)" (validationEvent)="updateQuestionsValidation($event)"></app-create-form>
   <button [disabled]="!pageDataForm.valid || !questionsAreValid">Submit</button>
+  <br>
 </form>
 
 {{totalValue | json}}

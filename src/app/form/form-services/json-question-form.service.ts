@@ -16,8 +16,6 @@ export class JsonQuestionFormService {
 
   getQuestionsFromJson(json) {
     let questions: QuestionBase<string> [] = [];
-    //json = JSON.parse(json);
-    //json = json['questions'];
     (Object.keys(json)).forEach(i => {
       let element = json[i];
       if (element.questionType === 'dropBox') {
@@ -31,7 +29,7 @@ export class JsonQuestionFormService {
         }));
       } else if (element.questionType === 'textBox') {
         questions.push(new TextboxQuestion({
-          key: element.key,
+          key: element.key || this.qcs.labelToKey(element.questionName),
           label: element.questionName,
           order: element.order,
           required: element.hasOwnProperty('required') ? element.required : false,
@@ -40,7 +38,7 @@ export class JsonQuestionFormService {
         }));
       } else if (element.questionType === 'bbCode') {
         questions.push(new BBcodeQuestion({
-          key: element.key,
+          key: element.key || this.qcs.labelToKey(element.questionName),
           label: element.questionName,
           order: element.order,
           desc: element.desc,

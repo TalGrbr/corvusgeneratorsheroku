@@ -1,0 +1,23 @@
+<a routerLink="/updatePage/{{pageName}}">
+  go back to update page: {{pageName}}
+</a>
+<div>
+  Available Admins:
+  <div *ngFor="let admin of availableAdmins">
+    <ng-container *ngIf="admin.trim().length > 0">
+      admin: {{admin}}
+    </ng-container>
+  </div>
+  <br>
+  Current Sub Admins:
+  <div *ngFor="let oldSubAdmin of oldSubAdmins">
+    <ng-container *ngIf="oldSubAdmin.trim().length > 0">
+      oldSubAdmin: {{oldSubAdmin}}
+      <br>
+    </ng-container>
+  </div>
+  <br>
+  New Sub Admins:
+  <input type="text" [(ngModel)]="newSubAdmins">
+  <button type="submit" (click)="updateSubAdmins()">Save</button>
+</div>

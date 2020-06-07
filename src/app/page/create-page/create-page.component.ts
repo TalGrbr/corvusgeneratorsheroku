@@ -3,6 +3,8 @@ import {Page} from '../Page';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PageDataService} from '../../server-handlers/page-data.service';
 import {Utils} from '../../utilities/Utils';
+import {Router} from '@angular/router';
+import {TakenValidator} from '../../utilities/custom-validators/taken-validator';
 
 @Component({
   selector: 'app-create-page',
@@ -17,13 +19,13 @@ export class CreatePageComponent implements OnInit {
   private pds: PageDataService;
   questionsAreValid = false;
 
-  constructor(private fb: FormBuilder, pds: PageDataService) {
+  constructor(private fb: FormBuilder, pds: PageDataService, private router: Router) {
     this.pageDataForm = this.fb.group({
       name: new FormControl('', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(30)
-      ]),
+      ], [TakenValidator(pds, 'page name')]),
       color: [''],
       title: new FormControl('', [
         Validators.required,
@@ -67,9 +69,10 @@ export class CreatePageComponent implements OnInit {
 
     // console.log(JSON.stringify(this.totalValue));
     this.pds.postPageToServer(this.totalValue).subscribe(data => {
-      alert(data['successBody']);
+      alert(data['message']);
+      this.router.navigate(['showPage/' + this.totalValue['name']]);
     }, error => {
-      alert(error.error.errBody);
+      alert(error.error.message);
     });
   }
 
