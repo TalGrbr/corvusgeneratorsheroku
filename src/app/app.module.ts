@@ -35,6 +35,7 @@ import { ManagePageAdminComponent } from './users/management/manage-page-admin/m
 import { ManagePageUsersComponent } from './users/management/manage-page-users/manage-page-users.component';
 import { UpdatePasswordComponent } from './users/update-password/update-password.component';
 import {TakenValidator} from './utilities/custom-validators/taken-validator';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import {TakenValidator} from './utilities/custom-validators/taken-validator';
     RouterModule,
     AppRoutingModule,
     EditorModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [
     QuestionControlService,

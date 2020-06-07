@@ -3,25 +3,27 @@
   Hello {{this.authService.getUsername()}}
   <button (click)="logout()" *ngIf="this.authService.isLoggedIn" type="button">Logout</button>
 </div>
-<div>
-  <nav>
-    <a routerLink="main">Main</a>
-    <------->
-    <a routerLink="choosePage" *ngIf="isVisible(['user', 'mod', 'admin', 'master'])">Choose Page</a>
-    <------->
-    <a routerLink="createPage" *ngIf="isVisible(['admin', 'master'])">Create Page</a>
-    <------->
-    <a routerLink="manageUsers" *ngIf="isVisible(['mod', 'admin', 'master'])">Manage Users</a>
-    <------->
-    <a routerLink="manageAdmins" *ngIf="isVisible(['master'])">Manage Admins</a>
-    <ng-container *ngIf="!this.authService.isLoggedIn">
+<div class="h-100">
+  <div class="center">
+    <nav class="center centerText">
+      <a routerLink="main">Main</a>
       <------->
-      <a routerLink="login">Login</a>
-    </ng-container>
-  </nav>
+      <a routerLink="choosePage" *ngIf="isVisible(['user', 'mod', 'admin', 'master'])">Choose Page</a>
+      <------->
+      <a routerLink="createPage" *ngIf="isVisible(['admin', 'master'])">Create Page</a>
+      <------->
+      <a routerLink="manageUsers" *ngIf="isVisible(['mod', 'admin', 'master'])">Manage Users</a>
+      <------->
+      <a routerLink="manageAdmins" *ngIf="isVisible(['master'])">Manage Admins</a>
+      <ng-container *ngIf="!this.authService.isLoggedIn">
+        <------->
+        <a routerLink="login">Login</a>
+      </ng-container>
+    </nav>
+  </div>
   <app-update-password *ngIf="authService.getInitPass() == '1'"></app-update-password>
   <br>
-  <router-outlet></router-outlet>
-  <br>
-  <br>
+  <div class="h-100 gray-background">
+    <router-outlet></router-outlet>
+  </div>
 </div>

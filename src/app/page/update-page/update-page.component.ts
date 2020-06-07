@@ -23,20 +23,18 @@ export class UpdatePageComponent implements OnInit {
   private oldName = '';
   curName = this.oldName;
   jqfs = new JsonQuestionFormService(new QuestionControlService(this.fb));
-  private pds: PageDataService;
   questionsAreValid = true;
 
-  constructor(private fb: FormBuilder, pds: PageDataService, private router: Router) {
-    this.pds = pds;
+  constructor(private fb: FormBuilder, private pds: PageDataService, private router: Router) {
   }
 
   ngOnInit(): void {
-    //console.log('pagedata: ' + this.pageData);
+    // console.log('pagedata: ' + this.pageData);
     let newPageData = JSON.parse(this.pageData);
     this.oldName = newPageData.name;
     this.curName = this.oldName;
     this.pageDataForm = this.fb.group({
-      name: [newPageData['name'], [Validators.required], [TakenValidator(this.pds, 'page name')]],
+      name: [newPageData['name'], [Validators.required], [TakenValidator(this.pds, 'page name', this.oldName)]],
       color: [newPageData['color']],
       title: [newPageData['title'], [Validators.required]],
       about: [newPageData['about']],
@@ -59,7 +57,7 @@ export class UpdatePageComponent implements OnInit {
     }
     this.totalValue['template'] = formJsonValue.template;
     this.totalValue = JSON.parse((JSON.stringify(this.totalValue))
-      .split(Utils.DOUBLE_QUOTES)
+      .split(Utils.DOUBLE_QUOTES_ESCAPED)
       .join(Utils.DOUBLE_QUOTES_REPLACEMENT)
       .split(Utils.SINGLE_QUOTES)
       .join(Utils.SINGLE_QUOTES_REPLACEMENT)

@@ -1,7 +1,35 @@
-<span *ngIf="!pagesAndRoles || pagesAndRoles.length === 0">No pages found</span>
-<div *ngFor="let pageAndRole of pagesAndRoles">
-  <a routerLink="/showPage/{{pageAndRole['page']}}">
-    {{pageAndRole['page'].trim()}}
-  </a> [{{pageAndRole['role']}}]
-  <br>
+<span *ngIf="!loading && (!pagesAndRoles || pagesAndRoles.length === 0)">No pages found</span>
+<div class="card shadow-lg p-3 mb-5 bg-white rounded w-50 center">
+  <div class="card-body justify-content-center">
+    <h4 class="card-title text-center font-weight-bolder">My Generators</h4>
+    <div *ngIf="!loading; then loaded else loadingSpinner"></div>
+    <ng-template #loaded>
+      <div class="card-text">
+        <div class="container-fluid content-row">
+          <div *ngFor="let pageAndRole of pagesAndRoles">
+            <div class="row view overlay">
+              <div class="card h-25 shadow-sm mb-2 bg-white rounded w-100 center card-hover"
+                   routerLink="/showPage/{{pageAndRole['page']}}">
+                <div class="card-header">
+                <span class="font-weight-bold blueText">
+                  {{pageAndRole['page'].trim()}}</span>
+                  <a class="card-subtitle mb-2 text-muted"> [{{pageAndRole['role']}}]</a>
+                </div>
+                <div class="card-body">
+                  <a [innerHTML]="pageAndRole['about'] | safeHtml"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template #loadingSpinner>
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
 </div>

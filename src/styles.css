@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  font-family: 'Assistant', sans-serif;
+  height: 100% !important;
+}
+
+.center {
+  margin: auto;
+}
+.w-60{
+  width: 60%;
+}
+.gray-background {
+  background-color: #f7f7f9;
+}
+.threeQuartersHeight {
+  height: 75%;
+}
+
+.centerText{
+  text-align: center;
+}
+
+.card-hover:hover {
+  box-shadow: 0 3px 3px 2px rgba(0,0,0,.175) !important;
+  transition: all 200ms ease-in-out !important;
+  cursor: pointer;
+}
+
+.blueText{
+  color: #3395FF;
+}

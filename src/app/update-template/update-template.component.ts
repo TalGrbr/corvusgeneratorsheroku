@@ -4,6 +4,7 @@ import {copy} from '../utilities/copyToClipBoard';
 import {FormGroup} from '@angular/forms';
 import {QuestionControlService} from '../form/form-services/question-control.service';
 import {toBBCode} from '../utilities/htmlToBBCode';
+import {Utils} from '../utilities/Utils';
 
 @Component({
   selector: 'app-update-template',
@@ -20,7 +21,13 @@ export class UpdateTemplateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.editorContent = this.curTemplate;
+    this.editorContent = this.curTemplate
+      .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
+      .join(Utils.DOUBLE_QUOTES)
+      .split(Utils.SINGLE_QUOTES_REPLACEMENT)
+      .join(Utils.SINGLE_QUOTES)
+      .split(Utils.NEW_LINE_REPLACEMENT)
+      .join('<br>');
     this.editorContentEvent.emit(this.editorContent);
   }
 

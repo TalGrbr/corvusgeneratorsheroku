@@ -1,13 +1,28 @@
 <!-- Show the current page -->
-<a routerLink="/updatePage/{{showPageName}}">Update this page</a> Role in this page: {{role}}
-<br>
-<a [innerHTML]="page.title | safeHtml"></a>
-<p [innerHTML]="page.about | safeHtml"></p>
-<ng-container *ngFor="let remark of page.remarks">
-  &bull;<a [innerHTML]="remark | safeHtml"></a>
-  <br>
-</ng-container>
-<app-dynamic-form *ngIf="page.showForm" [questions]="questions"
-                  (payLoadEvent)="updatePayload($event)"></app-dynamic-form>
-<br>
-<textarea [hidden]="result.length == 0"> {{result}}</textarea>
+<div class="card shadow p-3 mb-5 bg-white rounded w-75 center">
+  <div class="card-body justify-content-center">
+    <div *ngIf="!loading; then loaded else loadingSpinner"></div>
+    <ng-template #loaded>
+      <h4 class="card-title text-center font-weight-bold" [innerHTML]="page.title | safeHtml"></h4>
+      <div class="card-text">
+        <p [innerHTML]="page.about | safeHtml" class="text-center w-50 center"></p>
+        <a routerLink="/updatePage/{{showPageName}}" class="btn btn-primary btn-sm">Update this page</a>
+        <br>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" *ngFor="let remark of page.remarks">&bull;<a [innerHTML]="remark | safeHtml"></a></li>
+        </ul>
+        <app-dynamic-form *ngIf="page.showForm" [questions]="questions"
+                          (payLoadEvent)="updatePayload($event)"></app-dynamic-form>
+        <br>
+        <textarea [hidden]="result.length == 0"> {{result}}</textarea>
+      </div>
+    </ng-template>
+    <ng-template #loadingSpinner>
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

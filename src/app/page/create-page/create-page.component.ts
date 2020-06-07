@@ -25,7 +25,7 @@ export class CreatePageComponent implements OnInit {
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(30)
-      ], [TakenValidator(pds, 'page name')]),
+      ], [TakenValidator(pds, 'page name', '')]),
       color: [''],
       title: new FormControl('', [
         Validators.required,
@@ -61,7 +61,7 @@ export class CreatePageComponent implements OnInit {
     }
     this.totalValue['template'] = formJsonValue.template;
     this.totalValue = JSON.parse((JSON.stringify(this.totalValue))
-      .split(Utils.DOUBLE_QUOTES)
+      .split(Utils.DOUBLE_QUOTES_ESCAPED)
       .join(Utils.DOUBLE_QUOTES_REPLACEMENT)
       .split(Utils.SINGLE_QUOTES)
       .join(Utils.SINGLE_QUOTES_REPLACEMENT)

@@ -36,7 +36,7 @@ export class UpdatePageParentComponent implements OnInit {
           showForm: data.showForm
         }))
           .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
-          .join(Utils.DOUBLE_QUOTES)
+          .join(Utils.DOUBLE_QUOTES_ESCAPED)
           .split(Utils.SINGLE_QUOTES_REPLACEMENT)
           .join(Utils.SINGLE_QUOTES)
           .split(Utils.NEW_LINE_REPLACEMENT)
@@ -45,7 +45,7 @@ export class UpdatePageParentComponent implements OnInit {
       self.template$ = of(data.template);
       self.questionsForm$ = of(JSON.parse(JSON.stringify(
         data.questions).split(Utils.DOUBLE_QUOTES_REPLACEMENT)
-        .join(Utils.DOUBLE_QUOTES)
+        .join(Utils.DOUBLE_QUOTES_ESCAPED)
         .split(Utils.SINGLE_QUOTES_REPLACEMENT)
         .join(Utils.SINGLE_QUOTES)
         .split(Utils.NEW_LINE_REPLACEMENT)

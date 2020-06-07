@@ -21,7 +21,7 @@ export class ManageUsersComponent implements OnInit {
               private authService: AuthService,
               private mds: ManagementDataService) {
     this.addUserForm = fb.group({
-      username: new FormControl('', [Validators.required], [TakenValidator(this.mds, 'username')])
+      username: new FormControl('', [Validators.required], [TakenValidator(this.mds, 'username', '')])
     });
     authService.getWebsiteRole().subscribe(data => this.role = data.body['role']);
     this.mds.getAllAvailableUsers().subscribe(data => {

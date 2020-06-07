@@ -24,6 +24,7 @@ export class ShowPageComponent implements OnInit {
   template: string;
   payload: JSON;
   result = '';
+  loading = true;
 
   constructor(private titleService: Title,
               pds: PageDataService,
@@ -34,10 +35,10 @@ export class ShowPageComponent implements OnInit {
     this.showPageName = this.route.snapshot.paramMap.get('name');
     this.authService.getPageRole(this.showPageName).subscribe(data => this.role = data.body['role']);
     pds.getPageFromServer(this.showPageName).subscribe((data: any) => {
-        //console.log('data from server: ' + JSON.stringify(data));
+        // console.log('data from server: ' + JSON.stringify(data));
         data = JSON.parse(JSON.stringify(data.body)
           .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
-          .join(Utils.DOUBLE_QUOTES)
+          .join(Utils.DOUBLE_QUOTES_ESCAPED)
           .split(Utils.SINGLE_QUOTES_REPLACEMENT)
           .join(Utils.SINGLE_QUOTES)
           .split(Utils.NEW_LINE_REPLACEMENT)
@@ -53,6 +54,7 @@ export class ShowPageComponent implements OnInit {
         });
         this.template = data.template;
         this.questions = jqf.getQuestionsFromJson(data.questions);
+        this.loading = false;
       },
       err => {
         console.log(err);
