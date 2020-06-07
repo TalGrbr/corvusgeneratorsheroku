@@ -4,6 +4,9 @@
     Page name:
     <input type="text" formControlName="name" required>
   </label>
+  <div *ngIf="pageDataForm.invalid && pageDataForm.get('name').errors.availability">
+    Page name taken
+  </div>
   <br>
   <label>
     Page main color:
@@ -76,6 +79,7 @@
   </div>
   <app-create-form (contentEvent)="updateFormValue($event)" (validationEvent)="updateQuestionsValidation($event)"></app-create-form>
   <button [disabled]="!pageDataForm.valid || !questionsAreValid">Submit</button>
+  <div *ngIf="!questionsAreValid">questions are not valid</div>
   <br>
 </form>
 

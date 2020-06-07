@@ -35,12 +35,6 @@ export class UpdatePageParentComponent implements OnInit {
           remarks: data.remarks,
           showForm: data.showForm
         }))
-          .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
-          .join(Utils.DOUBLE_QUOTES_ESCAPED)
-          .split(Utils.SINGLE_QUOTES_REPLACEMENT)
-          .join(Utils.SINGLE_QUOTES)
-          .split(Utils.NEW_LINE_REPLACEMENT)
-          .join(Utils.NEW_LINE)
       );
       self.template$ = of(data.template);
       self.questionsForm$ = of(JSON.parse(JSON.stringify(

@@ -17,9 +17,9 @@ export class ChoosePageComponent implements OnInit {
         if (data.body) {
           data.body.forEach(content => {
             this.pagesAndRoles.push({
-              page: this.handleText(content.page),
+              page: content.page,
               role: content.role,
-              about: (content.about.length > 210) ? this.handleText(content.about).substr(0, 210) + '...' : this.handleText(content.about)
+              about: (content.about.length > 210) ? content.about.substr(0, 210) + '...' : content.about
             });
           });
         }

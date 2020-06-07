@@ -35,15 +35,16 @@ export class ShowPageComponent implements OnInit {
     this.showPageName = this.route.snapshot.paramMap.get('name');
     this.authService.getPageRole(this.showPageName).subscribe(data => this.role = data.body['role']);
     pds.getPageFromServer(this.showPageName).subscribe((data: any) => {
-        // console.log('data from server: ' + JSON.stringify(data));
-        data = JSON.parse(JSON.stringify(data.body)
+        data = data.body;
+        /*data = JSON.parse(JSON.stringify(data.body)
           .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
           .join(Utils.DOUBLE_QUOTES_ESCAPED)
           .split(Utils.SINGLE_QUOTES_REPLACEMENT)
           .join(Utils.SINGLE_QUOTES)
           .split(Utils.NEW_LINE_REPLACEMENT)
-          .join(Utils.NEW_LINE));
+          .join(Utils.NEW_LINE));*/
         // console.log('data from server after change: ' + JSON.stringify(data));
+
         this.page = new Page({
           name: data.name,
           color: data.color,
