@@ -24,7 +24,9 @@ export class AppComponent {
 
   isVisible(roles) {
     if (this.authService.isLoggedIn && !this.isLogged) { // detect logging in
-      this.authService.getWebsiteRole().subscribe(data => this.role = data.body['role']);
+      this.authService.getWebsiteRole().subscribe(data => {
+        this.role = data.body['role'];
+      });
       this.isLogged = true;
     }
     return roles.includes(this.role);
