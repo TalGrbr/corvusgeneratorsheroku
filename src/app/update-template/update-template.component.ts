@@ -21,13 +21,7 @@ export class UpdateTemplateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.editorContent = this.curTemplate
-      .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
-      .join(Utils.DOUBLE_QUOTES)
-      .split(Utils.SINGLE_QUOTES_REPLACEMENT)
-      .join(Utils.SINGLE_QUOTES)
-      .split(Utils.NEW_LINE_REPLACEMENT)
-      .join('<br>');
+    this.editorContent = this.curTemplate;
     this.editorContentEvent.emit(this.editorContent);
   }
 
