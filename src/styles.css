@@ -7,26 +7,59 @@ body {
 .center {
   margin: auto;
 }
-.w-60{
+
+.w-60 {
   width: 60%;
 }
+
+.w-40 {
+  width: 40%;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.w-90{
+  width: 90%;
+}
+
 .gray-background {
   background-color: #f7f7f9;
 }
+
 .threeQuartersHeight {
   height: 75%;
 }
 
-.centerText{
+.centerText {
   text-align: center;
 }
 
 .card-hover:hover {
-  box-shadow: 0 3px 3px 2px rgba(0,0,0,.175) !important;
-  transition: all 200ms ease-in-out !important;
+  box-shadow: 0 3px 3px 2px rgba(0, 0, 0, .175) !important;
+  transition: all 300ms ease !important;
   cursor: pointer;
 }
 
-.blueText{
+.blueText {
   color: #3395FF;
+}
+
+.transition-ease {
+  transition: all 350ms ease;
+}
+
+.borderless {
+  border: none;
+}
+
+.left-1 {
+  position: relative;
+  left: 1%;
+}
+
+.left-2 {
+  position: relative;
+  left: 2%;
 }

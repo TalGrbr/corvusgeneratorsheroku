@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Observable} from 'rxjs';
 import {QuestionBase} from '../../form/question-types/question-base';
@@ -10,13 +10,14 @@ import {JsonQuestionFormService} from '../../form/form-services/json-question-fo
 import {ActivatedRoute} from '@angular/router';
 import {Utils} from '../../utilities/Utils';
 import {AuthService} from '../../users/Auth/auth.service';
+import {QuestionControlService} from '../../form/form-services/question-control.service';
 
 @Component({
   selector: 'app-show-page',
   templateUrl: './show-page.component.html',
   styleUrls: ['./show-page.component.css']
 })
-export class ShowPageComponent implements OnInit {
+export class ShowPageComponent implements OnInit, AfterViewInit {
   readonly showPageName;
   role;
   questions: QuestionBase<any>[];
@@ -24,11 +25,13 @@ export class ShowPageComponent implements OnInit {
   template: string;
   payload: JSON;
   result = '';
-  loading = true;
+  loadingContent = true;
+  loadingViews = true;
 
   constructor(private titleService: Title,
               pds: PageDataService,
               jqf: JsonQuestionFormService,
+              private qcs: QuestionControlService,
               private route: ActivatedRoute,
               private location: Location,
               private authService: AuthService) {
@@ -36,15 +39,6 @@ export class ShowPageComponent implements OnInit {
     this.authService.getPageRole(this.showPageName).subscribe(data => this.role = data.body['role']);
     pds.getPageFromServer(this.showPageName).subscribe((data: any) => {
         data = data.body;
-        /*data = JSON.parse(JSON.stringify(data.body)
-          .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
-          .join(Utils.DOUBLE_QUOTES_ESCAPED)
-          .split(Utils.SINGLE_QUOTES_REPLACEMENT)
-          .join(Utils.SINGLE_QUOTES)
-          .split(Utils.NEW_LINE_REPLACEMENT)
-          .join(Utils.NEW_LINE));*/
-        // console.log('data from server after change: ' + JSON.stringify(data));
-
         this.page = new Page({
           name: data.name,
           color: data.color,
@@ -55,7 +49,7 @@ export class ShowPageComponent implements OnInit {
         });
         this.template = data.template;
         this.questions = jqf.getQuestionsFromJson(data.questions);
-        this.loading = false;
+        this.loadingContent = false;
       },
       err => {
         console.log(err);
@@ -64,6 +58,15 @@ export class ShowPageComponent implements OnInit {
       });
     titleService.setTitle(this.showPageName);
   }
+
+  ngAfterViewInit() {
+    //TODO: check if there is a way without delay
+    (async () => {
+      await this.delay(500);
+      this.loadingViews = false;
+    })();
+  }
+
 
   ngOnInit(): void {
   }
@@ -75,18 +78,17 @@ export class ShowPageComponent implements OnInit {
 
   onSubmit() {
     let translationDict = this.getTranslationDict();
-
     Object.keys(translationDict).forEach(key => {
       this.template = this.template.replace(key, translationDict[key]);
     });
-    this.result = this.template;
+    this.result = this.template.split('<br>').join('\n');
   }
 
   private getTranslationDict() {
     let translationDict = {};
     const names = this.getNamesToChange();
     names.forEach(name => {
-      translationDict[name] = this.payload[name.substr(1, name.length - 2)];
+      translationDict[name] = this.payload[this.qcs.labelToKey(name.substr(1, name.length - 2))];
     });
     return translationDict;
   }
@@ -100,5 +102,9 @@ export class ShowPageComponent implements OnInit {
       }
     });
     return names;
+  }
+
+  private delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }

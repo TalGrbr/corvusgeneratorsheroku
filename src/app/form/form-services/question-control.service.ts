@@ -4,6 +4,7 @@ import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angul
 import {QuestionBase} from '../question-types/question-base';
 import {TextboxQuestion} from '../question-types/question-textbox';
 import {DropdownQuestion} from '../question-types/question-dropdown';
+import {BBcodeQuestion} from '../question-types/question-bbcode-box';
 
 @Injectable()
 export class QuestionControlService {
@@ -42,7 +43,7 @@ export class QuestionControlService {
       } else if (question instanceof DropdownQuestion) {
         control.push(
           this.fb.group({
-            questionType: ['dropBox'],
+            questionType: 'dropBox',
             questionName: question.label,
             order: question.order,
             required: question.required,
@@ -52,6 +53,17 @@ export class QuestionControlService {
               values: this.getValuesFromListDict(question.options)
             })
           }));
+      } else if (question instanceof BBcodeQuestion) {
+        control.push(
+          this.fb.group({
+            questionType: 'bbCode',
+            questionName: question.label,
+            order: question.order,
+            required: question.required,
+            desc: question.desc,
+            questionLabels: this.fb.group({})
+          })
+        );
       }
     });
     return formForm;

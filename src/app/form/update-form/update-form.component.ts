@@ -96,6 +96,7 @@ export class UpdateFormComponent implements OnInit {
   deleteQuestion(index) {
     let control = this.formForm.controls.questions as FormArray;
     control.removeAt(index);
+    this.validationEvent.emit(this.formForm.valid);
   }
 
   getFormOrders() {
@@ -136,6 +137,4 @@ export class UpdateFormComponent implements OnInit {
     this.validationEvent.emit(this.formForm.valid);
     this.contentEvent.emit(JSON.stringify(this.formForm.value));
   }
-
-
 }

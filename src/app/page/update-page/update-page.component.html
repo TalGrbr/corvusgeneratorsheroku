@@ -94,6 +94,8 @@
   <app-update-form (contentEvent)="updateFormValue($event)" (validationEvent)="updateQuestionsValidation($event)"
                    [template]="template" [questions]="jqfs.getQuestionsFromJson(questionsForm)"></app-update-form>
   <button [disabled]="!pageDataForm.valid || !questionsAreValid">Submit</button>
+  <div *ngIf="!pageDataForm.valid">page isnt valid</div>
+  <div *ngIf="!questionsAreValid">questions arent valid</div>
 </form>
 
 {{totalValue | json}}
