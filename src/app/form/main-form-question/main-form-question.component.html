@@ -18,7 +18,7 @@
         </div>
       </td>
       <td *ngSwitchCase="'dropdown'" class="w-25">
-        <select [id]="question.key" [formControlName]="question.key" class="form-control left-2">
+        <select [id]="question.key" [formControlName]="question.key" class="left-2 form-control">
           <ng-container *ngFor="let opt of question.options">
             <optgroup *ngIf="opt.key.startsWith('~~')" label="{{opt.key.substr(2)}}">
             </optgroup>

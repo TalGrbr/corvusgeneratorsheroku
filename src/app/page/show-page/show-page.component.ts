@@ -60,9 +60,9 @@ export class ShowPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    //TODO: check if there is a way without delay
+    // TODO: check if there is a way without delay
     (async () => {
-      await this.delay(500);
+      await this.delay(200);
       this.loadingViews = false;
     })();
   }
@@ -72,8 +72,13 @@ export class ShowPageComponent implements OnInit, AfterViewInit {
   }
 
   updatePayload(value: string) {
-    this.payload = JSON.parse(value);
-    this.onSubmit();
+    if (value) {
+      this.payload = JSON.parse(value);
+      this.onSubmit();
+    } else {
+      this.payload = {} as JSON;
+      this.result = '';
+    }
   }
 
   onSubmit() {

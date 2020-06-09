@@ -52,4 +52,8 @@ export class MainFormComponent implements OnInit {
     });
     return questionsByType;
   }
+
+  resetResult() {
+    this.payLoadEvent.emit('');
+  }
 }

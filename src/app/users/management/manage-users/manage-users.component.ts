@@ -18,7 +18,7 @@ export class ManageUsersComponent implements OnInit {
   usernameToResetPassword;
 
   constructor(private fb: FormBuilder,
-              private authService: AuthService,
+              public authService: AuthService,
               private mds: ManagementDataService) {
     this.addUserForm = fb.group({
       username: new FormControl('', [Validators.required], [TakenValidator(this.mds, 'username', '')])
@@ -56,8 +56,8 @@ export class ManageUsersComponent implements OnInit {
     }, error => console.log(error));
   }
 
-  resetPassword() {
-    this.mds.resetPassword(this.usernameToResetPassword).subscribe(data => {
+  resetPassword(user) {
+    this.mds.resetPassword(user).subscribe(data => {
       if (data.body['message']) {
         alert(data.body['message']);
       }
