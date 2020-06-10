@@ -83,10 +83,11 @@ export class ShowPageComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     let translationDict = this.getTranslationDict();
+    this.result = this.template;
     Object.keys(translationDict).forEach(key => {
-      this.template = this.template.replace(key, translationDict[key]);
+      this.result = this.result.replace(key, translationDict[key]);
     });
-    this.result = this.template.split('<br>').join('\n');
+    this.result = this.result.split('<br>').join('\n');
   }
 
   private getTranslationDict() {

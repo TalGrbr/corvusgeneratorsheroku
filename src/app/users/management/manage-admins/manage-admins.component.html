@@ -1,34 +1,47 @@
-<strong>Current Admins:</strong>
-<div *ngFor="let admin of allAdmins">
-  <ng-container *ngIf="admin.trim().length > 0">
-    admin: {{admin}}
-  </ng-container>
+<div class="card shadow mb-2 bg-white rounded login-card-size center w-50">
+  <div class="card-header">
+    <span class="font-weight-bold">Manage Admins</span>
+  </div>
+  <div class="card-body justify-content-center">
+    <strong>All Users:</strong>
+    <div style="overflow-y: auto; max-height: 350px">
+      <table class="table table-striped m-0 table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col" class="centerText">Admin</th>
+          <th scope="col" class="centerText">Password</th>
+          <th scope="col" class="centerText">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of allUsers">
+          <td class="w-30">
+            <span>{{user}}</span>
+            <small *ngIf="!availableUsers.includes(user)" class="text-muted ml-2">User not available.</small>
+          </td>
+          <td class="centerText w-10">
+            <button *ngIf="!allAdmins.includes(user)" type="submit"
+                    [disabled]="!availableUsers.includes(user)"
+                    (click)="addAdmin(user)" class="btn btn-sm btn-block btn-primary">Add
+            </button>
+            <button *ngIf="allAdmins.includes(user)" type="submit" (click)="removeAdmin(user)"
+                    class="btn btn-sm btn-block btn-danger">Remove
+            </button>
+          </td>
+          <td class="centerText w-10">
+            <button [disabled]="!availableUsers.includes(user)" type="submit" (click)="resetPassword(user)"
+                    class="btn btn-sm btn-block btn-warning">Reset
+            </button>
+          </td>
+          <td class="centerText w-10">
+            <button [disabled]="user === authService.getUsername()" type="submit" (click)="removeUser(user)"
+                    class="btn btn-sm btn-block btn-danger">Delete
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
-<br>
-
-<strong>Available Users:</strong>
-<div *ngFor="let user of availableUsers">
-  <ng-container *ngIf="user.trim().length > 0">
-    user: {{user}}
-  </ng-container>
-</div>
-<br>
-<strong>Add New Admin:</strong>
-<input type="text" [(ngModel)]="newAdmin">
-<button type="submit" (click)="addAdmin()">Save</button>
-<br>
-<strong>Remove Admin:</strong>
-<input type="text" [(ngModel)]="adminToRemove">
-<button type="submit" (click)="removeAdmin()">Do it</button>
-<br>
-<strong>All Users:</strong>
-<div *ngFor="let user of allUsers">
-  <ng-container *ngIf="user.trim().length > 0">
-    user: {{user}}
-  </ng-container>
-</div>
-<br>
-<strong>Delete User:</strong>
-  <input type="text" [(ngModel)]="userToRemove">
-  <button type="submit" (click)="removeUser()">Delete</button>
-

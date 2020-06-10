@@ -1,61 +1,94 @@
-<h1>Create Form</h1>
-<button type="button" (click)="addNewDropBoxQuestion()">Add new DropBox</button>
-<button type="button" (click)="addNewTextBoxQuestion()">Add new TextBox</button>
-<button type="button" (click)="addEditor()">Add new Editor</button>
+<h3>Create Form</h3>
+<button class="btn btn-outline-primary btn-sm m-1" type="button" (click)="addNewDropBoxQuestion()">Add new DropBox
+</button>
+<button class="btn btn-outline-primary btn-sm m-1" type="button" (click)="addNewTextBoxQuestion()">Add new TextBox
+</button>
+<button class="btn btn-outline-primary btn-sm m-1" type="button" (click)="addEditor()">Add new Editor</button>
 <br><br>
-<form [formGroup]="formForm" (change)="formChanged()">
-  <div formArrayName="questions">
-    <div *ngFor="let q of formForm.get('questions')['controls']; let i=index">
-      <fieldset>
-        <legend><h3>Question {{i + 1}}; Type: {{q.get('questionType').value}}</h3></legend>
-        <div [formGroupName]="i">
-          <span><button type="button" (click)="deleteQuestion(i)">Delete Question</button></span>
-          <br>
-          <label>Question Name: </label>
-          <input formControlName="questionName"/>
-          <br>
-          <label>Required?</label>
-          <input formControlName="required" type="checkbox">
-          <br>
-          <label>Order:</label>
-          <input formControlName="order" type="number">
-          <br>
-          <label>Question desc:</label>
-          <input formControlName="desc"/>
-          <br>
-          <div formArrayName="questionLabels" *ngIf="q.get('questionLabels')">
-            <fieldset>
-              <legend><h4>QuestionLabel</h4></legend>
-              <div *ngIf="q.get('questionType').value === 'dropBox'">
-                <label>Forums:</label>
-                <input formControlName="keys"/>
-                <br>
-                <label>Values:</label>
-                <input formControlName="values"/>
-                <br>
-                <span>*To add options-group, start key and value with '~~'</span>
+<form [formGroup]="formForm" (focusout)="formChanged()" (change)="formChanged()">
+  <div formArrayName="questions" style="overflow-y: auto; overflow-x: hidden; max-height: 500px">
+    <table class="table table-striped m-0 table-hover">
+      <tbody>
+      <div *ngFor="let q of formForm.get('questions')['controls']; let i=index">
+        <tr class="form-group row">
+          <td class="col-sm-9 col-form-label ml-4">
+            <label><strong>Question {{i + 1}}</strong> [{{q.get('questionType').value}}] </label>
+            <br>
+            <button type="button" class="btn btn-sm btn-outline-danger mt-2" (click)="deleteQuestion(i)">Delete
+              Question
+            </button>
+          </td>
+          <td class="w-75">
+            <div [formGroupName]="i">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label ml-4 pr-1">Question Name:</label>
+                <div class="col-sm-7 pl-0">
+                  <input type="text" class="form-control" formControlName="questionName">
+                </div>
               </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label ml-4 pr-1">Question desc:</label>
+                <div class="col-sm-7 pl-0">
+                  <input formControlName="desc" class="form-control"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label ml-4 pr-1">Order:</label>
+                <div class="col-sm-7 pl-0">
+                  <input formControlName="order" type="number" class="form-control" min="0">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label ml-4 pr-1">Required?</label>
+                <div class="col-sm-7 pl-0">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" id="required-{{i}}" class="custom-control-input" formControlName="required">
+                    <label class="custom-control-label" for="required-{{i}}"></label>
+                  </div>
+                </div>
+              </div>
+              <div formArrayName="questionLabels" *ngIf="q.get('questionLabels')">
+                <div *ngIf="q.get('questionType').value === 'dropBox'">
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label ml-4 pr-1">Keys:</label>
+                    <div class="col-sm-7 pl-0">
+                      <input formControlName="keys" class="form-control"/>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label ml-4 pr-1">Values:</label>
+                    <div class="col-sm-7 pl-0">
+                      <input formControlName="values" class="form-control"/>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-9 col-form-label ml-4 pr-1">*To add options-group, start key and value with
+                      '~~'</label>
+                  </div>
+                </div>
 
-              <div *ngIf="q.get('questionType').value === 'textBox'">
-                <label>Question box type:</label>
-                <select formControlName="boxType">
-                  <option value="text">text</option>
-                  <option value="number">number</option>
-                  <option value="url">url</option>
-                  <option value="email">email</option>
-                </select>
-                <br>
+                <div *ngIf="q.get('questionType').value === 'textBox'">
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label ml-4 pr-1">Input type:</label>
+                    <div class="col-sm-7 pl-0">
+                      <select formControlName="boxType" class="form-control dropdown-toggle">
+                        <option value="text">text</option>
+                        <option value="number">number</option>
+                        <option value="url">url</option>
+                        <option value="email">email</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </fieldset>
-          </div>
-        </div>
-      </fieldset>
-    </div>
+            </div>
+          </td>
+        </tr>
+      </div>
+      </tbody>
+    </table>
   </div>
-  <br>
 </form>
-
-<pre>{{formForm.value | json}}</pre>
-
+<hr/>
 <h3>Create Template</h3>
 <app-update-template [questionsForm]="formForm" (editorContentEvent)="updateTemplate($event)"></app-update-template>

@@ -8,19 +8,24 @@ body {
   margin: auto;
 }
 
-.w-60 {
-  width: 60%;
+
+.w-10 {
+  width: 10%;
+}
+
+.w-30 {
+  width: 30%;
 }
 
 .w-40 {
   width: 40%;
 }
 
-.w-10 {
-  width: 10%;
+.w-60 {
+  width: 60%;
 }
 
-.w-90{
+.w-90 {
   width: 90%;
 }
 

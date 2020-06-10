@@ -91,6 +91,7 @@ export class CreateFormComponent implements OnInit {
   deleteQuestion(index) {
     let control = this.formForm.controls.questions as FormArray;
     control.removeAt(index);
+    this.validationEvent.emit(this.formForm.valid);
   }
 
   ngOnInit(): void {

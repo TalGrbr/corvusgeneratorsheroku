@@ -86,7 +86,7 @@ export class UpdateFormComponent implements OnInit {
         desc: new FormControl('', [
           Validators.maxLength(30)
         ]),
-        order: this.getNextOrder(),
+        order: new FormControl(this.getNextOrder()),
         required: false
       })
     );

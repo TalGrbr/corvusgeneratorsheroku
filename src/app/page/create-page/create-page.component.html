@@ -1,68 +1,92 @@
-<h1>Create Page</h1>
-<form [formGroup]="pageDataForm" (ngSubmit)="onPageSubmit()">
-  <label>
-    Page name:
-    <input type="text" formControlName="name" required>
-  </label>
-  <div *ngIf="pageDataForm.invalid && pageDataForm.get('name').errors.availability">
-    Page name taken
+<div class="card shadow-lg mb-5 bg-white rounded w-60 center">
+  <div class="card-header">
+    <span class="font-weight-bold">Create Page</span>
   </div>
-  <br>
-  <label>
-    Page main color:
-    <input type="text" formControlName="color">
-  </label>
-  <br>
-  <label>
-    Page title:
-    <input type="text" formControlName="title" required>
-  </label>
-  <br>
-  <label>
-    About:
-    <editor
-      apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
-      formControlName="about"
-      [init]="{
+  <div class="card-body justify-content-center">
+    <h3>Page Details</h3>
+    <form [formGroup]="pageDataForm" (ngSubmit)="onPageSubmit()">
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Page name:</label>
+        <div class="col-sm-10">
+          <input type="text" id="name" class="form-control" formControlName="name">
+          <div
+            *ngIf="pageDataForm.invalid && pageDataForm.get('name').errors && pageDataForm.get('name').errors.availability"
+            class="invalid-feedback"
+            style="display: inline !important;">
+            * Page name taken
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="color" class="col-sm-2 col-form-label">Page main color:</label>
+        <div class="col-sm-10">
+          <input type="text" id="color" class="form-control" formControlName="color">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="title" class="col-sm-2 col-form-label">Page title:</label>
+        <div class="col-sm-10">
+          <input type="text" id="title" class="form-control" formControlName="title">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="about" class="col-sm-2 col-form-label">About:</label>
+        <div class="col-sm-10">
+          <div [hidden]="!loadingEditor">
+            <div class="d-flex justify-content-center">
+              <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          </div>
+          <editor
+            apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
+            formControlName="about"
+            id="about"
+            [init]="{
         height: 200,
-        width:800,
         menubar: false,
         plugins: [
-          'advlist autolink lists link image charmap print preview anchor',
-          'searchreplace visualblocks code fullscreen',
-          'insertdatetime media table paste code help wordcount'
+          'advlist autolink lists link image charmap preview anchor',
+          'searchreplace code fullscreen',
+          'media paste '
         ],
         toolbar:
           'undo redo | bold italic underline |' +
           'fontselect fontsizeselect |' +
-          'alignleft aligncenter alignright alignjustify | ' +
           'numlist bullist |' +
           'forecolor backcolor |'+
           'ltr rtl |' +
           'table media link image |' +
-          'outdent indent | removeformat | preview',
+          'removeformat | preview',
           forced_root_block : ''
-   }"></editor>
-  </label>
-  <br>
-  <div formArrayName="remarks">
-    <h3>Remarks</h3>
-    <button type="button" (click)="addRemark()">Add remark</button>
 
-    <div *ngFor="let remark of remarks.controls; let i=index">
-      <label>
-        Remark {{i}}:
-        <editor
-          apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
-          [formControlName]="i"
-          [init]="{
+   }"></editor>
+        </div>
+      </div>
+      <hr>
+      <div formArrayName="remarks">
+        <h3>Remarks</h3>
+        <button class="btn btn-sm btn-outline-primary" type="button" (click)="addRemark()">Add remark</button>
+
+        <div *ngFor="let remark of remarks.controls; let i=index">
+          <div class="form-group row">
+            <label for="about" class="col-sm-2 col-form-label">Remark {{i}}:
+              <br>
+              <button class="btn btn-sm btn-danger col-form-label mt-2" type="button" (click)="deleteRemark(i)">Remove
+              </button>
+            </label>
+            <div class="col-sm-10">
+              <editor
+                apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
+                [formControlName]="i"
+                [init]="{
         height: 150,
-        width: 800,
         menubar: false,
         plugins: [
-          'advlist autolink lists link image charmap print preview anchor',
-          'searchreplace visualblocks code fullscreen',
-          'insertdatetime media table paste code help wordcount'
+          'advlist autolink lists link image charmap preview anchor',
+          'searchreplace code fullscreen',
+          'media paste code '
         ],
         toolbar:
           'undo redo | bold italic underline |' +
@@ -74,13 +98,14 @@
           'removeformat | preview',
           forced_root_block : ''
    }"></editor>
-      </label>
-    </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <app-create-form (contentEvent)="updateFormValue($event)"
+                       (validationEvent)="updateQuestionsValidation($event)"></app-create-form>
+      <button class="btn btn-primary btn-sm mt-1" [disabled]="!pageDataForm.valid || !questionsAreValid">Submit</button>
+    </form>
   </div>
-  <app-create-form (contentEvent)="updateFormValue($event)" (validationEvent)="updateQuestionsValidation($event)"></app-create-form>
-  <button [disabled]="!pageDataForm.valid || !questionsAreValid">Submit</button>
-  <div *ngIf="!questionsAreValid">questions are not valid</div>
-  <br>
-</form>
-
-{{totalValue | json}}
+</div>

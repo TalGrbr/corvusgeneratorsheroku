@@ -29,7 +29,8 @@ export class UpdatePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log('pagedata: ' + this.pageData);
+    //console.log('pagedata: ' + this.pageData);
+    console.log(this.questionsForm);
     let newPageData = JSON.parse(this.pageData);
     this.oldName = newPageData.name;
     this.curName = this.oldName;
@@ -56,14 +57,6 @@ export class UpdatePageComponent implements OnInit {
       this.totalValue['showForm'] = true;
     }
     this.totalValue['template'] = formJsonValue.template;
-   /* this.totalValue = JSON.parse((JSON.stringify(this.totalValue))
-      .split(Utils.DOUBLE_QUOTES_ESCAPED)
-      .join(Utils.DOUBLE_QUOTES_REPLACEMENT)
-      .split(Utils.SINGLE_QUOTES)
-      .join(Utils.SINGLE_QUOTES_REPLACEMENT)
-    );*/
-
-    // console.log(JSON.stringify(this.totalValue));
     this.pds.postUpdatePageToServer(this.oldName, this.totalValue).subscribe(data => {
       alert(data['message']);
       this.curName = this.totalValue['name'];
