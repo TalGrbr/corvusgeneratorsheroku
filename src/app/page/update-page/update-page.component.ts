@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {QuestionControlService} from '../../form/form-services/question-control.service';
 import {JsonQuestionFormService} from '../../form/form-services/json-question-form.service';

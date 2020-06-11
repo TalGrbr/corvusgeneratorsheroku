@@ -19,6 +19,7 @@ export class UpdatePageParentComponent implements OnInit {
   pageData$: Observable<string>;
   readonly showPageName;
   role;
+  loadingContent = true;
 
   constructor(private titleService: Title, pds: PageDataService, jqf: JsonQuestionFormService, private route: ActivatedRoute, private authService: AuthService) {
     this.showPageName = this.route.snapshot.paramMap.get('name');
@@ -40,6 +41,7 @@ export class UpdatePageParentComponent implements OnInit {
       self.questionsForm$ = of(JSON.parse(JSON.stringify(
         data.questions)
       ));
+      this.loadingContent = false;
     }, error => alert(error.error.message));
     titleService.setTitle('Update ' + this.showPageName);
   }

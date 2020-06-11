@@ -36,7 +36,7 @@
               </td>
               <td class="w-100">
                 <div class="w-100">
-                  <button type="submit" (click)="resetPassword(user)" class="btn btn-sm btn-danger m-1 float-right"
+                  <button type="submit" (click)="resetPassword(user)" class="btn btn-sm btn-warning m-1 float-right"
                           *ngIf="authService.getUsername() === user || isVisible(['admin', 'master'])">Reset Password
                   </button>
                 </div>
