@@ -1,0 +1,14 @@
+.hp-150 {
+  height: 75px;
+}
+
+.logo {
+  height: 50px;
+  width: 50px;
+  display: ruby-text-container;
+  margin: auto;
+}
+
+.no-outline {
+  outline: none;
+}

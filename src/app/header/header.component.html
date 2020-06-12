@@ -1,0 +1,61 @@
+<div class="bg-dark shadow text-light">
+  <div class="w-100">
+    <h3 class="ml-3 w-25 d-inline-block">Corvus Generators</h3>
+    <div class="w-50 d-inline-block"><img src="assets/output-onlinepngtools.png" class="logo"></div>
+    <div class="w-25"></div>
+  </div>
+  <nav class="navbar navbar-dark navbar-expand-lg bg-dark pb-0">
+    <div class="navbar-collapse w-100 pb-2">
+      <div class="ml-3 float-left w-25">
+        Hello, {{this.authService.getUsername()}}
+        <button (click)="logout(); setActive('main')" *ngIf="this.authService.isLoggedIn" type="button"
+                class="btn btn-sm btn-outline-light ml-1">
+          Logout
+        </button>
+      </div>
+      <div class="m-auto w-50 justify-content-center d-inline-flex">
+        <ul class="navbar-nav m-auto">
+          <li class="nav-item">
+            <a routerLink="main" class="nav-link no-outline" (click)="setActive('main')"
+               [class.active]="activeIndex === 'main'">
+              Main
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="choosePage" *ngIf="isVisible(['user', 'mod', 'admin', 'master'])" class="nav-link no-outline"
+               (click)="setActive('choosePage')"
+               [class.active]="activeIndex === 'choosePage'">
+              Choose Page
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="createPage" *ngIf="isVisible(['admin', 'master'])" class="nav-link"
+               (click)="setActive('createPage')"
+               [class.active]="activeIndex === 'createPage'">
+              Create Page
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="manageUsers" *ngIf="isVisible(['mod', 'admin', 'master'])" class="nav-link"
+               (click)="setActive('manageUsers')" [class.active]="activeIndex === 'manageUsers'">
+              Manage Users
+            </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="manageAdmins" *ngIf="isVisible(['master'])" class="nav-link"
+               (click)="setActive('manageAdmins')"
+               [class.active]="activeIndex === 'manageAdmins'">
+              Manage Admins</a>
+          </li>
+          <li class="nav-item">
+            <a *ngIf="!this.authService.isLoggedIn" routerLink="login" class="nav-link" (click)="setActive('login')"
+               [class.active]="activeIndex === 'login'">
+              Login
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="m-auto w-25"></div>
+    </div>
+  </nav>
+</div>
