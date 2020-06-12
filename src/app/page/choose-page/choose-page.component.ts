@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PageDataService} from '../../server-handlers/page-data.service';
 import {Utils} from '../../utilities/Utils';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-choose-page',
@@ -11,7 +12,8 @@ export class ChoosePageComponent implements OnInit {
   pagesAndRoles: any[];
   loading = true;
 
-  constructor(private pds: PageDataService) {
+  constructor(private pds: PageDataService,  private titleService: Title) {
+    titleService.setTitle(Utils.PAGE_NAME);
     pds.getRelatedPages().subscribe((data: any) => {
         this.pagesAndRoles = new Array<JSON>();
         if (data.body) {
@@ -31,15 +33,5 @@ export class ChoosePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  }
-
-  private handleText(text) {
-    return text
-      .split(Utils.DOUBLE_QUOTES_REPLACEMENT)
-      .join(Utils.DOUBLE_QUOTES)
-      .split(Utils.SINGLE_QUOTES_REPLACEMENT)
-      .join(Utils.SINGLE_QUOTES)
-      .split(Utils.NEW_LINE_REPLACEMENT)
-      .join(Utils.NEW_LINE);
   }
 }

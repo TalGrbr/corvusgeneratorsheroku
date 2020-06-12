@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ManagementDataService} from '../../../server-handlers/management-data.service';
 import {ActivatedRoute} from '@angular/router';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-manage-page-admin',
@@ -10,15 +11,15 @@ import {ActivatedRoute} from '@angular/router';
 export class ManagePageAdminComponent implements OnInit {
   readonly pageName: string;
   availableAdmins = new Array<string>();
-  oldAdmin: string;
-  newAdmin: string;
+  curAdmin: string;
 
-  constructor(private mds: ManagementDataService, private route: ActivatedRoute) {
+  constructor(private mds: ManagementDataService, private route: ActivatedRoute, private titleService: Title) {
     this.pageName = this.route.snapshot.paramMap.get('name');
+    titleService.setTitle('Manage ' + this.pageName + ' admin');
 
     mds.getPageAdmin(this.pageName).subscribe(data => {
       if (data.body['content']) {
-        this.oldAdmin = data.body['content'];
+        this.curAdmin = data.body['content'].toString().trim();
       }
     }, error => alert(error.error.message));
 
@@ -36,9 +37,10 @@ export class ManagePageAdminComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  updateAdmin() {
-    if (this.newAdmin && (this.availableAdmins.includes(this.newAdmin))) {
-      this.mds.updatePageAdmin(this.newAdmin, this.pageName).subscribe(data => {
+  updateAdmin(admin: string) {
+    if (admin && (this.availableAdmins.includes(admin))) {
+      this.curAdmin = admin;
+      this.mds.updatePageAdmin(this.curAdmin, this.pageName).subscribe(data => {
         alert(data.body['message']);
       }, error => {
         console.log(error);

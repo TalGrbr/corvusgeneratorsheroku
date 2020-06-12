@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AuthService} from '../../Auth/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ManagementDataService} from '../../../server-handlers/management-data.service';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-manage-mods',
@@ -11,14 +12,14 @@ import {ManagementDataService} from '../../../server-handlers/management-data.se
 export class ManageModsComponent implements OnInit {
   readonly pageName: string;
   availableUsers = [];
-  oldMods = [];
-  newMods: string;
+  curMods = [];
 
-  constructor(private mds: ManagementDataService, private route: ActivatedRoute) {
+  constructor(private mds: ManagementDataService, private route: ActivatedRoute, private titleService: Title) {
     this.pageName = this.route.snapshot.paramMap.get('name');
+    titleService.setTitle('Manage ' + this.pageName + ' mods');
     mds.getAllPageMods(this.pageName).subscribe((data: any) => {
       if (data.body.content) {
-        this.oldMods = data.body.content.toString().split(',').map((item) => {
+        this.curMods = data.body.content.toString().split(',').map((item) => {
           return item.trim();
         });
       }
@@ -36,8 +37,16 @@ export class ManageModsComponent implements OnInit {
   }
 
   updateMods() {
-    this.mds.updatePageMods(this.newMods.split(','), this.pageName).subscribe(data => {
+    this.mds.updatePageMods(this.curMods, this.pageName).subscribe(data => {
       alert(data.body['message']);
     }, error => alert(error.error.message));
+  }
+
+  addMod(mod: string) {
+    this.curMods.push(mod);
+  }
+
+  removeMod(mod: string) {
+    this.curMods = this.curMods.filter((elm) => elm !== mod);
   }
 }

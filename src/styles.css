@@ -4,6 +4,10 @@ body {
   height: 100% !important;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 .center {
   margin: auto;
 }

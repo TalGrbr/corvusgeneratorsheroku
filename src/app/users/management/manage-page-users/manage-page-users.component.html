@@ -1,23 +1,40 @@
-<a routerLink="/updatePage/{{pageName}}">
-  go back to update page: {{pageName}}
-</a>
-<div>
-  Current Users:
-  <div *ngFor="let curUser of curPageUsers">
-    <ng-container *ngIf="curUser.trim().length > 0">
-      curUser: {{curUser}}
-    </ng-container>
-    <br>
+<div class="card shadow mb-2 bg-white rounded login-card-size center w-50">
+  <div class="card-header">
+    <span class="font-weight-bold">Manage Page Users</span>
   </div>
-
-  Available Users:
-  <div *ngFor="let user of allUsers">
-    <ng-container *ngIf="user.trim().length > 0">
-      user: {{user}}
-    </ng-container>
+  <div class="card-body justify-content-center">
+    <nav aria-label="breadcrumb" class="align-middle">
+      <ol class="breadcrumb p-2">
+        <li class="breadcrumb-item mb-1"><a routerLink="/showPage/{{pageName}}">{{pageName}}</a></li>
+        <li class="breadcrumb-item mb-1"><a routerLink="/updatePage/{{pageName}}">Update</a></li>
+        <li class="breadcrumb-item mb-1 active" aria-current="page">Users</li>
+      </ol>
+    </nav>
+    <div style="overflow-y: auto; max-height: 350px">
+      <table class="table table-striped m-0 table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col" class="centerText"><span>Add User</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of allUsers">
+          <td class="w-75">
+            <span>{{user}}</span>
+          </td>
+          <td class="w-25">
+            <button *ngIf="!curPageUsers.includes(user)" type="submit"
+                    (click)="addUser(user)" class="btn btn-sm btn-block btn-primary float-right">Add
+            </button>
+            <button *ngIf="curPageUsers.includes(user)" type="submit" (click)="removeUser(user)"
+                    class="btn btn-sm btn-block btn-danger float-right">Remove
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn mt-2 btn-success float-right" (click)="updatePageUsers()">Save</button>
   </div>
-  <br>
-  New Users:
-  <input type="text" [(ngModel)]="newPageUsers">
-  <button type="submit" (click)="updatePageUsers()">Save</button>
 </div>

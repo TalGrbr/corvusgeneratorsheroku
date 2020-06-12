@@ -1,4 +1,4 @@
-<div class="col p-0">
+<div class="col p-0" *ngIf="getQuestionsNames() && getQuestionsNames().length > 0">
   <div ngbDropdown placement="top-left" class="d-inline-block">
     <button type="button" class="btn btn-outline-dark" ngbDropdownToggle>Placeholders</button>
     <div ngbDropdownMenu aria-labelledby="dropdownBasic2">

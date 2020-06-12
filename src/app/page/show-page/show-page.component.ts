@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Observable} from 'rxjs';
 import {QuestionBase} from '../../form/question-types/question-base';
@@ -17,7 +17,7 @@ import {QuestionControlService} from '../../form/form-services/question-control.
   templateUrl: './show-page.component.html',
   styleUrls: ['./show-page.component.css']
 })
-export class ShowPageComponent implements OnInit, AfterViewInit {
+export class ShowPageComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly showPageName;
   role;
   questions: QuestionBase<any>[];
@@ -69,6 +69,10 @@ export class ShowPageComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy() {
+    this.titleService.setTitle('Corvus Generators');
   }
 
   updatePayload(value: string) {

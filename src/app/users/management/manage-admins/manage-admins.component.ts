@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ManagementDataService} from '../../../server-handlers/management-data.service';
 import {AuthService} from '../../Auth/auth.service';
 import {Router} from '@angular/router';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-manage-admins',
@@ -13,7 +14,8 @@ export class ManageAdminsComponent implements OnInit {
   availableUsers = [];
   allUsers = [];
 
-  constructor(private mds: ManagementDataService, public authService: AuthService, private router: Router) {
+  constructor(private mds: ManagementDataService, public authService: AuthService, private titleService: Title) {
+    titleService.setTitle('Manage admins');
     mds.getAllAdmins().subscribe((data: any) => {
       if (data.body.content) {
         this.allAdmins = data.body.content.toString().split(',').map((item) => {

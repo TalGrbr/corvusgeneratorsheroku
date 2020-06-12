@@ -20,8 +20,8 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/corvus_logo.ico"
             ],
             "styles": [
               "src/styles.css",
@@ -89,8 +89,8 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/corvus_logo.ico"
             ],
             "styles": [
               "src/styles.css"

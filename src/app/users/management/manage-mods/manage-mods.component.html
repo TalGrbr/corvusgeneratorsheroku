@@ -1,23 +1,40 @@
-<a routerLink="/updatePage/{{pageName}}">
-  go back to update page: {{pageName}}
-</a>
-<div>
-  Current Mods:
-  <div *ngFor="let oldMod of oldMods">
-    <ng-container *ngIf="oldMod.trim().length > 0">
-      oldMod: {{oldMod}}
-    </ng-container>
-    <br>
+<div class="card shadow mb-2 bg-white rounded login-card-size center w-50">
+  <div class="card-header">
+    <span class="font-weight-bold">Manage Page Mods</span>
   </div>
-
-  Available Users:
-  <div *ngFor="let user of availableUsers">
-    <ng-container *ngIf="user.trim().length > 0">
-      user: {{user}}
-    </ng-container>
+  <div class="card-body justify-content-center">
+    <nav aria-label="breadcrumb" class="align-middle">
+      <ol class="breadcrumb p-2">
+        <li class="breadcrumb-item mb-1"><a routerLink="/showPage/{{pageName}}">{{pageName}}</a></li>
+        <li class="breadcrumb-item mb-1"><a routerLink="/updatePage/{{pageName}}">Update</a></li>
+        <li class="breadcrumb-item mb-1 active" aria-current="page">Mods</li>
+      </ol>
+    </nav>
+    <div style="overflow-y: auto; max-height: 350px">
+      <table class="table table-striped m-0 table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col" class="centerText"><span>Add Mod</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of availableUsers">
+          <td class="w-75">
+            <span>{{user}}</span>
+          </td>
+          <td class="w-25">
+            <button *ngIf="!curMods.includes(user)" type="submit"
+                    (click)="addMod(user)" class="btn btn-sm btn-block btn-primary float-right">Add
+            </button>
+            <button *ngIf="curMods.includes(user)" type="submit" (click)="removeMod(user)"
+                    class="btn btn-sm btn-block btn-danger float-right">Remove
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn mt-2 btn-success float-right" (click)="updateMods()">Save</button>
   </div>
-  <br>
-  New Mods:
-  <input type="text" [(ngModel)]="newMods">
-  <button type="submit" (click)="updateMods()">Save</button>
 </div>

@@ -4,6 +4,7 @@ import {AuthService} from '../../Auth/auth.service';
 import {Router} from '@angular/router';
 import {ManagementDataService} from '../../../server-handlers/management-data.service';
 import {TakenValidator} from '../../../utilities/custom-validators/taken-validator';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-user',
@@ -19,7 +20,9 @@ export class ManageUsersComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               public authService: AuthService,
-              private mds: ManagementDataService) {
+              private mds: ManagementDataService,
+              private titleService: Title) {
+    titleService.setTitle('Manage users');
     this.addUserForm = fb.group({
       username: new FormControl('', [Validators.required], [TakenValidator(this.mds, 'username', '')])
     });

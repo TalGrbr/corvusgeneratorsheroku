@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ManagementDataService} from '../../../server-handlers/management-data.service';
 import {ActivatedRoute} from '@angular/router';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-manage-page-users',
@@ -11,10 +12,10 @@ export class ManagePageUsersComponent implements OnInit {
   readonly pageName: string;
   allUsers = [];
   curPageUsers = [];
-  newPageUsers: string;
 
-  constructor(private mds: ManagementDataService, private route: ActivatedRoute) {
+  constructor(private mds: ManagementDataService, private route: ActivatedRoute, private titleService: Title) {
     this.pageName = this.route.snapshot.paramMap.get('name');
+    titleService.setTitle('Manage ' + this.pageName + ' users');
 
     this.mds.getAllAvailableUsers().subscribe(data => {
       this.allUsers = data.body['content'].toString().split(',').map((item) => {
@@ -32,8 +33,16 @@ export class ManagePageUsersComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  addUser(user) {
+    this.curPageUsers.push(user);
+  }
+
+  removeUser(user) {
+    this.curPageUsers = this.curPageUsers.filter((elm) => elm !== user);
+  }
+
   updatePageUsers() {
-    this.mds.updatePageUsers(this.newPageUsers.split(','), this.pageName).subscribe(data => {
+    this.mds.updatePageUsers(this.curPageUsers, this.pageName).subscribe(data => {
       alert(data.body['message']);
     }, error => alert(error.error.message));
   }

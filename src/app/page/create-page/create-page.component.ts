@@ -5,6 +5,7 @@ import {PageDataService} from '../../server-handlers/page-data.service';
 import {Utils} from '../../utilities/Utils';
 import {Router} from '@angular/router';
 import {TakenValidator} from '../../utilities/custom-validators/taken-validator';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-create-page',
@@ -20,7 +21,8 @@ export class CreatePageComponent implements OnInit, AfterViewInit {
   private pds: PageDataService;
   questionsAreValid = true;
 
-  constructor(private fb: FormBuilder, pds: PageDataService, private router: Router) {
+  constructor(private fb: FormBuilder, pds: PageDataService, private router: Router, private titleService: Title) {
+    titleService.setTitle('Create page');
     this.pageDataForm = this.fb.group({
       name: new FormControl('', [
         Validators.required,

@@ -6,6 +6,7 @@ import {Utils} from '../../utilities/Utils';
 import {PageDataService} from '../../server-handlers/page-data.service';
 import {Router} from '@angular/router';
 import {TakenValidator} from '../../utilities/custom-validators/taken-validator';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-update-page',
