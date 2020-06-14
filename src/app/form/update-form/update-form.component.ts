@@ -16,6 +16,7 @@ export class UpdateFormComponent implements OnInit {
   @Input() template: string;
   @Output() contentEvent = new EventEmitter<string>();
   @Output() validationEvent = new EventEmitter<boolean>();
+  isCollapsed = -1;
 
   constructor(private fb: FormBuilder, private qcs: QuestionControlService) {
   }
@@ -136,5 +137,9 @@ export class UpdateFormComponent implements OnInit {
     this.formForm.value['template'] = this.template;
     this.validationEvent.emit(this.formForm.valid);
     this.contentEvent.emit(JSON.stringify(this.formForm.value));
+  }
+
+  setCollapsed(index) {
+    (this.isCollapsed === index) ? this.isCollapsed = -1 : this.isCollapsed = index;
   }
 }

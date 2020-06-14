@@ -29,26 +29,26 @@
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="createPage" *ngIf="isVisible(['admin', 'master'])" class="nav-link"
+            <a routerLink="createPage" *ngIf="isVisible(['admin', 'master'])" class="nav-link no-outline"
                (click)="setActive('createPage')"
                [class.active]="activeIndex === 'createPage'">
               Create Page
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="manageUsers" *ngIf="isVisible(['mod', 'admin', 'master'])" class="nav-link"
+            <a routerLink="manageUsers" *ngIf="isVisible(['mod', 'admin', 'master'])" class="nav-link no-outline"
                (click)="setActive('manageUsers')" [class.active]="activeIndex === 'manageUsers'">
               Manage Users
             </a>
           </li>
           <li class="nav-item">
-            <a routerLink="manageAdmins" *ngIf="isVisible(['master'])" class="nav-link"
+            <a routerLink="manageAdmins" *ngIf="isVisible(['master'])" class="nav-link no-outline"
                (click)="setActive('manageAdmins')"
                [class.active]="activeIndex === 'manageAdmins'">
               Manage Admins</a>
           </li>
           <li class="nav-item">
-            <a *ngIf="!this.authService.isLoggedIn" routerLink="login" class="nav-link" (click)="setActive('login')"
+            <a *ngIf="!this.authService.isLoggedIn" routerLink="login" class="nav-link no-outline" (click)="setActive('login')"
                [class.active]="activeIndex === 'login'">
               Login
             </a>
@@ -58,4 +58,5 @@
       <div class="m-auto w-25"></div>
     </div>
   </nav>
+  <app-toasts aria-live="polite" aria-atomic="true" style="top: 110px"></app-toasts>
 </div>

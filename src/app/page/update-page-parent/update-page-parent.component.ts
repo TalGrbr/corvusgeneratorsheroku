@@ -7,6 +7,7 @@ import {PageDataService} from '../../server-handlers/page-data.service';
 import {JsonQuestionFormService} from '../../form/form-services/json-question-form.service';
 import {Utils} from '../../utilities/Utils';
 import {AuthService} from '../../users/Auth/auth.service';
+import {ToastService} from '../../logging/toast.service';
 
 @Component({
   selector: 'app-update-page-parent',
@@ -21,7 +22,12 @@ export class UpdatePageParentComponent implements OnInit {
   role;
   loadingContent = true;
 
-  constructor(private titleService: Title, pds: PageDataService, jqf: JsonQuestionFormService, private route: ActivatedRoute, private authService: AuthService) {
+  constructor(private titleService: Title,
+              pds: PageDataService,
+              jqf: JsonQuestionFormService,
+              private route: ActivatedRoute,
+              private authService: AuthService,
+              private toastService: ToastService) {
     this.showPageName = this.route.snapshot.paramMap.get('name');
     authService.getPageRole(this.showPageName).subscribe(data => this.role = data.body['role']);
     let self = this;
@@ -42,7 +48,7 @@ export class UpdatePageParentComponent implements OnInit {
         data.questions)
       ));
       this.loadingContent = false;
-    }, error => alert(error.error.message));
+    }, error => this.toastService.showDanger(error.error.message));
     titleService.setTitle('Update ' + this.showPageName);
   }
 

@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {User} from '../user';
+import {ToastService} from '../../logging/toast.service';
 
 
 @Injectable({
@@ -17,7 +18,7 @@ export class AuthService {
   API_URL = 'http://localhost:8000';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-  constructor(private httpClient: HttpClient, public router: Router) {
+  constructor(private httpClient: HttpClient, public router: Router, private toastService: ToastService) {
   }
 
   register(username): Observable<any> {
@@ -36,13 +37,12 @@ export class AuthService {
         this.router.navigate(['main']);
       }, error => {
         if (error.error.message) {
-          alert(error.error.message);
+          this.toastService.showDanger(error.error.message);
         } else {
-          alert('unknown server error');
+          this.toastService.showDanger('unknown server error');
         }
       });
   }
-
 
   private setCurrentUser(value) {
     this._currentUser = value;

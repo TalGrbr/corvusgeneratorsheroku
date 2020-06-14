@@ -3,6 +3,7 @@ import {ManagementDataService} from '../../../server-handlers/management-data.se
 import {AuthService} from '../../Auth/auth.service';
 import {Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
+import {ToastService} from '../../../logging/toast.service';
 
 @Component({
   selector: 'app-manage-admins',
@@ -14,7 +15,11 @@ export class ManageAdminsComponent implements OnInit {
   availableUsers = [];
   allUsers = [];
 
-  constructor(private mds: ManagementDataService, public authService: AuthService, private titleService: Title) {
+  constructor(private mds: ManagementDataService,
+              public authService: AuthService,
+              private titleService: Title,
+              private toastService: ToastService) {
+
     titleService.setTitle('Manage admins');
     mds.getAllAdmins().subscribe((data: any) => {
       if (data.body.content) {
@@ -23,7 +28,7 @@ export class ManageAdminsComponent implements OnInit {
         });
       }
     }, error => {
-      console.log(error.error.message);
+      this.toastService.showDanger(error.error.message);
     });
     mds.getAllAvailableUsers().subscribe((data: any) => {
       if (data.body.content) {
@@ -31,14 +36,14 @@ export class ManageAdminsComponent implements OnInit {
           return item.trim();
         });
       }
-    });
+    }, error => this.toastService.showDanger(error.error.message));
     mds.getAllUsers().subscribe((data: any) => {
       if (data.body.content) {
         this.allUsers = data.body.content.toString().split(',').map((item) => {
           return item.trim();
         });
       }
-    });
+    }, error => this.toastService.showDanger(error.error.message));
   }
 
   ngOnInit(): void {
@@ -47,40 +52,46 @@ export class ManageAdminsComponent implements OnInit {
   addAdmin(newAdmin) {
     if (newAdmin && (this.availableUsers.includes(newAdmin))) {
       this.mds.registerAdmin(newAdmin).subscribe(data => {
-        alert(data.body['message']);
+        this.toastService.showSuccess(`${newAdmin}: ${data.body['message']}`);
         this.allAdmins.push(newAdmin);
-      }, error => alert(error.error.message));
+      }, error => {
+        this.toastService.showDanger(newAdmin + ': ' + error.error.message);
+      });
     } else {
-      alert('user not available');
+      this.toastService.showDanger(newAdmin + ': user not available');
     }
   }
 
   removeAdmin(adminToRemove) {
     if (adminToRemove && this.allAdmins.includes(adminToRemove)) {
       this.mds.removeAdmin(adminToRemove).subscribe(data => {
-        alert(data.body['message']);
+        this.toastService.showSuccess(`${adminToRemove}: ${data.body['message']}`);
         this.allAdmins = this.allAdmins.filter(u => u !== adminToRemove);
       }, error => {
-        alert(error.error.message);
+        this.toastService.showDanger(adminToRemove + ': ' + error.error.message);
       });
     } else {
-      alert('User isn\'t admin');
+      this.toastService.showDanger(adminToRemove + ': user isn\'t admin');
     }
   }
 
   removeUser(userToDelete) {
     this.mds.removeUser(userToDelete).subscribe(data => {
-      alert(data.body['message']);
+      this.toastService.showSuccess(`${userToDelete}: ${data.body['message']}`);
       this.allUsers = this.allUsers.filter(user => user !== userToDelete);
-    }, error => alert(error.error.message));
+    }, error => {
+      this.toastService.showDanger(userToDelete + ': ' + error.error.message);
+    });
   }
 
   resetPassword(user) {
     this.mds.resetPassword(user).subscribe(data => {
       if (data.body['message']) {
-        alert(data.body['message']);
+        this.toastService.showSuccess(`${user}: ${data.body['message']}`);
         this.availableUsers = this.availableUsers.filter(u => u !== user);
       }
-    }, error => alert(error.error.message));
+    }, error => {
+      this.toastService.showDanger(user + ': ' + error.error.message);
+    });
   }
 }

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ManagementDataService} from '../../../server-handlers/management-data.service';
 import {ActivatedRoute} from '@angular/router';
 import {Title} from '@angular/platform-browser';
+import {ToastService} from '../../../logging/toast.service';
 
 @Component({
   selector: 'app-manage-page-admin',
@@ -13,7 +14,7 @@ export class ManagePageAdminComponent implements OnInit {
   availableAdmins = new Array<string>();
   curAdmin: string;
 
-  constructor(private mds: ManagementDataService, private route: ActivatedRoute, private titleService: Title) {
+  constructor(private mds: ManagementDataService, private route: ActivatedRoute, private titleService: Title, private toastService: ToastService) {
     this.pageName = this.route.snapshot.paramMap.get('name');
     titleService.setTitle('Manage ' + this.pageName + ' admin');
 
@@ -21,7 +22,7 @@ export class ManagePageAdminComponent implements OnInit {
       if (data.body['content']) {
         this.curAdmin = data.body['content'].toString().trim();
       }
-    }, error => alert(error.error.message));
+    }, error => this.toastService.showDanger(error.error.message));
 
     mds.getAllAdmins().subscribe((data: any) => {
       if (data.body.content) {
@@ -30,7 +31,7 @@ export class ManagePageAdminComponent implements OnInit {
         });
       }
     }, error => {
-      console.log(error.error.message);
+      this.toastService.showDanger(error.error.message);
     });
   }
 
@@ -41,13 +42,12 @@ export class ManagePageAdminComponent implements OnInit {
     if (admin && (this.availableAdmins.includes(admin))) {
       this.curAdmin = admin;
       this.mds.updatePageAdmin(this.curAdmin, this.pageName).subscribe(data => {
-        alert(data.body['message']);
+        this.toastService.showSuccess(`${admin}: ${data.body['message']}`);
       }, error => {
-        console.log(error);
-        alert(error.error.message);
+        this.toastService.showDanger(admin + ': ' + error.error.message);
       });
     } else {
-      alert('admin not available');
+      this.toastService.showDanger(admin + ': admin not available');
     }
   }
 }

@@ -39,6 +39,7 @@
         <label for="name" class="col-sm-2 col-form-label">Page name:</label>
         <div class="col-sm-10">
           <input type="text" id="name" class="form-control" formControlName="name">
+          <small class="text-muted">* Name can only be 3-15 chars and contain English and Hebrew chars.</small>
           <div
             *ngIf="pageDataForm.invalid && pageDataForm.get('name').errors && pageDataForm.get('name').errors.availability"
             class="invalid-feedback"
@@ -57,6 +58,7 @@
         <label for="title" class="col-sm-2 col-form-label">Page title:</label>
         <div class="col-sm-10">
           <input type="text" id="title" class="form-control" formControlName="title">
+          <small class="text-muted">* Title can only be 3-30 chars.</small>
         </div>
       </div>
       <div class="form-group row">
@@ -85,7 +87,9 @@
           forced_root_block : ''
 
    }"></editor>
+          <small class="text-muted">* About can only be up to 250 chars long.</small>
         </div>
+        <small class="text-danger ml-3">* Required</small>
       </div>
       <hr/>
       <div formArrayName="remarks">
@@ -121,6 +125,7 @@
           'removeformat | preview',
           forced_root_block : ''
    }"></editor>
+              <small class="text-muted">* Remark can only be up to 75 chars long.</small>
             </div>
           </div>
         </div>
@@ -128,7 +133,7 @@
       <hr>
       <app-update-form (contentEvent)="updateFormValue($event)" (validationEvent)="updateQuestionsValidation($event)"
                        [template]="template" [questions]="jqfs.getQuestionsFromJson(questionsForm)"></app-update-form>
-      <button class="btn btn-primary btn-sm mt-1" [disabled]="!pageDataForm.valid || !questionsAreValid">Submit</button>
+      <button class="btn btn-primary btn-sm mt-1 float-right" [disabled]="!pageDataForm.valid || !questionsAreValid">Submit</button>
     </form>
   </div>
 </div>

@@ -11,6 +11,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Utils} from '../../utilities/Utils';
 import {AuthService} from '../../users/Auth/auth.service';
 import {QuestionControlService} from '../../form/form-services/question-control.service';
+import {ToastService} from '../../logging/toast.service';
 
 @Component({
   selector: 'app-show-page',
@@ -34,7 +35,8 @@ export class ShowPageComponent implements OnInit, AfterViewInit, OnDestroy {
               private qcs: QuestionControlService,
               private route: ActivatedRoute,
               private location: Location,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private toastService: ToastService) {
     this.showPageName = this.route.snapshot.paramMap.get('name');
     this.authService.getPageRole(this.showPageName).subscribe(data => this.role = data.body['role']);
     pds.getPageFromServer(this.showPageName).subscribe((data: any) => {
@@ -52,8 +54,7 @@ export class ShowPageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadingContent = false;
       },
       err => {
-        console.log(err);
-        alert(err.error.message);
+        this.toastService.showDanger(err.error.message);
         location.back();
       });
     titleService.setTitle(this.showPageName);
@@ -67,6 +68,9 @@ export class ShowPageComponent implements OnInit, AfterViewInit, OnDestroy {
     })();
   }
 
+  isVisible(roles) {
+    return roles.includes(this.role);
+  }
 
   ngOnInit(): void {
   }
@@ -98,7 +102,8 @@ export class ShowPageComponent implements OnInit, AfterViewInit, OnDestroy {
     let translationDict = {};
     const names = this.getNamesToChange();
     names.forEach(name => {
-      translationDict[name] = this.payload[this.qcs.labelToKey(name.substr(1, name.length - 2))];
+      const value = this.payload[this.qcs.labelToKey(name.substr(1, name.length - 2))];
+      (value) ? translationDict[name] = value : translationDict[name] = '';
     });
     return translationDict;
   }

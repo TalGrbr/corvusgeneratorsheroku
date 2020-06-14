@@ -6,6 +6,7 @@ import {Utils} from '../../utilities/Utils';
 import {Router} from '@angular/router';
 import {TakenValidator} from '../../utilities/custom-validators/taken-validator';
 import {Title} from '@angular/platform-browser';
+import {ToastService} from '../../logging/toast.service';
 
 @Component({
   selector: 'app-create-page',
@@ -21,13 +22,14 @@ export class CreatePageComponent implements OnInit, AfterViewInit {
   private pds: PageDataService;
   questionsAreValid = true;
 
-  constructor(private fb: FormBuilder, pds: PageDataService, private router: Router, private titleService: Title) {
+  constructor(private fb: FormBuilder, pds: PageDataService, private router: Router, private titleService: Title, private toastService: ToastService) {
     titleService.setTitle('Create page');
     this.pageDataForm = this.fb.group({
       name: new FormControl('', [
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(30)
+        Validators.maxLength(20),
+        Validators.pattern('^[a-z\u0590-\u05feA-Z]+$')
       ], [TakenValidator(pds, 'page name', '')]),
       color: [''],
       title: new FormControl('', [
@@ -36,7 +38,8 @@ export class CreatePageComponent implements OnInit, AfterViewInit {
         Validators.maxLength(30)
       ]),
       about: new FormControl('', [
-        Validators.maxLength(250)
+        Validators.maxLength(250),
+        Validators.required
       ]),
       remarks: this.fb.array([])
     });
@@ -72,10 +75,10 @@ export class CreatePageComponent implements OnInit, AfterViewInit {
     }
     this.totalValue['template'] = formJsonValue.template;
     this.pds.postPageToServer(this.totalValue).subscribe(data => {
-      alert(data['message']);
+      this.toastService.showSuccess(data['message']);
       this.router.navigate(['showPage/' + this.totalValue['name']]);
     }, error => {
-      alert(error.error.message);
+      this.toastService.showDanger(error.error.message);
     });
   }
 

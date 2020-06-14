@@ -7,6 +7,7 @@ import {PageDataService} from '../../server-handlers/page-data.service';
 import {Router} from '@angular/router';
 import {TakenValidator} from '../../utilities/custom-validators/taken-validator';
 import {Title} from '@angular/platform-browser';
+import {ToastService} from '../../logging/toast.service';
 
 @Component({
   selector: 'app-update-page',
@@ -26,7 +27,7 @@ export class UpdatePageComponent implements OnInit {
   jqfs = new JsonQuestionFormService(new QuestionControlService(this.fb));
   questionsAreValid = true;
 
-  constructor(private fb: FormBuilder, private pds: PageDataService, private router: Router) {
+  constructor(private fb: FormBuilder, private pds: PageDataService, private router: Router, private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -36,7 +37,8 @@ export class UpdatePageComponent implements OnInit {
     this.oldName = newPageData.name;
     this.curName = this.oldName;
     this.pageDataForm = this.fb.group({
-      name: [newPageData['name'], [Validators.required], [TakenValidator(this.pds, 'page name', this.oldName)]],
+      name: [newPageData['name'], [Validators.required, Validators.pattern('^[a-z\u0590-\u05feA-Z]+$')],
+        [TakenValidator(this.pds, 'page name', this.oldName)]],
       color: [newPageData['color']],
       title: [newPageData['title'], [Validators.required]],
       about: [newPageData['about']],
@@ -59,10 +61,10 @@ export class UpdatePageComponent implements OnInit {
     }
     this.totalValue['template'] = formJsonValue.template;
     this.pds.postUpdatePageToServer(this.oldName, this.totalValue).subscribe(data => {
-      alert(data['message']);
+      this.toastService.showSuccess(data['message']);
       this.curName = this.totalValue['name'];
     }, error => {
-      alert(error.error.message);
+      this.toastService.showDanger(error.error.message);
     });
   }
 

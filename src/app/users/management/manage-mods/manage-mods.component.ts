@@ -3,6 +3,7 @@ import {AuthService} from '../../Auth/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ManagementDataService} from '../../../server-handlers/management-data.service';
 import {Title} from '@angular/platform-browser';
+import {ToastService} from '../../../logging/toast.service';
 
 @Component({
   selector: 'app-manage-mods',
@@ -14,7 +15,10 @@ export class ManageModsComponent implements OnInit {
   availableUsers = [];
   curMods = [];
 
-  constructor(private mds: ManagementDataService, private route: ActivatedRoute, private titleService: Title) {
+  constructor(private mds: ManagementDataService,
+              private route: ActivatedRoute,
+              private titleService: Title,
+              private toastService: ToastService) {
     this.pageName = this.route.snapshot.paramMap.get('name');
     titleService.setTitle('Manage ' + this.pageName + ' mods');
     mds.getAllPageMods(this.pageName).subscribe((data: any) => {
@@ -23,14 +27,14 @@ export class ManageModsComponent implements OnInit {
           return item.trim();
         });
       }
-    });
+    }, error => this.toastService.showDanger(error.error.message));
     mds.getAllAvailableUsers().subscribe((data: any) => {
       if (data.body.content) {
         this.availableUsers = data.body.content.toString().split(',').map((item) => {
           return item.trim();
         });
       }
-    });
+    }, error => this.toastService.showDanger(error.error.message));
   }
 
   ngOnInit(): void {
@@ -38,8 +42,8 @@ export class ManageModsComponent implements OnInit {
 
   updateMods() {
     this.mds.updatePageMods(this.curMods, this.pageName).subscribe(data => {
-      alert(data.body['message']);
-    }, error => alert(error.error.message));
+      this.toastService.showSuccess(data.body['message']);
+    }, error => this.toastService.showDanger(error.error.message));
   }
 
   addMod(mod: string) {

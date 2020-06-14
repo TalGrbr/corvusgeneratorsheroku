@@ -13,6 +13,8 @@
             <button type="submit" [disabled]="!addUserForm.valid" class="btn btn-sm btn-primary ml-2 mb-2">Add
             </button>
             <small class="form-text text-muted">* initial password is 123456789.</small>
+            <small class="form-text text-muted">* Username can contain Hebrew & English letters, and numbers only.</small>
+            <small class="form-text text-muted">* Username must be 3-15 letters long.</small>
             <div *ngIf="addUserForm.invalid && addUserForm.get('username').errors.availability"
                  class="invalid-feedback"
                  style="display: inline !important;">

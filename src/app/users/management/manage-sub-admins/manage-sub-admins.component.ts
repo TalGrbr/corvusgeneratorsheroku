@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ManagementDataService} from '../../../server-handlers/management-data.service';
 import {ActivatedRoute} from '@angular/router';
 import {Title} from '@angular/platform-browser';
+import {ToastService} from '../../../logging/toast.service';
 
 @Component({
   selector: 'app-manage-sub-admins',
@@ -13,7 +14,11 @@ export class ManageSubAdminsComponent implements OnInit {
   availableAdmins = [];
   curSubAdmins = [];
 
-  constructor(private mds: ManagementDataService, private route: ActivatedRoute, private titleService: Title) {
+  constructor(private mds: ManagementDataService,
+              private route: ActivatedRoute,
+              private titleService: Title,
+              private toastService: ToastService) {
+
     this.pageName = this.route.snapshot.paramMap.get('name');
     titleService.setTitle('Manage ' + this.pageName + ' sub-admins');
 
@@ -24,7 +29,7 @@ export class ManageSubAdminsComponent implements OnInit {
           return item.trim();
         });
       }
-    });
+    }, error => this.toastService.showDanger(error.error.message));
     mds.getAllAdmins().subscribe((data: any) => {
       if (data.body.content) {
         this.availableAdmins = data.body.content.toString().split(',').map((item) => {
@@ -32,7 +37,7 @@ export class ManageSubAdminsComponent implements OnInit {
         });
       }
     }, error => {
-      console.log(error.error.message);
+      this.toastService.showDanger(error.error.message);
     });
   }
 
@@ -41,9 +46,8 @@ export class ManageSubAdminsComponent implements OnInit {
 
   updateSubAdmins() {
     this.mds.updatePageSubAdmins(this.curSubAdmins, this.pageName).subscribe(data => {
-      //console.log(data);
-      alert(data.body['message']);
-    }, error => alert(error.error.message));
+      this.toastService.showSuccess(data.body['message']);
+    }, error => this.toastService.showDanger(error.error.message));
   }
 
   addSubAdmin(admin: string) {

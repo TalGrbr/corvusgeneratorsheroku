@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PageDataService} from '../../server-handlers/page-data.service';
 import {Utils} from '../../utilities/Utils';
 import {Title} from '@angular/platform-browser';
+import {ToastService} from '../../logging/toast.service';
 
 @Component({
   selector: 'app-choose-page',
@@ -12,7 +13,7 @@ export class ChoosePageComponent implements OnInit {
   pagesAndRoles: any[];
   loading = true;
 
-  constructor(private pds: PageDataService,  private titleService: Title) {
+  constructor(private pds: PageDataService, private titleService: Title, private toastService: ToastService) {
     titleService.setTitle(Utils.PAGE_NAME);
     pds.getRelatedPages().subscribe((data: any) => {
         this.pagesAndRoles = new Array<JSON>();
@@ -28,7 +29,11 @@ export class ChoosePageComponent implements OnInit {
         this.loading = false;
       },
       error => {
-        alert(error.error.message);
+        if (error.status === 0) {
+          this.toastService.showDanger('Couldn\'t connect to server');
+        } else {
+          this.toastService.showDanger(error.error.message);
+        }
       });
   }
 

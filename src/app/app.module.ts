@@ -36,6 +36,8 @@ import { ManagePageUsersComponent } from './users/management/manage-page-users/m
 import { UpdatePasswordComponent } from './users/update-password/update-password.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HeaderComponent } from './header/header.component';
+import { ToastGlobalComponent } from './logging/toast-global/toast-global.component';
+import {ToastsContainerComponent} from './logging/toasts-container.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { HeaderComponent } from './header/header.component';
     ManagePageAdminComponent,
     ManagePageUsersComponent,
     UpdatePasswordComponent,
-    HeaderComponent
+    HeaderComponent,
+    ToastGlobalComponent,
+    ToastsContainerComponent
   ],
   imports: [
     BrowserModule,

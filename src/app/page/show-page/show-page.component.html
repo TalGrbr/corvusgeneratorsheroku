@@ -5,7 +5,8 @@
       <h3 class="card-title text-center font-weight-bold" [innerHTML]="page.title | safeHtml"></h3>
       <div class="card-text">
         <p [innerHTML]="page.about | safeHtml" class="w-50 text-center center"></p>
-        <a routerLink="/updatePage/{{showPageName}}" class="btn btn-outline-primary btn-sm">Update this page</a>
+        <a *ngIf="isVisible(['master', 'admin', 'sub_admin', 'mod'])" routerLink="/updatePage/{{showPageName}}"
+           class="btn btn-outline-primary btn-sm">Update this page</a>
         <br>
         <h4 class="m-1" *ngIf="page.remarks.length > 0">Remarks:</h4>
         <ul class="list-group list-group-flush w-50 p-0">
@@ -15,8 +16,8 @@
         <br>
         <app-dynamic-form *ngIf="page.showForm" [questions]="questions"
                           (payLoadEvent)="updatePayload($event)"></app-dynamic-form>
-        <br>
         <div [hidden]="result.length == 0">
+          <hr/>
           <a class="col-form-label-lg p-0 m-0">Result:</a>
           <textarea class="form-control" style="min-height: 200px">{{result}}</textarea>
         </div>
