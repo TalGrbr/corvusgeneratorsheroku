@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ManagementDataService} from '../../../server-handlers/management-data.service';
 import {ActivatedRoute} from '@angular/router';
+import {Title} from '@angular/platform-browser';
+import {ToastService} from '../../../logging/toast.service';
 
 @Component({
   selector: 'app-manage-page-admin',
@@ -10,42 +12,53 @@ import {ActivatedRoute} from '@angular/router';
 export class ManagePageAdminComponent implements OnInit {
   readonly pageName: string;
   availableAdmins = new Array<string>();
-  oldAdmin: string;
-  newAdmin: string;
+  curAdmin: string;
+  filteredAdmins = [];
 
-  constructor(private mds: ManagementDataService, private route: ActivatedRoute) {
+  constructor(private mds: ManagementDataService, private route: ActivatedRoute, private titleService: Title, private toastService: ToastService) {
     this.pageName = this.route.snapshot.paramMap.get('name');
+    titleService.setTitle('Manage ' + this.pageName + ' admin');
 
     mds.getPageAdmin(this.pageName).subscribe(data => {
       if (data.body['content']) {
-        this.oldAdmin = data.body['content'];
+        this.curAdmin = data.body['content'].toString().trim();
       }
-    }, error => alert(error.error.message));
+    }, error => this.toastService.showDanger(error.error.message));
 
     mds.getAllAdmins().subscribe((data: any) => {
       if (data.body.content) {
         this.availableAdmins = data.body.content.toString().split(',').map((item) => {
           return item.trim();
         });
+        this.filteredAdmins = this.availableAdmins;
       }
     }, error => {
-      console.log(error.error.message);
+      this.toastService.showDanger(error.error.message);
     });
   }
 
   ngOnInit(): void {
   }
 
-  updateAdmin() {
-    if (this.newAdmin && (this.availableAdmins.includes(this.newAdmin))) {
-      this.mds.updatePageAdmin(this.newAdmin, this.pageName).subscribe(data => {
-        alert(data.body['message']);
+  updateAdmin(admin: string) {
+    if (admin && (this.availableAdmins.includes(admin))) {
+      this.curAdmin = admin;
+      this.mds.updatePageAdmin(this.curAdmin, this.pageName).subscribe(data => {
+        this.toastService.showSuccess(`${admin}: ${data.body['message']}`);
       }, error => {
-        console.log(error);
-        alert(error.error.message);
+        this.toastService.showDanger(admin + ': ' + error.error.message);
       });
     } else {
-      alert('admin not available');
+      this.toastService.showDanger(admin + ': admin not available');
     }
+  }
+
+  filterUsers(value: string) {
+    if (!value) {
+      this.filteredAdmins = this.availableAdmins;
+    }
+    this.filteredAdmins = Object.assign([], this.availableAdmins).filter(
+      item => item.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
   }
 }

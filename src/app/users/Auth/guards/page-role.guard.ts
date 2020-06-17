@@ -7,13 +7,14 @@ import {Observable} from 'rxjs';
 import {AuthService} from '../auth.service';
 import {ancestorWhere} from 'tslint';
 import {map} from 'rxjs/operators';
+import {ToastService} from '../../../logging/toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PageRoleGuard implements CanActivate {
 
-  constructor(public authService: AuthService) {
+  constructor(public authService: AuthService, private toastService: ToastService) {
   }
 
   canActivate(
@@ -27,7 +28,7 @@ export class PageRoleGuard implements CanActivate {
         curRole = data.body['role'];
       }
       if (this.authService.isLoggedIn !== true || !allowedRoles.includes(curRole)) {
-        window.alert('Access not allowed!');
+        this.toastService.showDanger('Access not allowed!');
         return false;
       }
       return true;

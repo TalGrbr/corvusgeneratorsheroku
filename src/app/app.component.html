@@ -1,27 +1,13 @@
-<h2>pam pam pam</h2>
-<div>
-  Hello {{this.authService.getUsername()}}
-  <button (click)="logout()" *ngIf="this.authService.isLoggedIn" type="button">Logout</button>
-</div>
-<div>
-  <nav>
-    <a routerLink="main">Main</a>
-    <------->
-    <a routerLink="choosePage" *ngIf="isVisible(['user', 'mod', 'admin', 'master'])">Choose Page</a>
-    <------->
-    <a routerLink="createPage" *ngIf="isVisible(['admin', 'master'])">Create Page</a>
-    <------->
-    <a routerLink="manageUsers" *ngIf="isVisible(['mod', 'admin', 'master'])">Manage Users</a>
-    <------->
-    <a routerLink="manageAdmins" *ngIf="isVisible(['master'])">Manage Admins</a>
-    <ng-container *ngIf="!this.authService.isLoggedIn">
-      <------->
-      <a routerLink="login">Login</a>
-    </ng-container>
-  </nav>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="w-100 position-absolute" style="min-height: 100%">
+  <app-header (loggedEmitter)="updateLogout($event)" style="height: 20%"></app-header>
   <app-update-password *ngIf="authService.getInitPass() == '1'"></app-update-password>
-  <br>
-  <router-outlet></router-outlet>
-  <br>
-  <br>
+  <!--  <div style="height: 1500px; background-color: #3395FF"></div>-->
+  <div class="mt-2">
+    <router-outlet class="mb-3"></router-outlet>
+  </div>
+<!--  <div class="w-100 position-absolute" style="top: 100%">-->
+  <div class="w-100 position-sticky" style="top: 100%">
+    <app-footer class="w-100"></app-footer>
+  </div>
 </div>

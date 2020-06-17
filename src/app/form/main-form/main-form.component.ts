@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 
 import {QuestionBase} from '../question-types/question-base';
@@ -36,9 +36,9 @@ export class MainFormComponent implements OnInit {
   private addDropBoxKeys() {
     const dropBoxQuestions = this.getQuestionsByType('dropdown');
     dropBoxQuestions.forEach(q => {
-      let temp = ((q.options).filter(elm => elm['value'] === this.payLoad[q.label]))[0];
+      let temp = ((q.options).filter(elm => elm['value'] === this.payLoad[this.qcs.labelToKey(q.label)]))[0];
       if (temp) {
-        this.payLoad[q.label + '-key'] = temp['key'];
+        this.payLoad[this.qcs.labelToKey(q.label) + '-key'] = temp['key'];
       }
     });
   }
@@ -51,5 +51,9 @@ export class MainFormComponent implements OnInit {
       }
     });
     return questionsByType;
+  }
+
+  resetResult() {
+    this.payLoadEvent.emit('');
   }
 }

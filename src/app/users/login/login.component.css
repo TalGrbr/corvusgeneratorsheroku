@@ -1,0 +1,9 @@
+.login-card-size {
+  width: 500px;
+  min-height: 250px;
+  height: 60%;
+}
+
+.display-flex {
+  display: flex;
+}

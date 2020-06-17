@@ -1,8 +1,11 @@
 <div>
-  <form [formGroup]="form" (submit)="onFormSubmitted()" style="background-color: aquamarine; border: blueviolet; border-bottom-width: thick">
-    <div *ngFor="let question of questions">
-      <app-question [question]="question" [form]="form"></app-question>
-    </div>
-    <button>Submit</button>
+  <form [formGroup]="form" (submit)="onFormSubmitted()">
+    <table class="w-100">
+      <div *ngFor="let question of questions">
+        <app-question [question]="question" [form]="form"></app-question>
+      </div>
+      <button [disabled]="form.invalid" class="btn btn-primary float-right">Submit</button>
+      <button type="reset" class="btn btn-danger float-right mr-1" (click)="resetResult()">Reset</button>
+    </table>
   </form>
 </div>

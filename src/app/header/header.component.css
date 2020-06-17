@@ -1,0 +1,14 @@
+.hp-150 {
+  height: 75px;
+}
+
+.logo {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  margin: auto;
+}
+
+.no-outline {
+  outline: none;
+}

@@ -16,6 +16,7 @@ export class UpdateFormComponent implements OnInit {
   @Input() template: string;
   @Output() contentEvent = new EventEmitter<string>();
   @Output() validationEvent = new EventEmitter<boolean>();
+  isCollapsed = -1;
 
   constructor(private fb: FormBuilder, private qcs: QuestionControlService) {
   }
@@ -37,7 +38,8 @@ export class UpdateFormComponent implements OnInit {
         order: this.getNextOrder(),
         required: false,
         desc: new FormControl('', [
-          Validators.maxLength(30)
+          Validators.maxLength(30),
+          Validators.required
         ]),
         questionLabels: this.fb.group({
           values: [''],
@@ -86,7 +88,7 @@ export class UpdateFormComponent implements OnInit {
         desc: new FormControl('', [
           Validators.maxLength(30)
         ]),
-        order: this.getNextOrder(),
+        order: new FormControl(this.getNextOrder()),
         required: false
       })
     );
@@ -96,6 +98,7 @@ export class UpdateFormComponent implements OnInit {
   deleteQuestion(index) {
     let control = this.formForm.controls.questions as FormArray;
     control.removeAt(index);
+    this.validationEvent.emit(this.formForm.valid);
   }
 
   getFormOrders() {
@@ -137,5 +140,7 @@ export class UpdateFormComponent implements OnInit {
     this.contentEvent.emit(JSON.stringify(this.formForm.value));
   }
 
-
+  setCollapsed(index) {
+    (this.isCollapsed === index) ? this.isCollapsed = -1 : this.isCollapsed = index;
+  }
 }

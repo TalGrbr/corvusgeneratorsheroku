@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 
 import {QuestionService} from './form/form-services/question.service';
 import {AuthService} from './users/Auth/auth.service';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -11,24 +12,15 @@ import {AuthService} from './users/Auth/auth.service';
 export class AppComponent {
   private role;
   private isLogged = false;
+  private readonly title = 'Corvus Generators';
 
-  constructor(public authService: AuthService) {
+  constructor(public authService: AuthService, private titleService: Title) {
     authService.getWebsiteRole().subscribe(data => this.role = data.body['role']);
+    titleService.setTitle(this.title);
   }
 
-  logout() {
-    this.authService.logout();
+  updateLogout($event: any) {
     this.role = 'guest';
     this.isLogged = false;
-  }
-
-  isVisible(roles) {
-    if (this.authService.isLoggedIn && !this.isLogged) { // detect logging in
-      this.authService.getWebsiteRole().subscribe(data => {
-        this.role = data.body['role'];
-      });
-      this.isLogged = true;
-    }
-    return roles.includes(this.role);
   }
 }

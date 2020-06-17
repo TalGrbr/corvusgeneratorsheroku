@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {QuestionControlService} from '../../form/form-services/question-control.service';
 import {JsonQuestionFormService} from '../../form/form-services/json-question-form.service';
@@ -6,6 +6,8 @@ import {Utils} from '../../utilities/Utils';
 import {PageDataService} from '../../server-handlers/page-data.service';
 import {Router} from '@angular/router';
 import {TakenValidator} from '../../utilities/custom-validators/taken-validator';
+import {Title} from '@angular/platform-browser';
+import {ToastService} from '../../logging/toast.service';
 
 @Component({
   selector: 'app-update-page',
@@ -23,20 +25,20 @@ export class UpdatePageComponent implements OnInit {
   private oldName = '';
   curName = this.oldName;
   jqfs = new JsonQuestionFormService(new QuestionControlService(this.fb));
-  private pds: PageDataService;
   questionsAreValid = true;
 
-  constructor(private fb: FormBuilder, pds: PageDataService, private router: Router) {
-    this.pds = pds;
+  constructor(private fb: FormBuilder, private pds: PageDataService, private router: Router, private toastService: ToastService) {
   }
 
   ngOnInit(): void {
     //console.log('pagedata: ' + this.pageData);
+    console.log(this.questionsForm);
     let newPageData = JSON.parse(this.pageData);
     this.oldName = newPageData.name;
     this.curName = this.oldName;
     this.pageDataForm = this.fb.group({
-      name: [newPageData['name'], [Validators.required], [TakenValidator(this.pds, 'page name')]],
+      name: [newPageData['name'], [Validators.required, Validators.pattern('^[a-z\u0590-\u05feA-Z]+$')],
+        [TakenValidator(this.pds, 'page name', this.oldName)]],
       color: [newPageData['color']],
       title: [newPageData['title'], [Validators.required]],
       about: [newPageData['about']],
@@ -58,19 +60,11 @@ export class UpdatePageComponent implements OnInit {
       this.totalValue['showForm'] = true;
     }
     this.totalValue['template'] = formJsonValue.template;
-    this.totalValue = JSON.parse((JSON.stringify(this.totalValue))
-      .split(Utils.DOUBLE_QUOTES)
-      .join(Utils.DOUBLE_QUOTES_REPLACEMENT)
-      .split(Utils.SINGLE_QUOTES)
-      .join(Utils.SINGLE_QUOTES_REPLACEMENT)
-    );
-
-    // console.log(JSON.stringify(this.totalValue));
     this.pds.postUpdatePageToServer(this.oldName, this.totalValue).subscribe(data => {
-      alert(data['message']);
+      this.toastService.showSuccess(data['message']);
       this.curName = this.totalValue['name'];
     }, error => {
-      alert(error.error.message);
+      this.toastService.showDanger(error.error.message);
     });
   }
 

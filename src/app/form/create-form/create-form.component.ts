@@ -12,6 +12,7 @@ export class CreateFormComponent implements OnInit {
   template: string;
   @Output() contentEvent = new EventEmitter<string>();
   @Output() validationEvent = new EventEmitter<boolean>();
+  isCollapsed = -1;
 
   constructor(private fb: FormBuilder) {
     this.formForm = this.fb.group({
@@ -30,9 +31,10 @@ export class CreateFormComponent implements OnInit {
           Validators.maxLength(30)
         ]),
         desc: new FormControl('', [
-          Validators.maxLength(30)
+          Validators.maxLength(30),
+          Validators.required
         ]),
-        order: this.getNextOrder(),
+        order: new FormControl(this.getNextOrder(), [Validators.required]),
         required: false,
         questionLabels: this.fb.group({
           values: new FormControl(''),
@@ -91,6 +93,7 @@ export class CreateFormComponent implements OnInit {
   deleteQuestion(index) {
     let control = this.formForm.controls.questions as FormArray;
     control.removeAt(index);
+    this.validationEvent.emit(this.formForm.valid);
   }
 
   ngOnInit(): void {
@@ -145,5 +148,9 @@ export class CreateFormComponent implements OnInit {
     questions.forEach(q => {
       q['key'] = q['order'].toString();
     });
+  }
+
+  setCollapsed(index) {
+    (this.isCollapsed === index) ? this.isCollapsed = -1 : this.isCollapsed = index;
   }
 }

@@ -1,23 +1,51 @@
-<a routerLink="/updatePage/{{pageName}}">
-  go back to update page: {{pageName}}
-</a>
-<div>
-  Available Admins:
-  <div *ngFor="let admin of availableAdmins">
-    <ng-container *ngIf="admin.trim().length > 0">
-      admin: {{admin}}
-    </ng-container>
+<div class="card shadow mb-2 bg-white rounded login-card-size center w-50">
+  <div class="card-header">
+    <span class="font-weight-bold">Manage Page Mods</span>
   </div>
-  <br>
-  Current Sub Admins:
-  <div *ngFor="let oldSubAdmin of oldSubAdmins">
-    <ng-container *ngIf="oldSubAdmin.trim().length > 0">
-      oldSubAdmin: {{oldSubAdmin}}
-      <br>
-    </ng-container>
+  <div class="card-body justify-content-center">
+    <nav aria-label="breadcrumb" class="align-middle">
+      <ol class="breadcrumb p-2">
+        <li class="breadcrumb-item mb-1"><a routerLink="/showPage/{{pageName}}">{{pageName}}</a></li>
+        <li class="breadcrumb-item mb-1"><a routerLink="/updatePage/{{pageName}}">Update</a></li>
+        <li class="breadcrumb-item mb-1 active" aria-current="page">Sub-Admins</li>
+      </ol>
+    </nav>
+    <div style="overflow-y: auto; max-height: 350px">
+      <table class="table table-striped m-0 table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Username
+            <div class="d-inline-flex">
+              <input #filter (input)="filterUsers(filter.value)"
+                     class="form-control form-control-sm w-75 d-inline-block ml-1 rounded-right-0 border-right-0 rounded-left"
+                     placeholder="Search">
+              <span class="input-group-append">
+                <div class="input-group-text bg-transparent border-left-0 rounded-left-0 rounded-right"><i
+                  class="fa fa-search"></i></div>
+            </span>
+            </div>
+          </th>
+          <th scope="col" class="centerText"><span>Add Sub-Admin</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let admin of filteredAdmins">
+          <td class="w-75">
+            <span>{{admin}}</span>
+          </td>
+          <td class="w-25">
+            <button *ngIf="!curSubAdmins.includes(admin)" type="submit"
+                    (click)="addSubAdmin(admin)" class="btn btn-sm btn-block btn-primary float-right">Add
+            </button>
+            <button *ngIf="curSubAdmins.includes(admin)" type="submit" (click)="removeSubAdmin(admin)"
+                    class="btn btn-sm btn-block btn-danger float-right">Remove
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn mt-2 btn-success float-right" (click)="updateSubAdmins()">Save</button>
   </div>
-  <br>
-  New Sub Admins:
-  <input type="text" [(ngModel)]="newSubAdmins">
-  <button type="submit" (click)="updateSubAdmins()">Save</button>
 </div>
+

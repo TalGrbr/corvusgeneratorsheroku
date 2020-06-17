@@ -22,7 +22,7 @@ export class JsonQuestionFormService {
         questions.push(new DropdownQuestion({
           key: element.key || this.qcs.labelToKey(element.questionName),
           label: element.questionName,
-          order: element.order,
+          order: element.order || 0,
           required: element.hasOwnProperty('required') ? element.required : false,
           desc: element.desc,
           options: this.zipForDropDown(element.questionLabels.keys.split(','), element.questionLabels.values.split(','))
@@ -31,7 +31,7 @@ export class JsonQuestionFormService {
         questions.push(new TextboxQuestion({
           key: element.key || this.qcs.labelToKey(element.questionName),
           label: element.questionName,
-          order: element.order,
+          order: element.order || 0,
           required: element.hasOwnProperty('required') ? element.required : false,
           desc: element.desc,
           boxType: element.questionLabels.boxType
@@ -40,7 +40,7 @@ export class JsonQuestionFormService {
         questions.push(new BBcodeQuestion({
           key: element.key || this.qcs.labelToKey(element.questionName),
           label: element.questionName,
-          order: element.order,
+          order: element.order || 0,
           desc: element.desc,
           required: element.hasOwnProperty('required') ? element.required : false,
         }));

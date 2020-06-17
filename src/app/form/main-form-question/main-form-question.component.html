@@ -1,26 +1,39 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <div [formGroup]="form">
-  <label [attr.for]="question.key">{{question.label}}</label>
-
-  <div [ngSwitch]="question.controlType">
-
-    <input *ngSwitchCase="'textbox'" [formControlName]="question.key"
-           [id]="question.key" [type]="question.boxType">
-    <ng-container *ngSwitchCase="'dropdown'">
-      <select [id]="question.key" [formControlName]="question.key">
-        <ng-container *ngFor="let opt of question.options">
-          <optgroup *ngIf="opt.key.startsWith('~~')" label="{{opt.key.substr(2)}}">
-          </optgroup>
-          <option *ngIf="!opt.key.startsWith('~~')" [value]="opt.value">{{opt.key}}</option>
-        </ng-container>
-      </select>
-    </ng-container>
-    <editor
-      *ngSwitchCase="'bbcode'"
-      apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
-      id="bbCodeEditor"
-      [formControlName]="question.key"
-      [init]="{
-        height: 500,
+  <tr class="form-group row m-1">
+    <td>
+      <label [attr.for]="question.key" class="col-form-label-lg p-0 m-0">{{question.label}}</label>
+    </td>
+  </tr>
+  <tr style="position:relative;left: -2%" class="form-group row m-0">
+    <td>
+      <a class="align-middle" placement="left" ngbTooltip="{{question.desc}}"><h6
+        class="fa fa-question-circle m-0"></h6></a>
+    </td>
+    <div [ngSwitch]="question.controlType" class="w-90">
+      <td class="left-1 w-10" *ngSwitchCase="'textbox'">
+        <div class="input-group">
+          <input [formControlName]="question.key" class="form-control col-xs-4"
+                 [id]="question.key" [type]="question.boxType">
+        </div>
+      </td>
+      <td *ngSwitchCase="'dropdown'" class="w-25">
+        <select [id]="question.key" [formControlName]="question.key" class="left-2 form-control">
+          <ng-container *ngFor="let opt of question.options">
+            <optgroup *ngIf="opt.key.startsWith('~~')" label="{{opt.key.substr(2)}}">
+            </optgroup>
+            <option *ngIf="!opt.key.startsWith('~~')" [value]="opt.value">{{opt.key}}</option>
+          </ng-container>
+        </select>
+      </td>
+      <td *ngSwitchCase="'bbcode'">
+        <editor
+          class="left-1"
+          apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
+          id="bbCodeEditor"
+          [formControlName]="question.key"
+          [init]="{
+        height: 450,
         menubar: true,
         plugins: [
           'advlist autolink lists link image charmap print preview anchor',
@@ -38,7 +51,14 @@
           'outdent indent | removeformat | preview',
           forced_root_block : ''
    }"></editor>
-    <a>{{question.desc}}</a>
-  </div>
-  <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div>
+      </td>
+    </div>
+  </tr>
+  <tr class="form-group row m-1">
+    <td>
+      <div *ngIf="!isValid" class="invalid-feedback" style="display: inline !important; position:relative; left: 2%">
+        * Required
+      </div>
+    </td>
+  </tr>
 </div>

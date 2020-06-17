@@ -1,81 +1,119 @@
-<h1>Update Page</h1>
-<a routerLink="/showPage/{{curName}}">
-  go back to page: {{curName}}
-</a>
-<button type="button" *ngIf="isVisible(['admin', 'master'])" (click)="deleteClicked()">Delete this page</button>
-<br>
-<a *ngIf="isVisible(['mod', 'sub_admin', 'admin', 'master'])" routerLink="/managePageUsers/{{curName}}">Manage Users</a>
-<br>
-<a *ngIf="isVisible(['sub_admin', 'admin', 'master'])" routerLink="/manageMods/{{curName}}">Manage Mods</a>
-<br>
-<a *ngIf="isVisible(['admin', 'master'])" routerLink="/manageSubAdmins/{{curName}}">Manage Sub Admins</a>
-<br>
-<a *ngIf="isVisible(['master'])" routerLink="/managePageAdmin/{{curName}}">Manage Admin</a>
-
-<form [formGroup]="pageDataForm" (ngSubmit)="onPageSubmit()">
-  <label>
-    Page name:
-    <input type="text" formControlName="name" required>
-  </label>
-  <br>
-  <label>
-    Page main color:
-    <input type="text" formControlName="color">
-  </label>
-  <br>
-  <label>
-    Page title:
-    <input type="text" formControlName="title" required>
-  </label>
-  <br>
-  <label>
-    About:
-    <editor
-      apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
-      formControlName="about"
-      [init]="{
+<div class="card shadow-lg mb-4 bg-white rounded w-60 center min-width-850">
+  <div class="card-header">
+    <span class="font-weight-bold">Update Page</span>
+  </div>
+  <div class="card-body justify-content-center">
+    <nav aria-label="breadcrumb" class="align-middle">
+      <ol class="breadcrumb p-2">
+        <li class="breadcrumb-item mb-1"><a routerLink="/showPage/{{curName}}">{{curName}}</a></li>
+        <li class="breadcrumb-item mb-1 active" aria-current="page">Update</li>
+      </ol>
+    </nav>
+    <div class="btn-group" role="group">
+      <button type="button" *ngIf="isVisible(['mod', 'sub_admin', 'admin', 'master'])"
+              routerLink="/managePageUsers/{{curName}}"
+              class="btn btn-sm btn-outline-dark">
+        Users
+      </button>
+      <button type="button" *ngIf="isVisible(['sub_admin', 'admin', 'master'])" routerLink="/manageMods/{{curName}}"
+              class="btn btn-sm btn-outline-dark">
+        Mods
+      </button>
+      <button type="button" *ngIf="isVisible(['admin', 'master'])" routerLink="/manageSubAdmins/{{curName}}"
+              class="btn btn-sm btn-outline-dark">
+        Sub Admins
+      </button>
+      <button type="button" *ngIf="isVisible(['master'])" routerLink="/managePageAdmin/{{curName}}"
+              class="btn btn-sm btn-outline-dark">
+        Admin
+      </button>
+      <button type="button" *ngIf="isVisible(['admin', 'master'])" (click)="deleteClicked()"
+              class="btn btn-sm btn-outline-danger">
+        Delete Page
+      </button>
+    </div>
+    <hr/>
+    <h3>Page Details</h3>
+    <form [formGroup]="pageDataForm" (ngSubmit)="onPageSubmit()">
+      <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">Page name:</label>
+        <div class="col-sm-10">
+          <input type="text" id="name" class="form-control" formControlName="name">
+          <small class="text-muted">* Name can only be 3-15 chars and contain English and Hebrew chars.</small>
+          <div
+            *ngIf="pageDataForm.invalid && pageDataForm.get('name').errors && pageDataForm.get('name').errors.availability"
+            class="invalid-feedback"
+            style="display: inline !important;">
+            * Page name taken
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="color" class="col-sm-2 col-form-label">Page main color:</label>
+        <div class="col-sm-10">
+          <input type="text" id="color" class="form-control" formControlName="color">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="title" class="col-sm-2 col-form-label">Page title:</label>
+        <div class="col-sm-10">
+          <input type="text" id="title" class="form-control" formControlName="title">
+          <small class="text-muted">* Title can only be 3-30 chars.</small>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="about" class="col-sm-2 col-form-label">About:</label>
+        <div class="col-sm-10">
+          <editor
+            apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
+            formControlName="about"
+            id="about"
+            [init]="{
         height: 200,
-        width:800,
         menubar: false,
         plugins: [
-          'advlist autolink lists link image charmap print preview anchor',
-          'searchreplace visualblocks code fullscreen',
-          'insertdatetime media table paste code help wordcount'
+          'advlist autolink lists link image charmap preview anchor',
+          'searchreplace code fullscreen',
+          'media paste '
         ],
         toolbar:
           'undo redo | bold italic underline |' +
           'fontselect fontsizeselect |' +
-          'alignleft aligncenter alignright alignjustify | ' +
           'numlist bullist |' +
           'forecolor backcolor |'+
           'ltr rtl |' +
           'table media link image |' +
-          'outdent indent | removeformat | preview',
+          'removeformat | preview',
           forced_root_block : ''
 
    }"></editor>
-  </label>
-  <br>
-  <div formArrayName="remarks">
-    <h3>Remarks</h3>
-    <button type="button" (click)="addRemark()">Add remark</button>
+          <small class="text-muted">* About can only be up to 250 chars long.</small>
+        </div>
+        <small class="text-danger ml-3">* Required</small>
+      </div>
+      <hr/>
+      <div formArrayName="remarks">
+        <h3>Remarks</h3>
+        <button class="btn btn-sm btn-outline-primary" type="button" (click)="addRemark()">Add remark</button>
 
-    <div *ngFor="let remark of remarks.controls; let i=index">
-      <button (click)="deleteRemark(i)">Remove remark</button>
-      <label>
-        Remark {{i}}:
-        <editor
-          apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
-          [formControlName]="i"
-          [initialValue]="remark.value"
-          [init]="{
+        <div *ngFor="let remark of remarks.controls; let i=index">
+          <div class="form-group row">
+            <label for="about" class="col-sm-2 col-form-label">Remark {{i}}:
+              <br>
+              <button class="btn btn-sm btn-danger col-form-label mt-2" type="button" (click)="deleteRemark(i)">Remove
+              </button>
+            </label>
+            <div class="col-sm-10">
+              <editor
+                apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
+                [formControlName]="i"
+                [init]="{
         height: 150,
-        width: 800,
         menubar: false,
         plugins: [
-          'advlist autolink lists link image charmap print preview anchor',
-          'searchreplace visualblocks code fullscreen',
-          'insertdatetime media table paste code help wordcount'
+          'advlist autolink lists link image charmap preview anchor',
+          'searchreplace code fullscreen',
+          'media paste code '
         ],
         toolbar:
           'undo redo | bold italic underline |' +
@@ -85,15 +123,17 @@
           'ltr rtl |' +
           'link|' +
           'removeformat | preview',
-        forced_root_block : ''
+          forced_root_block : ''
    }"></editor>
-      </label>
-    </div>
+              <small class="text-muted">* Remark can only be up to 75 chars long.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <app-update-form (contentEvent)="updateFormValue($event)" (validationEvent)="updateQuestionsValidation($event)"
+                       [template]="template" [questions]="jqfs.getQuestionsFromJson(questionsForm)"></app-update-form>
+      <button class="btn btn-primary btn-sm mt-1 float-right" [disabled]="!pageDataForm.valid || !questionsAreValid">Submit</button>
+    </form>
   </div>
-  <h3>Update Form</h3>
-  <app-update-form (contentEvent)="updateFormValue($event)" (validationEvent)="updateQuestionsValidation($event)"
-                   [template]="template" [questions]="jqfs.getQuestionsFromJson(questionsForm)"></app-update-form>
-  <button [disabled]="!pageDataForm.valid || !questionsAreValid">Submit</button>
-</form>
-
-{{totalValue | json}}
+</div>

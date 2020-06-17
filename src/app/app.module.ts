@@ -34,7 +34,10 @@ import { ManageAdminsComponent } from './users/management/manage-admins/manage-a
 import { ManagePageAdminComponent } from './users/management/manage-page-admin/manage-page-admin.component';
 import { ManagePageUsersComponent } from './users/management/manage-page-users/manage-page-users.component';
 import { UpdatePasswordComponent } from './users/update-password/update-password.component';
-import {TakenValidator} from './utilities/custom-validators/taken-validator';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HeaderComponent } from './header/header.component';
+import {ToastsContainerComponent} from './logging/toasts-container.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,10 @@ import {TakenValidator} from './utilities/custom-validators/taken-validator';
     ManageAdminsComponent,
     ManagePageAdminComponent,
     ManagePageUsersComponent,
-    UpdatePasswordComponent
+    UpdatePasswordComponent,
+    HeaderComponent,
+    ToastsContainerComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +76,8 @@ import {TakenValidator} from './utilities/custom-validators/taken-validator';
     RouterModule,
     AppRoutingModule,
     EditorModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [
     QuestionControlService,
