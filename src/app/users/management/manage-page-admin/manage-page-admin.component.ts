@@ -13,6 +13,7 @@ export class ManagePageAdminComponent implements OnInit {
   readonly pageName: string;
   availableAdmins = new Array<string>();
   curAdmin: string;
+  filteredAdmins = [];
 
   constructor(private mds: ManagementDataService, private route: ActivatedRoute, private titleService: Title, private toastService: ToastService) {
     this.pageName = this.route.snapshot.paramMap.get('name');
@@ -29,6 +30,7 @@ export class ManagePageAdminComponent implements OnInit {
         this.availableAdmins = data.body.content.toString().split(',').map((item) => {
           return item.trim();
         });
+        this.filteredAdmins = this.availableAdmins;
       }
     }, error => {
       this.toastService.showDanger(error.error.message);
@@ -49,5 +51,14 @@ export class ManagePageAdminComponent implements OnInit {
     } else {
       this.toastService.showDanger(admin + ': admin not available');
     }
+  }
+
+  filterUsers(value: string) {
+    if (!value) {
+      this.filteredAdmins = this.availableAdmins;
+    }
+    this.filteredAdmins = Object.assign([], this.availableAdmins).filter(
+      item => item.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
   }
 }

@@ -37,6 +37,7 @@ import { UpdatePasswordComponent } from './users/update-password/update-password
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HeaderComponent } from './header/header.component';
 import {ToastsContainerComponent} from './logging/toasts-container.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {ToastsContainerComponent} from './logging/toasts-container.component';
     ManagePageUsersComponent,
     UpdatePasswordComponent,
     HeaderComponent,
-    ToastsContainerComponent
+    ToastsContainerComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

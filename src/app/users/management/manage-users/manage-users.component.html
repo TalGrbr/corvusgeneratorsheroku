@@ -1,4 +1,4 @@
-<div class="card shadow mb-2 bg-white rounded login-card-size center w-50">
+<div class="card shadow mb-2 bg-white rounded login-card-size center w-50 min-width-850" style="min-height: 700px">
   <div class="card-header">
     <span class="font-weight-bold">Manage Users</span>
   </div>
@@ -8,12 +8,15 @@
         <strong>Add User</strong>
         <div class="form-group row">
           <div class="col-sm-10">
-            <label for="username" class="col-sm-2 col-form-label display-flex p-1">Username:</label>
-            <input type="text" id="username" formControlName="username">
-            <button type="submit" [disabled]="!addUserForm.valid" class="btn btn-sm btn-primary ml-2 mb-2">Add
-            </button>
+            <div class="d-inline-flex w-100">
+              <label for="username" class="col-sm-2 col-form-label display-flex p-1">Username:</label>
+              <input type="text" id="username" formControlName="username" class="form-control form-control-sm w-25 m-0">
+              <button type="submit" [disabled]="!addUserForm.valid" class="btn btn-sm btn-primary ml-2 mb-2">Add
+              </button>
+            </div>
             <small class="form-text text-muted">* initial password is 123456789.</small>
-            <small class="form-text text-muted">* Username can contain Hebrew & English letters, and numbers only.</small>
+            <small class="form-text text-muted">* Username can contain Hebrew & English letters, and numbers
+              only.</small>
             <small class="form-text text-muted">* Username must be 3-15 letters long.</small>
             <div *ngIf="addUserForm.invalid && addUserForm.get('username').errors.availability"
                  class="invalid-feedback"
@@ -28,10 +31,27 @@
     <div>
       <strong>Available Users:</strong>
       <small class="form-text text-muted">(users who updated their initial password)</small>
-      <div style="overflow-y: auto; max-height: 250px">
+      <div style="overflow-y: auto; max-height: 300px">
         <table class="table table-striped m-0 table-hover">
+          <thead>
+          <tr>
+            <th scope="col">
+              Username
+              <div class="d-inline-flex">
+                <input #filter (input)="filterUsers(filter.value)"
+                       class="form-control form-control-sm w-75 d-inline-block ml-1 rounded-right-0 border-right-0 rounded-left"
+                       placeholder="Search">
+                <span class="input-group-append">
+                <div class="input-group-text bg-transparent border-left-0 rounded-left-0 rounded-right"><i
+                  class="fa fa-search"></i></div>
+            </span>
+              </div>
+            </th>
+            <th scope="col"><span class="mr-4 float-right">Password</span></th>
+          </tr>
+          </thead>
           <tbody>
-          <ng-container *ngFor="let user of allAvailableUsers">
+          <ng-container *ngFor="let user of filteredUsers">
             <tr>
               <td class="w-50">
                 {{user}}
@@ -52,10 +72,26 @@
     <hr/>
     <div>
       <strong>All Users:</strong>
-      <div style="overflow-y: auto; max-height: 250px">
+      <div style="overflow-y: auto; max-height: 300px">
         <table class="table table-striped m-0 table-hover">
+          <thead>
+          <tr>
+            <th scope="col">
+              Username
+              <div class="d-inline-flex">
+                <input #filterAll (input)="filterAllUsers(filterAll.value)"
+                       class="form-control form-control-sm w-75 d-inline-block ml-1 rounded-right-0 border-right-0 rounded-left"
+                       placeholder="Search">
+                <span class="input-group-append">
+                <div class="input-group-text bg-transparent border-left-0 rounded-left-0 rounded-right"><i
+                  class="fa fa-search"></i></div>
+            </span>
+              </div>
+            </th>
+          </tr>
+          </thead>
           <tbody>
-          <ng-container *ngFor="let user of allUsers">
+          <ng-container *ngFor="let user of filteredAllUsers">
             <tr>
               <td>
                 {{user}}

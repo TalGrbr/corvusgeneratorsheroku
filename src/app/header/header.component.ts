@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
   @Output() loggedEmitter = new EventEmitter();
   private role;
 
-  constructor(public authService: AuthService, private router: Router) {
+  constructor(public authService: AuthService) {
     authService.getWebsiteRole().subscribe(data => this.role = data.body['role']);
     this.isLogged = authService.isLoggedIn;
     this.activeIndex = window.location.pathname.substr(1) || 'main';

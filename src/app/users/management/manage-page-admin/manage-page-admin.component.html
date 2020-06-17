@@ -14,12 +14,22 @@
       <table class="table table-striped m-0 table-hover">
         <thead>
         <tr>
-          <th scope="col">Username</th>
+          <th scope="col">Username
+            <div class="d-inline-flex">
+              <input #filter (input)="filterUsers(filter.value)"
+                     class="form-control form-control-sm w-75 d-inline-block ml-1 rounded-right-0 border-right-0 rounded-left"
+                     placeholder="Search">
+              <span class="input-group-append">
+                <div class="input-group-text bg-transparent border-left-0 rounded-left-0 rounded-right"><i
+                  class="fa fa-search"></i></div>
+            </span>
+            </div>
+          </th>
           <th scope="col" class="centerText"><span>Assign Admin</span></th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let admin of availableAdmins">
+        <tr *ngFor="let admin of filteredAdmins">
           <td class="w-75">
             <span>{{admin}}</span>
           </td>

@@ -14,6 +14,7 @@ export class ManageAdminsComponent implements OnInit {
   allAdmins = [];
   availableUsers = [];
   allUsers = [];
+  filteredUsers = [];
 
   constructor(private mds: ManagementDataService,
               public authService: AuthService,
@@ -42,6 +43,7 @@ export class ManageAdminsComponent implements OnInit {
         this.allUsers = data.body.content.toString().split(',').map((item) => {
           return item.trim();
         });
+        this.filteredUsers = this.allUsers;
       }
     }, error => this.toastService.showDanger(error.error.message));
   }
@@ -93,5 +95,14 @@ export class ManageAdminsComponent implements OnInit {
     }, error => {
       this.toastService.showDanger(user + ': ' + error.error.message);
     });
+  }
+
+  filterUsers(value: string) {
+    if (!value) {
+      this.filteredUsers = this.allUsers;
+    }
+    this.filteredUsers = Object.assign([], this.allUsers).filter(
+      item => item.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
   }
 }

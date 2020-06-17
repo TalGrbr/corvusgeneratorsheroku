@@ -38,7 +38,8 @@ export class UpdateFormComponent implements OnInit {
         order: this.getNextOrder(),
         required: false,
         desc: new FormControl('', [
-          Validators.maxLength(30)
+          Validators.maxLength(30),
+          Validators.required
         ]),
         questionLabels: this.fb.group({
           values: [''],

@@ -1,11 +1,13 @@
-<div class="h-100">
-  <div>
-    <app-header (loggedEmitter)="updateLogout($event)"></app-header>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="w-100 position-absolute" style="min-height: 100%">
+  <app-header (loggedEmitter)="updateLogout($event)" style="height: 20%"></app-header>
+  <app-update-password *ngIf="authService.getInitPass() == '1'"></app-update-password>
+  <!--  <div style="height: 1500px; background-color: #3395FF"></div>-->
+  <div class="mt-2">
+    <router-outlet class="mb-3"></router-outlet>
   </div>
-  <div>
-    <app-update-password *ngIf="authService.getInitPass() == '1'"></app-update-password>
-    <div class="mt-2">
-      <router-outlet></router-outlet>
-    </div>
+<!--  <div class="w-100 position-absolute" style="top: 100%">-->
+  <div class="w-100 position-sticky" style="top: 100%">
+    <app-footer class="w-100"></app-footer>
   </div>
 </div>

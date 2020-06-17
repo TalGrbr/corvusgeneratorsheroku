@@ -13,6 +13,7 @@ export class ManagePageUsersComponent implements OnInit {
   readonly pageName: string;
   allUsers = [];
   curPageUsers = [];
+  filteredUsers = [];
 
   constructor(private mds: ManagementDataService,
               private route: ActivatedRoute,
@@ -26,6 +27,7 @@ export class ManagePageUsersComponent implements OnInit {
       this.allUsers = data.body['content'].toString().split(',').map((item) => {
         return item.trim();
       });
+      this.filteredUsers = this.allUsers;
     }, error => this.toastService.showDanger(error.error.message));
 
     this.mds.getAllPageUsers(this.pageName).subscribe(data => {
@@ -50,5 +52,14 @@ export class ManagePageUsersComponent implements OnInit {
     this.mds.updatePageUsers(this.curPageUsers, this.pageName).subscribe(data => {
       this.toastService.showSuccess(data.body['message']);
     }, error => this.toastService.showDanger(error.error.message));
+  }
+
+  filterUsers(value: string) {
+    if (!value) {
+      this.filteredUsers = this.allUsers;
+    }
+    this.filteredUsers = Object.assign([], this.allUsers).filter(
+      item => item.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
   }
 }

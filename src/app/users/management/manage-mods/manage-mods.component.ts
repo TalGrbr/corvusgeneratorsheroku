@@ -14,6 +14,7 @@ export class ManageModsComponent implements OnInit {
   readonly pageName: string;
   availableUsers = [];
   curMods = [];
+  filteredUsers = [];
 
   constructor(private mds: ManagementDataService,
               private route: ActivatedRoute,
@@ -33,6 +34,7 @@ export class ManageModsComponent implements OnInit {
         this.availableUsers = data.body.content.toString().split(',').map((item) => {
           return item.trim();
         });
+        this.filteredUsers = this.availableUsers;
       }
     }, error => this.toastService.showDanger(error.error.message));
   }
@@ -52,5 +54,14 @@ export class ManageModsComponent implements OnInit {
 
   removeMod(mod: string) {
     this.curMods = this.curMods.filter((elm) => elm !== mod);
+  }
+
+  filterUsers(value: string) {
+    if (!value) {
+      this.filteredUsers = this.availableUsers;
+    }
+    this.filteredUsers = Object.assign([], this.availableUsers).filter(
+      item => item.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
   }
 }

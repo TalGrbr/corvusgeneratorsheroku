@@ -17,6 +17,8 @@ export class ManageUsersComponent implements OnInit {
   private role;
   allAvailableUsers = [];
   allUsers = [];
+  filteredUsers = [];
+  filteredAllUsers = [];
 
   constructor(private fb: FormBuilder,
               public authService: AuthService,
@@ -38,6 +40,7 @@ export class ManageUsersComponent implements OnInit {
       if (data.body['content']) {
         this.allAvailableUsers = data.body['content'].split(',');
       }
+      this.filteredUsers = this.allAvailableUsers;
     }, error => this.toastService.showDanger(error.error.message));
 
     mds.getAllUsers().subscribe((data: any) => {
@@ -45,6 +48,7 @@ export class ManageUsersComponent implements OnInit {
         this.allUsers = data.body.content.toString().split(',').map((item) => {
           return item.trim();
         });
+        this.filteredAllUsers = this.allUsers;
       }
     }, error => this.toastService.showDanger(error.error.message));
   }
@@ -77,5 +81,23 @@ export class ManageUsersComponent implements OnInit {
 
   isVisible(roles) {
     return roles.includes(this.role);
+  }
+
+  filterUsers(value: string) {
+    if (!value) {
+      this.filteredUsers = this.allAvailableUsers;
+    }
+    this.filteredUsers = Object.assign([], this.allAvailableUsers).filter(
+      item => item.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
+  }
+
+  filterAllUsers(value: string) {
+    if (!value) {
+      this.filteredAllUsers = this.allUsers;
+    }
+    this.filteredAllUsers = Object.assign([], this.allUsers).filter(
+      item => item.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
   }
 }

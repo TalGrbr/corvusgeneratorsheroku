@@ -13,6 +13,7 @@ export class ManageSubAdminsComponent implements OnInit {
   readonly pageName: string;
   availableAdmins = [];
   curSubAdmins = [];
+  filteredAdmins = [];
 
   constructor(private mds: ManagementDataService,
               private route: ActivatedRoute,
@@ -35,6 +36,7 @@ export class ManageSubAdminsComponent implements OnInit {
         this.availableAdmins = data.body.content.toString().split(',').map((item) => {
           return item.trim();
         });
+        this.filteredAdmins = this.availableAdmins;
       }
     }, error => {
       this.toastService.showDanger(error.error.message);
@@ -56,5 +58,14 @@ export class ManageSubAdminsComponent implements OnInit {
 
   removeSubAdmin(admin: string) {
     this.curSubAdmins = this.curSubAdmins.filter((elm) => elm !== admin);
+  }
+
+  filterUsers(value: string) {
+    if (!value) {
+      this.filteredAdmins = this.availableAdmins;
+    }
+    this.filteredAdmins = Object.assign([], this.availableAdmins).filter(
+      item => item.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
   }
 }

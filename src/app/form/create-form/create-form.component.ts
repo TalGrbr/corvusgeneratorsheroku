@@ -31,7 +31,8 @@ export class CreateFormComponent implements OnInit {
           Validators.maxLength(30)
         ]),
         desc: new FormControl('', [
-          Validators.maxLength(30)
+          Validators.maxLength(30),
+          Validators.required
         ]),
         order: new FormControl(this.getNextOrder(), [Validators.required]),
         required: false,

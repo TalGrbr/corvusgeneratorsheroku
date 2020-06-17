@@ -4,18 +4,28 @@
   </div>
   <div class="card-body justify-content-center">
     <strong>All Users:</strong>
-    <div style="overflow-y: auto; max-height: 350px">
+    <div style="overflow-y: scroll; max-height: 350px">
       <table class="table table-striped m-0 table-hover">
         <thead>
         <tr>
-          <th scope="col">Username</th>
+          <th scope="col">Username
+            <div class="d-inline-flex">
+              <input #filter (input)="filterUsers(filter.value)"
+                     class="form-control form-control-sm w-75 d-inline-block ml-1 rounded-right-0 border-right-0 rounded-left"
+                     placeholder="Search">
+              <span class="input-group-append">
+                <div class="input-group-text bg-transparent border-left-0 rounded-left-0 rounded-right"><i
+                  class="fa fa-search"></i></div>
+            </span>
+            </div>
+          </th>
           <th scope="col" class="centerText">Admin</th>
           <th scope="col" class="centerText">Password</th>
           <th scope="col" class="centerText">Delete</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let user of allUsers">
+        <tr *ngFor="let user of filteredUsers">
           <td class="w-30">
             <span>{{user}}</span>
             <small *ngIf="!availableUsers.includes(user)" class="text-muted ml-2">User not available.</small>
