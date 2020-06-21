@@ -2,7 +2,7 @@
   <form [formGroup]="form" (submit)="onFormSubmitted()">
     <table class="w-100">
       <div *ngFor="let question of questions">
-        <app-question [question]="question" [form]="form"></app-question>
+        <app-question *ngIf="question.controlType !== 'threads'" [question]="question" [form]="form"></app-question>
       </div>
       <button [disabled]="form.invalid" class="btn btn-primary float-right">Submit</button>
       <button type="reset" class="btn btn-danger float-right mr-1" (click)="resetResult()">Reset</button>

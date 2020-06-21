@@ -5,6 +5,7 @@ import {QuestionBase} from '../question-types/question-base';
 import {TextboxQuestion} from '../question-types/question-textbox';
 import {DropdownQuestion} from '../question-types/question-dropdown';
 import {BBcodeQuestion} from '../question-types/question-bbcode-box';
+import {ThreadsQuestion} from '../question-types/question-threads';
 
 @Injectable()
 export class QuestionControlService {
@@ -62,6 +63,19 @@ export class QuestionControlService {
             required: question.required,
             desc: question.desc,
             questionLabels: this.fb.group({})
+          })
+        );
+      } else if (question instanceof ThreadsQuestion) {
+        control.push(
+          this.fb.group({
+            questionType: 'threads',
+            questionName: question.label || 'threads',
+            order: question.order || -1,
+            required: question.required || false,
+            desc: question.desc || '',
+            questionLabels: this.fb.group({
+              forumId: question.forumId
+            })
           })
         );
       }

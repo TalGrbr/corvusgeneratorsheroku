@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateFormComponent } from './create-form.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('CreateFormComponent', () => {
   let component: CreateFormComponent;

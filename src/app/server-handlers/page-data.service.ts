@@ -26,7 +26,7 @@ export class PageDataService {
     return this.httpClient.get(this.API_SERVER + '/pages', {observe: 'response'});
   }
 
-  public getRelatedPages(){
+  public getRelatedPages() {
     return this.httpClient.get(this.API_SERVER + '/pagesByUser', {observe: 'response'});
   }
 
@@ -50,5 +50,9 @@ export class PageDataService {
 
   public isPageNameValid(pageName) {
     return this.httpClient.get(this.API_SERVER + '/isPageNameAvailable?name=' + pageName, {observe: 'response'});
+  }
+
+  public getThreads(forumId) {
+    return this.httpClient.get(this.API_SERVER + '/get5Threads?id=' + forumId, {observe: 'response'});
   }
 }

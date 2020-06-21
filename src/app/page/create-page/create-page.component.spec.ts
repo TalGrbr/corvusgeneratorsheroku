@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreatePageComponent } from './create-page.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('CreatePageComponent', () => {
   let component: CreatePageComponent;

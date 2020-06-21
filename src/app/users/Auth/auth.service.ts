@@ -33,7 +33,7 @@ export class AuthService {
         localStorage.setItem('access_token', res.token);
         localStorage.setItem('init_pass', res.init_pass);
         // this.currentUser = {username: res.username, role: res.role};
-        this.setCurrentUser({username: res.username, role: res.role});
+        this.setCurrentUser({username: res.username, role: res.role, logged_time_stamp: Date.now()});
         this.router.navigate(['main']);
       }, error => {
         if (error.error.message) {
@@ -42,6 +42,14 @@ export class AuthService {
           this.toastService.showDanger('unknown server error');
         }
       });
+  }
+
+  get timestamp() {
+    if (this.currentUser && this.currentUser.length > 0){
+      return Date.parse(JSON.parse(this.currentUser)['logged_time_stamp']) || -1;
+    } else {
+      return -1;
+    }
   }
 
   private setCurrentUser(value) {

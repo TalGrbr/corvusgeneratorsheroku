@@ -7,11 +7,13 @@ import {Router} from '@angular/router';
 import {TakenValidator} from '../../utilities/custom-validators/taken-validator';
 import {Title} from '@angular/platform-browser';
 import {ToastService} from '../../logging/toast.service';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-create-page',
   templateUrl: './create-page.component.html',
-  styleUrls: ['./create-page.component.css']
+  styleUrls: ['./create-page.component.css'],
 })
 export class CreatePageComponent implements OnInit, AfterViewInit {
   loadingEditor = true;
@@ -67,13 +69,14 @@ export class CreatePageComponent implements OnInit, AfterViewInit {
   }
 
   onPageSubmit() {
-    let formJsonValue = JSON.parse(this.formValue);
+    const formJsonValue = JSON.parse(this.formValue);
     this.totalValue = this.pageDataForm.getRawValue();
     this.totalValue['questions'] = formJsonValue.questions;
     if (formJsonValue.questions.length > 0) {
       this.totalValue['showForm'] = true;
     }
     this.totalValue['template'] = formJsonValue.template;
+    console.log(this.totalValue);
     this.pds.postPageToServer(this.totalValue).subscribe(data => {
       this.toastService.showSuccess(data['message']);
       this.router.navigate(['showPage/' + this.totalValue['name']]);

@@ -4,6 +4,7 @@
 <button class="btn btn-outline-primary btn-sm m-1" type="button" (click)="addNewTextBoxQuestion()">Add new TextBox
 </button>
 <button class="btn btn-outline-primary btn-sm m-1" type="button" (click)="addEditor()">Add new Editor</button>
+<button class="btn btn-outline-primary btn-sm m-1" type="button" (click)="addThreadsGenerator()">Add threads generator</button>
 <br>
 <small  class="text-muted ml-2">* Be aware that updating questions' names does not change the matching placeholders in the template.</small>
 <br>
@@ -19,7 +20,7 @@
               Question
             </button>
           </td>
-          <td class="w-75" [ngbCollapse]="isCollapsed !== i">
+          <td class="w-75" [@smoothCollapse]="(isCollapsed !== i)? 'initial' : 'final'">
             <div [formGroupName]="i">
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label ml-4 pr-1">Question Name:<span class="text-danger">*</span></label>
@@ -27,19 +28,19 @@
                   <input type="text" class="form-control" formControlName="questionName">
                 </div>
               </div>
-              <div class="form-group row">
+              <div class="form-group row" [hidden]="q.get('questionType').value === 'threads'">
                 <label class="col-sm-3 col-form-label ml-4 pr-1">Question desc:<span class="text-danger">*</span></label>
                 <div class="col-sm-7 pl-0">
                   <input formControlName="desc" class="form-control"/>
                 </div>
               </div>
-              <div class="form-group row">
+              <div class="form-group row" [hidden]="q.get('questionType').value === 'threads'">
                 <label class="col-sm-3 col-form-label ml-4 pr-1">Order:<span class="text-danger">*</span></label>
                 <div class="col-sm-7 pl-0">
                   <input formControlName="order" type="number" class="form-control" min="0" oninput="validity.valid||(value='');">
                 </div>
               </div>
-              <div class="form-group row">
+              <div class="form-group row" [hidden]="q.get('questionType').value === 'threads'">
                 <label class="col-sm-3 col-form-label ml-4 pr-1">Required?</label>
                 <div class="col-sm-7 pl-0">
                   <div class="custom-control custom-checkbox">
@@ -78,6 +79,15 @@
                         <option value="url">url</option>
                         <option value="email">email</option>
                       </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="q.get('questionType').value === 'threads'">
+                  <div class="form-group row">
+                    <label class="col-sm-3 col-form-label ml-4 pr-1">Forum ID:<span class="text-danger">*</span></label>
+                    <div class="col-sm-7 pl-0">
+                      <input formControlName="forumId" class="form-control" type="number"/>
                     </div>
                   </div>
                 </div>

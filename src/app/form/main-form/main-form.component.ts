@@ -4,6 +4,9 @@ import {FormGroup} from '@angular/forms';
 import {QuestionBase} from '../question-types/question-base';
 import {QuestionControlService} from '../form-services/question-control.service';
 import {toBBCode} from '../../utilities/htmlToBBCode';
+import {PageDataService} from '../../server-handlers/page-data.service';
+import {ToastService} from '../../logging/toast.service';
+import {type} from 'os';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -16,7 +19,7 @@ export class MainFormComponent implements OnInit {
   payLoad;
   @Output() payLoadEvent = new EventEmitter<string>();
 
-  constructor(private qcs: QuestionControlService) {
+  constructor(private qcs: QuestionControlService, private pds: PageDataService, private toastService: ToastService) {
   }
 
   ngOnInit() {
@@ -25,12 +28,27 @@ export class MainFormComponent implements OnInit {
 
   onFormSubmitted() {
     this.payLoad = this.form.getRawValue();
+    const threadsQuestions = this.getQuestionsByType('threads');
+    if (threadsQuestions.length > 0) {
+      threadsQuestions.forEach(q => {
+        this.pds.getThreads(q.forumId).subscribe(data => {
+          this.payLoad[q.label.toString()] = data.body['message'];
+          this.payLoad = JSON.stringify(this.payLoad);
+          this.payLoadEvent.emit(this.payLoad);
+          this.payLoad = JSON.parse(this.payLoad);
+        }, error => {
+          this.toastService.showDanger(error.message);
+          console.log(error);
+        });
+      });
+    }
     if (this.payLoad.hasOwnProperty('article')) {
       this.payLoad.article = toBBCode(this.form.get('article').value);
     }
     this.addDropBoxKeys();
     this.payLoad = JSON.stringify(this.payLoad);
     this.payLoadEvent.emit(this.payLoad);
+    this.payLoad = JSON.parse(this.payLoad);
   }
 
   private addDropBoxKeys() {

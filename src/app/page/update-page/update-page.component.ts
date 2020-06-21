@@ -31,8 +31,6 @@ export class UpdatePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //console.log('pagedata: ' + this.pageData);
-    console.log(this.questionsForm);
     let newPageData = JSON.parse(this.pageData);
     this.oldName = newPageData.name;
     this.curName = this.oldName;
@@ -54,7 +52,6 @@ export class UpdatePageComponent implements OnInit {
   onPageSubmit() {
     let formJsonValue = JSON.parse(this.formValue);
     this.totalValue = this.pageDataForm.getRawValue();
-
     this.totalValue['questions'] = formJsonValue.questions;
     if (formJsonValue.questions.length > 0) {
       this.totalValue['showForm'] = true;

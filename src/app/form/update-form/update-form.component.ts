@@ -2,12 +2,31 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {QuestionBase} from '../question-types/question-base';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {QuestionControlService} from '../form-services/question-control.service';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-update-form',
   templateUrl: './update-form.component.html',
   styleUrls: ['./update-form.component.css'],
-  providers: [QuestionControlService]
+  providers: [QuestionControlService],
+  animations: [
+    trigger('smoothCollapse', [
+      state('initial', style({
+        height: 0,
+        width: 0,
+        'padding-top': '0',
+        'padding-bottom': '0',
+        overflow: 'hidden',
+        opacity: 0
+      })),
+      state('final', style({
+        overflow: 'hidden',
+        opacity: 1
+      })),
+      transition('initial=>final', animate('275ms')),
+      transition('final=>initial', animate('275ms'))
+    ]),
+  ]
 })
 export class UpdateFormComponent implements OnInit {
   @Input() questions: QuestionBase<string>[];
@@ -95,6 +114,25 @@ export class UpdateFormComponent implements OnInit {
     this.validationEvent.emit(this.formForm.valid);
   }
 
+  addThreadsGenerator() {
+    let control = this.formForm.controls.questions as FormArray;
+    control.push(
+      this.fb.group({
+        questionType: 'threads',
+        questionName: new FormControl('', [Validators.required]),
+        desc: new FormControl(''),
+        order: -1,
+        required: false,
+        questionLabels: this.fb.group({
+          forumId: new FormControl('', [
+            Validators.required,
+            Validators.pattern(/[0-9]+/)
+          ])
+        })
+      })
+    );
+  }
+
   deleteQuestion(index) {
     let control = this.formForm.controls.questions as FormArray;
     control.removeAt(index);
@@ -128,6 +166,7 @@ export class UpdateFormComponent implements OnInit {
   }
 
   updateTemplate(value: string) {
+    //console.log(this.formForm);
     this.template = value;
     this.formForm.value['template'] = this.template;
     this.validationEvent.emit(this.formForm.valid);

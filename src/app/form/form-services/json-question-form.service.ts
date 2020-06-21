@@ -4,6 +4,7 @@ import {DropdownQuestion} from '../question-types/question-dropdown';
 import {QuestionControlService} from './question-control.service';
 import {TextboxQuestion} from '../question-types/question-textbox';
 import {BBcodeQuestion} from '../question-types/question-bbcode-box';
+import {ThreadsQuestion} from '../question-types/question-threads';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,15 @@ export class JsonQuestionFormService {
           order: element.order || 0,
           desc: element.desc,
           required: element.hasOwnProperty('required') ? element.required : false,
+        }));
+      } else if (element.questionType === 'threads'){
+        questions.push(new ThreadsQuestion({
+          key: element.key || this.qcs.labelToKey(element.questionName),
+          label: element.questionName,
+          order: -1,
+          desc: '',
+          required: false,
+          forumId: element.questionLabels.forumId || -1
         }));
       }
     });
