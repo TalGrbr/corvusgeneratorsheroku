@@ -7,10 +7,7 @@ const PAGES_DB_NAME = config.dbName;
 const PAGES_TABLE_NAME = 'pages';
 const mysql = require('mysql');
 const mastersDB = require('./mastersDBHandlers');
-let con = null;
-require('../server').con.then(pool => {
-  con = pool;
-});
+const con = require('../server').con;
 
 exports.createPageDB = function() {
   const conNoDb = mysql.createPool({

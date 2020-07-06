@@ -4,12 +4,7 @@ const path = require('path');
 const app = express();
 const server = require('./server-dist/server.js');
 app.use(express.static(__dirname + '/dist'));
-app.use('/api', server);
-
-app.get('/test', function(req, res) {
-  res.writeHead(200, {"Content-Type": "application/json"});
-  res.write(JSON.stringify({message: 'test123'}));
-})
+app.use('/api', server.app);
 
 app.get('/*', function(req,res) {
   res.sendFile(path.join(__dirname+'/dist/index.html'));

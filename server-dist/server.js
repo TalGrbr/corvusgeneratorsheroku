@@ -22,7 +22,7 @@ const usersRequestsHandlers = require('./requests-handlers/users-requests-handle
 // get db connection
 const mysql = require('mysql');
 const config = require('./config');
-exports.con = mysql.createPool({
+const con = mysql.createPool({
     connectionLimit: config.maxCon,
     waitForConnections: true,
     host: config.dbHost,
@@ -70,5 +70,5 @@ app.post('/removeAdmin', middleware.checkToken, usersRequestsHandlers.removeAdmi
 // SUB ADMINS
 app.get('/getPageSubAdmins', middleware.checkToken, pageRequestsHandlers.getPageSubAdmins);
 app.post('/updatePageSubAdmins', middleware.checkToken, pageRequestsHandlers.updatePageSubAdmins);
-module.exports = app;
+module.exports = { app, con };
 //# sourceMappingURL=server.js.map
