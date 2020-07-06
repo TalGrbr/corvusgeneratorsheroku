@@ -28,17 +28,19 @@ import {ManageUsersComponent} from './users/management/manage-users/manage-users
 import {LoginComponent} from './users/login/login.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {AuthInterceptor} from './users/Auth/interceptors/auth.interceptor';
-import { ManageModsComponent } from './users/management/manage-mods/manage-mods.component';
-import { ManageSubAdminsComponent } from './users/management/manage-sub-admins/manage-sub-admins.component';
-import { ManageAdminsComponent } from './users/management/manage-admins/manage-admins.component';
-import { ManagePageAdminComponent } from './users/management/manage-page-admin/manage-page-admin.component';
-import { ManagePageUsersComponent } from './users/management/manage-page-users/manage-page-users.component';
-import { UpdatePasswordComponent } from './users/update-password/update-password.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HeaderComponent } from './header/header.component';
+import {ManageModsComponent} from './users/management/manage-mods/manage-mods.component';
+import {ManageSubAdminsComponent} from './users/management/manage-sub-admins/manage-sub-admins.component';
+import {ManageAdminsComponent} from './users/management/manage-admins/manage-admins.component';
+import {ManagePageAdminComponent} from './users/management/manage-page-admin/manage-page-admin.component';
+import {ManagePageUsersComponent} from './users/management/manage-page-users/manage-page-users.component';
+import {UpdatePasswordComponent} from './users/update-password/update-password.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {HeaderComponent} from './header/header.component';
 import {ToastsContainerComponent} from './logging/toasts-container.component';
-import { FooterComponent } from './footer/footer.component';
+import {FooterComponent} from './footer/footer.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RequestCache} from './opt-security/caching/RequestCache';
+import {CachingInterceptor} from './opt-security/caching/caching-interceptor';
 
 @NgModule({
   declarations: [
@@ -86,6 +88,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    RequestCache,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CachingInterceptor,
       multi: true
     }
   ],

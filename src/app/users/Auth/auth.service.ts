@@ -7,7 +7,7 @@ import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {User} from '../user';
 import {ToastService} from '../../logging/toast.service';
-
+import {RequestCache} from '../../opt-security/caching/RequestCache';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +15,11 @@ import {ToastService} from '../../logging/toast.service';
 
 export class AuthService {
   private _currentUser;
-  API_URL = 'http://localhost:8000';
+  // API_URL = 'http://localhost:8000';
+  API_URL = 'https://us-central1-corvusgenerators.cloudfunctions.net/app';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-  constructor(private httpClient: HttpClient, public router: Router, private toastService: ToastService) {
+  constructor(private httpClient: HttpClient, public router: Router, private toastService: ToastService, private cacheService: RequestCache) {
   }
 
   register(username): Observable<any> {
@@ -30,6 +31,7 @@ export class AuthService {
   login(user: User) {
     return this.httpClient.post<any>(`${this.API_URL}/loginUser`, user)
       .subscribe((res: any) => {
+        this.cacheService.clearCache();
         localStorage.setItem('access_token', res.token);
         localStorage.setItem('init_pass', res.init_pass);
         // this.currentUser = {username: res.username, role: res.role};
@@ -39,13 +41,14 @@ export class AuthService {
         if (error.error.message) {
           this.toastService.showDanger(error.error.message);
         } else {
+          console.log(error);
           this.toastService.showDanger('unknown server error');
         }
       });
   }
 
   get timestamp() {
-    if (this.currentUser && this.currentUser.length > 0){
+    if (this.currentUser && this.currentUser.length > 0) {
       return Date.parse(JSON.parse(this.currentUser)['logged_time_stamp']) || -1;
     } else {
       return -1;
@@ -76,6 +79,7 @@ export class AuthService {
     if (localStorage.removeItem('access_token') == null &&
       localStorage.removeItem('cur_user') == null &&
       localStorage.removeItem('init_pass') == null) {
+      this.cacheService.clearCache();
       this.router.navigate(['main']);
     }
   }
