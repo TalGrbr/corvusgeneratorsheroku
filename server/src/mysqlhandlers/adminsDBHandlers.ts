@@ -1,23 +1,24 @@
 export {}
 const sqlHandlers = require('./mysqlhandlers');
-const DB_NAME = 'usersdatabase';
+const config = require('../config');
+const DB_NAME = config.dbName;
 const ADMINS_TABLE_NAME = 'admins';
 const mysql = require('mysql');
 
 const con = mysql.createPool({
-    connectionLimit: 70,
-    host: 'localhost',
-    user: 'root',
-    password: 'Tctctncrzhk1!',
+    connectionLimit: 20,
+    host: config.dbHost,
+    user: config.dbUserName,
+    password: config.dbPassword,
     database: DB_NAME
 });
 
 exports.createAdminDB = function () {
     const conNoDb = mysql.createPool({
-        connectionLimit: 40,
-        host: 'localhost',
-        user: 'root',
-        password: 'Tctctncrzhk1!',
+        connectionLimit: 20,
+      host: config.dbHost,
+      user: config.dbUserName,
+      password: config.dbPassword
     });
     return sqlHandlers.createNewDataBase(conNoDb, DB_NAME);
 }

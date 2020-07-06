@@ -11,52 +11,53 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../utilities/constants");
 const sqlHandlers = require('./mysqlhandlers');
-const PAGES_DB_NAME = "pagesdatabase";
-const PAGES_TABLE_NAME = "pages";
+const config = require('../config');
+const PAGES_DB_NAME = config.dbName;
+const PAGES_TABLE_NAME = 'pages';
 const mysql = require('mysql');
 const mastersDB = require('./mastersDBHandlers');
 const con = mysql.createPool({
-    connectionLimit: 70,
-    host: 'localhost',
-    user: 'root',
-    password: 'Tctctncrzhk1!',
+    connectionLimit: 20,
+    host: config.dbHost,
+    user: config.dbUserName,
+    password: config.dbPassword,
     database: PAGES_DB_NAME
 });
 exports.createPageDB = function () {
     const conNoDb = mysql.createPool({
-        connectionLimit: 40,
-        host: 'localhost',
-        user: 'root',
-        password: 'Tctctncrzhk1!',
+        connectionLimit: 20,
+        host: config.dbHost,
+        user: config.dbUserName,
+        password: config.dbPassword
     });
     return sqlHandlers.createNewDataBase(conNoDb, PAGES_DB_NAME);
 };
 exports.createNewPageTable = function () {
-    const query = "CREATE TABLE IF NOT EXISTS " +
+    const query = 'CREATE TABLE IF NOT EXISTS ' +
         PAGES_TABLE_NAME +
-        " (id INT AUTO_INCREMENT PRIMARY KEY UNIQUE, " +
-        "page_name VARCHAR(255) UNIQUE, " +
-        "content LONGTEXT, " +
-        "date_of_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
-        "users_ids LONGTEXT, " +
-        "mods_ids LONGTEXT, " +
-        "admin_id VARCHAR(255), " +
-        "sub_admins_ids LONGTEXT " +
-        ")";
+        ' (id INT AUTO_INCREMENT PRIMARY KEY UNIQUE, ' +
+        'page_name VARCHAR(255) UNIQUE, ' +
+        'content LONGTEXT, ' +
+        'date_of_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, ' +
+        'users_ids LONGTEXT, ' +
+        'mods_ids LONGTEXT, ' +
+        'admin_id VARCHAR(255), ' +
+        'sub_admins_ids LONGTEXT ' +
+        ')';
     return sqlHandlers.executeQuery(con, PAGES_DB_NAME, query);
 };
 exports.insertPage = function (pageContent, adminId) {
     let buff = Buffer.from(JSON.stringify(pageContent));
     let base64data = buff.toString('base64');
-    let query = "INSERT IGNORE  INTO " + PAGES_TABLE_NAME +
-        " (page_name, content, admin_id, users_ids, mods_ids, sub_admins_ids) VALUES ('" +
-        pageContent.name + "', '" +
-        base64data + "', '" +
-        adminId + "', '" +
-        "" + "', '" +
-        "" + "', '" +
-        "" +
-        "')";
+    let query = 'INSERT IGNORE  INTO ' + PAGES_TABLE_NAME +
+        ' (page_name, content, admin_id, users_ids, mods_ids, sub_admins_ids) VALUES (\'' +
+        pageContent.name + '\', \'' +
+        base64data + '\', \'' +
+        adminId + '\', \'' +
+        '' + '\', \'' +
+        '' + '\', \'' +
+        '' +
+        '\')';
     return sqlHandlers.executeQuery(con, PAGES_DB_NAME, query);
 };
 exports.getAllPages = function (orderBy) {
@@ -132,13 +133,13 @@ exports.getPagesByField = function (field, valueToSearch) {
 };
 exports.getPagesByUser = function (userId) {
     return __awaiter(this, void 0, void 0, function* () {
-        let query = "SELECT * FROM " + PAGES_TABLE_NAME + " WHERE FIND_IN_SET(" + userId + ", users_ids)";
+        let query = 'SELECT * FROM ' + PAGES_TABLE_NAME + ' WHERE FIND_IN_SET(' + userId + ', users_ids)';
         return sqlHandlers.executeQuery(con, PAGES_DB_NAME, query);
     });
 };
 exports.getPagesByMod = function (modId) {
     return __awaiter(this, void 0, void 0, function* () {
-        let query = "SELECT * FROM " + PAGES_TABLE_NAME + " WHERE FIND_IN_SET(" + modId + ", mods_ids)";
+        let query = 'SELECT * FROM ' + PAGES_TABLE_NAME + ' WHERE FIND_IN_SET(' + modId + ', mods_ids)';
         return sqlHandlers.executeQuery(con, PAGES_DB_NAME, query);
     });
 };
@@ -149,7 +150,7 @@ exports.getPagesByAdmin = function (adminId) {
 };
 exports.getPagesBySubAdmin = function (subAdminId) {
     return __awaiter(this, void 0, void 0, function* () {
-        let query = "SELECT * FROM " + PAGES_TABLE_NAME + " WHERE FIND_IN_SET(" + subAdminId + ", sub_admins_ids)";
+        let query = 'SELECT * FROM ' + PAGES_TABLE_NAME + ' WHERE FIND_IN_SET(' + subAdminId + ', sub_admins_ids)';
         return sqlHandlers.executeQuery(con, PAGES_DB_NAME, query);
     });
 };
@@ -226,14 +227,18 @@ exports.getAllPagesRelatedToUserWithRoles = function (userId) {
         pages.forEach(page => {
             role = constants_1.ROLES.GUEST;
             if (page) {
-                if (page.admin_id == userId)
+                if (page.admin_id == userId) {
                     role = constants_1.ROLES.ADMIN;
-                else if (page.sub_admins_ids.split(',').includes(userId.toString()))
+                }
+                else if (page.sub_admins_ids.split(',').includes(userId.toString())) {
                     role = constants_1.ROLES.SUB_ADMIN;
-                else if (page.mods_ids.split(',').includes(userId.toString()))
+                }
+                else if (page.mods_ids.split(',').includes(userId.toString())) {
                     role = constants_1.ROLES.MOD;
-                else if (page.users_ids.split(',').includes(userId.toString()))
+                }
+                else if (page.users_ids.split(',').includes(userId.toString())) {
                     role = constants_1.ROLES.USER;
+                }
                 pagesWithRoles.push({ page: page.page_name, role: role, about: (JSON.parse(page.content))['about'] });
             }
         });

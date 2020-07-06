@@ -10,39 +10,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sqlHandlers = require('./mysqlhandlers');
-const DB_NAME = 'usersdatabase';
+const config = require('../config');
+const DB_NAME = config.dbName;
 const USERS_TABLE_NAME = 'users';
 const mysql = require('mysql');
 const con = mysql.createPool({
-    connectionLimit: 70,
-    host: 'localhost',
-    user: 'root',
-    password: 'Tctctncrzhk1!',
+    connectionLimit: 20,
+    host: config.dbHost,
+    user: config.dbUserName,
+    password: config.dbPassword,
     database: DB_NAME
 });
 exports.createUsersDB = function () {
     const conNoDb = mysql.createPool({
-        connectionLimit: 40,
-        host: 'localhost',
-        user: 'root',
-        password: 'Tctctncrzhk1!',
+        connectionLimit: 20,
+        host: config.dbHost,
+        user: config.dbUserName,
+        password: config.dbPassword
     });
     return sqlHandlers.createNewDataBase(conNoDb, DB_NAME);
 };
 exports.createNewUsersTable = function () {
-    const query = "CREATE TABLE IF NOT EXISTS " +
+    const query = 'CREATE TABLE IF NOT EXISTS ' +
         USERS_TABLE_NAME +
-        " (id INT AUTO_INCREMENT PRIMARY KEY UNIQUE, username VARCHAR(255) UNIQUE, password VARCHAR(255), init_pass BOOL," +
-        " date_of_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)";
+        ' (id INT AUTO_INCREMENT PRIMARY KEY UNIQUE, username VARCHAR(255) UNIQUE, password VARCHAR(255), init_pass BOOL,' +
+        ' date_of_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)';
     return sqlHandlers.createNewTable(con, DB_NAME, USERS_TABLE_NAME, query);
 };
 exports.insertUser = function (user) {
-    let query = "INSERT IGNORE  INTO " + USERS_TABLE_NAME +
-        " (username, password, init_pass) VALUES ('" +
-        user.username + "', '" +
-        user.password + "', " +
-        "TRUE" +
-        ")";
+    let query = 'INSERT IGNORE  INTO ' + USERS_TABLE_NAME +
+        ' (username, password, init_pass) VALUES (\'' +
+        user.username + '\', \'' +
+        user.password + '\', ' +
+        'TRUE' +
+        ')';
     return sqlHandlers.insertValueToDB(con, DB_NAME, query);
 };
 exports.getAllUsers = function (orderBy) {
@@ -55,11 +56,11 @@ exports.isUserAvailable = function (username, id) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             if (username) {
-                let query = "SELECT * FROM " + USERS_TABLE_NAME + " WHERE username='" + username + "' AND init_pass=FALSE";
+                let query = 'SELECT * FROM ' + USERS_TABLE_NAME + ' WHERE username=\'' + username + '\' AND init_pass=FALSE';
                 return (yield sqlHandlers.executeQuery(con, DB_NAME, query)).length > 0;
             }
             else if (id) {
-                let query = "SELECT * FROM " + USERS_TABLE_NAME + " WHERE id=" + id + " AND init_pass=FALSE";
+                let query = 'SELECT * FROM ' + USERS_TABLE_NAME + ' WHERE id=' + id + ' AND init_pass=FALSE';
                 //let result = await sqlHandlers.executeQuery(DB_NAME, query);
                 return (yield sqlHandlers.executeQuery(con, DB_NAME, query)).length > 0;
             }
