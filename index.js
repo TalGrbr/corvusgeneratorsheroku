@@ -5,7 +5,6 @@ const app = express();
 const server = require('./server-dist/server.js');
 app.use(express.static(__dirname + '/dist'));
 app.use('/api', server);
-app.use(app.router);
 
 app.get('/test', function(req, res) {
   res.writeHead(200, {"Content-Type": "application/json"});
