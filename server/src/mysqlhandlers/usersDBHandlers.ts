@@ -64,6 +64,7 @@ exports.getById = function(id, orderBy ?: string) {
 };
 
 exports.getByUsername = function(username, orderBy ?: string) {
+  console.log('connections is:');
   console.log(con);
   return sqlHandlers.getByField(con, DB_NAME, USERS_TABLE_NAME, 'username', username, orderBy);
 };

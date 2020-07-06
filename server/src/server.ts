@@ -39,6 +39,8 @@ const con = mysql.createPool({
 // start server
 app.listen(8000, () => {
   console.log('Server started');
+  console.log('server started - con:');
+  console.log(con);
 });
 
 // PAGES
@@ -82,4 +84,5 @@ app.post('/removeAdmin', middleware.checkToken, usersRequestsHandlers.removeAdmi
 app.get('/getPageSubAdmins', middleware.checkToken, pageRequestsHandlers.getPageSubAdmins);
 app.post('/updatePageSubAdmins', middleware.checkToken, pageRequestsHandlers.updatePageSubAdmins);
 
+console.log(con);
 module.exports = {app, con};
