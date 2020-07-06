@@ -11,7 +11,6 @@ export class MainComponent implements OnInit {
 
   constructor(private titleService: Title, private location: Location) {
     titleService.setTitle('Corvus Generators');
-    console.log(location.prepareExternalUrl(location.path()));
   }
 
   ngOnInit(): void {
