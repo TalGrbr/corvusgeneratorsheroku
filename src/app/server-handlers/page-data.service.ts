@@ -8,7 +8,7 @@ import {AuthService} from '../users/Auth/auth.service';
   providedIn: 'root'
 })
 export class PageDataService {
-  private API_SERVER = 'http://localhost:8000';
+  private API_SERVER = 'https://corvusgenerators.herokuapp.com/api';
   private httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };

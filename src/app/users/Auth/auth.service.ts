@@ -16,7 +16,7 @@ import {RequestCache} from '../../opt-security/caching/RequestCache';
 export class AuthService {
   private _currentUser;
   // API_URL = 'http://localhost:8000';
-  API_URL = 'https://us-central1-corvusgenerators.cloudfunctions.net/app';
+  API_URL = 'https://corvusgenerators.herokuapp.com/api';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private httpClient: HttpClient, public router: Router, private toastService: ToastService, private cacheService: RequestCache) {
