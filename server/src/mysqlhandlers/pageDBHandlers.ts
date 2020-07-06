@@ -7,17 +7,11 @@ const PAGES_DB_NAME = config.dbName;
 const PAGES_TABLE_NAME = 'pages';
 const mysql = require('mysql');
 const mastersDB = require('./mastersDBHandlers');
-const con = mysql.createPool({
-  connectionLimit: 20,
-  host: config.dbHost,
-  user: config.dbUserName,
-  password: config.dbPassword,
-  database: PAGES_DB_NAME
-});
+const con = require('../server').con;
 
 exports.createPageDB = function() {
   const conNoDb = mysql.createPool({
-    connectionLimit: 20,
+    connectionLimit: config.maxCon,
     host: config.dbHost,
     user: config.dbUserName,
     password: config.dbPassword

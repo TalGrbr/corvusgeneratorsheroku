@@ -14,16 +14,10 @@ const config = require('../config');
 const DB_NAME = config.dbName;
 const ADMINS_TABLE_NAME = 'admins';
 const mysql = require('mysql');
-const con = mysql.createPool({
-    connectionLimit: 20,
-    host: config.dbHost,
-    user: config.dbUserName,
-    password: config.dbPassword,
-    database: DB_NAME
-});
+const con = require('../server').con;
 exports.createAdminDB = function () {
     const conNoDb = mysql.createPool({
-        connectionLimit: 20,
+        connectionLimit: config.maxCon,
         host: config.dbHost,
         user: config.dbUserName,
         password: config.dbPassword

@@ -24,6 +24,18 @@ let handlers = new HandlerGenerator();
 const pageRequestsHandlers = require('./requests-handlers/page-requests-handlers');
 const usersRequestsHandlers = require('./requests-handlers/users-requests-handlers');
 
+// get db connection
+const mysql = require('mysql');
+const config = require('./config');
+export const con = mysql.createPool({
+  connectionLimit: config.maxCon,
+  waitForConnections: true,
+  host: config.dbHost,
+  user: config.dbUserName,
+  password: config.dbPassword,
+  database: config.dbName
+});
+
 // start server
 app.listen(8000, () => {
   console.log('Server started');

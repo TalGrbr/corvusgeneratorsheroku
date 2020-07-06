@@ -5,17 +5,12 @@ const DB_NAME = config.dbName;
 const MASTERS_TABLE_NAME = 'masters';
 const mysql = require('mysql');
 
-const con = mysql.createPool({
-  connectionLimit: 20,
-  host: config.dbHost,
-  user: config.dbUserName,
-  password: config.dbPassword,
-  database: DB_NAME
-});
+const con = require('../server').con;
+
 
 exports.createMasterDB = function() {
   const conNoDb = mysql.createPool({
-    connectionLimit: 20,
+    connectionLimit: config.maxCon,
     host: config.dbHost,
     user: config.dbUserName,
     password: config.dbPassword
