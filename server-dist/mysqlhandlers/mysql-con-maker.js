@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mysql = require('mysql');
-const config = require('./config');
+const config = require('../config');
 const con = mysql.createPool({
     connectionLimit: config.maxCon,
     waitForConnections: true,
