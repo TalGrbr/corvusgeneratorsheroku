@@ -4,7 +4,7 @@ const config = require('../config');
 const DB_NAME = config.dbName;
 const USERS_TABLE_NAME = 'users';
 const mysql = require('mysql');
-const con = require('../server').con;
+const con = require('./mysql-con-maker');
 
 exports.createUsersDB = function() {
   const conNoDb = mysql.createPool({

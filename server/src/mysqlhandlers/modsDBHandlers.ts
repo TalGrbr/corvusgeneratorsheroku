@@ -5,7 +5,7 @@ const DB_NAME = config.dbName;
 const MODS_TABLE_NAME = 'mods';
 const mysql = require('mysql');
 
-const con = require('../server').con;
+const con = require('./mysql-con-maker');
 
 exports.createModsDB = function() {
   const conNoDb = mysql.createPool({

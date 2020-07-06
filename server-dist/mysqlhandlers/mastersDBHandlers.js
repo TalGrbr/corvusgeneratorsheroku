@@ -14,7 +14,7 @@ const config = require('../config');
 const DB_NAME = config.dbName;
 const MASTERS_TABLE_NAME = 'masters';
 const mysql = require('mysql');
-const con = require('../server').con;
+const con = require('./mysql-con-maker');
 exports.createMasterDB = function () {
     const conNoDb = mysql.createPool({
         connectionLimit: config.maxCon,

@@ -14,7 +14,7 @@ const config = require('../config');
 const DB_NAME = config.dbName;
 const ADMINS_TABLE_NAME = 'admins';
 const mysql = require('mysql');
-const con = require('../server').con;
+const con = require('./mysql-con-maker');
 exports.createAdminDB = function () {
     const conNoDb = mysql.createPool({
         connectionLimit: config.maxCon,

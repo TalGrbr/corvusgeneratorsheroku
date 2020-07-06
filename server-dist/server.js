@@ -15,26 +15,13 @@ app.use(cors(corsOptions));
 // users
 const HandlerGenerator = require('./auth/HandlerGenerator');
 const middleware = require('./auth/auth');
-let handlers = new HandlerGenerator();
+const handlers = new HandlerGenerator();
 // handlers
 const pageRequestsHandlers = require('./requests-handlers/page-requests-handlers');
 const usersRequestsHandlers = require('./requests-handlers/users-requests-handlers');
-// get db connection
-const mysql = require('mysql');
-const config = require('./config');
-const con = mysql.createPool({
-    connectionLimit: config.maxCon,
-    waitForConnections: true,
-    host: config.dbHost,
-    user: config.dbUserName,
-    password: config.dbPassword,
-    database: config.dbName
-});
 // start server
 app.listen(8000, () => {
     console.log('Server started');
-    console.log('server started - con:');
-    console.log(con);
 });
 // PAGES
 app.get('/showPage', middleware.checkToken, pageRequestsHandlers.showPage);
@@ -72,6 +59,5 @@ app.post('/removeAdmin', middleware.checkToken, usersRequestsHandlers.removeAdmi
 // SUB ADMINS
 app.get('/getPageSubAdmins', middleware.checkToken, pageRequestsHandlers.getPageSubAdmins);
 app.post('/updatePageSubAdmins', middleware.checkToken, pageRequestsHandlers.updatePageSubAdmins);
-console.log(con);
-module.exports = { app, con };
+module.exports = app;
 //# sourceMappingURL=server.js.map
