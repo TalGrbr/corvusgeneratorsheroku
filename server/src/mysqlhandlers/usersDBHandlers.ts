@@ -4,7 +4,10 @@ const config = require('../config');
 const DB_NAME = config.dbName;
 const USERS_TABLE_NAME = 'users';
 const mysql = require('mysql');
-const con = require('../server').con;
+let con = null;
+require('../server').con.then(pool => {
+  con = pool;
+});
 
 exports.createUsersDB = function() {
   const conNoDb = mysql.createPool({
@@ -64,6 +67,7 @@ exports.getById = function(id, orderBy ?: string) {
 };
 
 exports.getByUsername = function(username, orderBy ?: string) {
+  console.log(con);
   return sqlHandlers.getByField(con, DB_NAME, USERS_TABLE_NAME, 'username', username, orderBy);
 };
 
