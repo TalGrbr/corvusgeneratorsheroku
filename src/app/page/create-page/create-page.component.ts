@@ -33,7 +33,6 @@ export class CreatePageComponent implements OnInit, AfterViewInit {
         Validators.maxLength(20),
         Validators.pattern('^[a-z\u0590-\u05feA-Z]+$')
       ], [TakenValidator(pds, 'page name', '')]),
-      color: [''],
       title: new FormControl('', [
         Validators.required,
         Validators.minLength(3),
@@ -76,7 +75,6 @@ export class CreatePageComponent implements OnInit, AfterViewInit {
       this.totalValue['showForm'] = true;
     }
     this.totalValue['template'] = formJsonValue.template;
-    console.log(this.totalValue);
     this.pds.postPageToServer(this.totalValue).subscribe(data => {
       this.toastService.showSuccess(data['message']);
       this.router.navigate(['showPage/' + this.totalValue['name']]);

@@ -37,7 +37,6 @@ export class UpdatePageComponent implements OnInit {
     this.pageDataForm = this.fb.group({
       name: [newPageData['name'], [Validators.required, Validators.pattern('^[a-z\u0590-\u05feA-Z]+$')],
         [TakenValidator(this.pds, 'page name', this.oldName)]],
-      color: [newPageData['color']],
       title: [newPageData['title'], [Validators.required]],
       about: [newPageData['about']],
       remarks: this.fb.array([])

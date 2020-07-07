@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 // security
 const cors = require('cors');
 const corsOptions = {
-  origin: 'https://corvusgenerators.herokuapp.com',
+  origin: ['https://corvusgenerators.herokuapp.com', 'https://www.fxp.co.il'],
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));

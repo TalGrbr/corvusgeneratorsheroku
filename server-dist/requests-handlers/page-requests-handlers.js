@@ -58,12 +58,12 @@ exports.get5Threads = function (request, response) {
             const q = url.parse(request.url, true);
             let forumId = q.query.id;
             let articles = yield getArticles(forumId);
-            let finalString = "[U]";
+            let finalString = '[U]';
             Object.keys(articles).forEach(key => {
                 finalString += `[URL="${key}"][COLOR=#0000cd]${articles[key]}[/COLOR][/URL]<br>`;
             });
             finalString = finalString.substr(0, finalString.length - '<br>'.length);
-            finalString += "[/U]";
+            finalString += '[/U]';
             httpHelpers.sendSuccess(response, finalString);
             response.end();
         }
@@ -89,15 +89,16 @@ function getHtml(forumId) {
         }
         catch (e) {
             console.log(e);
-            return "";
+            return '';
         }
     });
 }
 function getArticles(forumId) {
     return __awaiter(this, void 0, void 0, function* () {
         let html = (yield getHtml(forumId)).toString();
-        if (html.length === 0)
+        if (html.length === 0) {
             return {};
+        }
         let sepRegex = /<li class="threadbit/g;
         // split and get rid of the sticky
         let htmlBroken = html.split(sepRegex).filter(elm => elm.includes('nonsticky'));

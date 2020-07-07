@@ -43,7 +43,6 @@ export class ShowPageComponent implements OnInit, AfterViewInit, OnDestroy {
         data = data.body;
         this.page = new Page({
           name: data.name,
-          color: data.color,
           title: data.title,
           about: data.about,
           remarks: data.remarks,
