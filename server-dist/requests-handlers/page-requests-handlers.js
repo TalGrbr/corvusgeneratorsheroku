@@ -83,21 +83,26 @@ function getHtml(forumId) {
                 port: 443,
                 path: '/forumdisplay.php?f=' + forumId
             };
-            http.get(opts, (res) => {
-                console.log(res);
-            }).on('error', (e) => {
-                console.log(e);
+            const htmlPromise = new Promise((resolve, reject) => {
+                http.get(opts, (res) => {
+                    res.on('data', (chunk) => {
+                        console.log('BODY: ' + chunk);
+                        resolve(chunk);
+                    });
+                }).on('error', (e) => {
+                    console.log(e);
+                    reject(e);
+                });
             });
-            let response = yield axios.get('https://corvusgenerators.herokuapp.com/main');
-            if (response.status === 200) {
-                const html = response.data;
-                const $ = cheerio.load(html, { decodeEntities: false });
-                // Get text
-                //console.log("------- with axios module -------")
-                //console.log($.text());
-                // Get HTML
-                return $.html();
-            }
+            return yield htmlPromise;
+            //let response = await axios.get('https://corvusgenerators.herokuapp.com/main');
+            //const html = response.data;
+            //const $ = cheerio.load(html, {decodeEntities: false});
+            // Get text
+            //console.log("------- with axios module -------")
+            //console.log($.text());
+            // Get HTML
+            //return $.html();
         }
         catch (e) {
             console.log(e);
