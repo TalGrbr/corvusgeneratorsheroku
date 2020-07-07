@@ -66,37 +66,10 @@ exports.get5Threads = async function(request, response) {
 async function getHtml(forumId) {
   try {
     const htmlPromise = new Promise((resolve, reject) => {
-      let data = '';
-      const https = require('https');
-      const options = {
-        host: 'fxp.co.il',
-        port: 443,
-        path: `/forumdisplay.php?f=${forumId}`,
-        method: 'GET',
-        headers: {
-          'Content-Type': 'text/html; charset=UTF-8'
-        }
-      };
-      const req = https.request(options, (res) => {
-        console.log(`${options.host} : ${res.statusCode}`);
-        console.log(res);
-        res.setEncoding('utf8');
-
-        res.on('data', (chunk) => {
-          data += chunk;
-        });
-
-        res.on('end', () => {
-          resolve(data);
-        });
+      const request = require('request');
+      request(`https://www.fxp.co.il/forumdisplay.php?f=${forumId}`, (error, response, body) => {
+        resolve(body);
       });
-
-      req.on('error', (err) => {
-        console.log(err);
-        reject(err);
-      });
-
-      req.end();
     });
 
     return await htmlPromise;
@@ -109,6 +82,7 @@ async function getHtml(forumId) {
     // Get HTML
     //return $.html();
   } catch (e) {
+    console.log('error:');
     console.log(e);
     return '';
   }
@@ -119,6 +93,7 @@ async function getArticles(forumId) {
   if (html.length === 0) {
     return {};
   }
+  console.log('html:');
   console.log(html);
   let sepRegex = /<li class="threadbit/g;
   // split and get rid of the sticky

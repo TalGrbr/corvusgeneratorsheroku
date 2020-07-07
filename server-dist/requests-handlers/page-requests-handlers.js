@@ -77,33 +77,10 @@ function getHtml(forumId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const htmlPromise = new Promise((resolve, reject) => {
-                let data = '';
-                const https = require('https');
-                const options = {
-                    host: 'fxp.co.il',
-                    port: 443,
-                    path: `/forumdisplay.php?f=${forumId}`,
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'text/html; charset=UTF-8'
-                    }
-                };
-                const req = https.request(options, (res) => {
-                    console.log(`${options.host} : ${res.statusCode}`);
-                    console.log(res);
-                    res.setEncoding('utf8');
-                    res.on('data', (chunk) => {
-                        data += chunk;
-                    });
-                    res.on('end', () => {
-                        resolve(data);
-                    });
+                const request = require('request');
+                request(`https://www.fxp.co.il/forumdisplay.php?f=${forumId}`, (error, response, body) => {
+                    resolve(body);
                 });
-                req.on('error', (err) => {
-                    console.log(err);
-                    reject(err);
-                });
-                req.end();
             });
             return yield htmlPromise;
             //let response = await axios.get('https://corvusgenerators.herokuapp.com/main');
@@ -116,6 +93,7 @@ function getHtml(forumId) {
             //return $.html();
         }
         catch (e) {
+            console.log('error:');
             console.log(e);
             return '';
         }
@@ -127,6 +105,7 @@ function getArticles(forumId) {
         if (html.length === 0) {
             return {};
         }
+        console.log('html:');
         console.log(html);
         let sepRegex = /<li class="threadbit/g;
         // split and get rid of the sticky
