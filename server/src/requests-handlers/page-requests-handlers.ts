@@ -65,7 +65,8 @@ exports.get5Threads = async function(request, response) {
 
 async function getHtml(forumId) {
   try {
-    let response = await axios.get('https://www.fxp.co.il/forumdisplay.php?f=' + forumId);
+    //let response = await axios.get('https://www.fxp.co.il/forumdisplay.php?f=' + forumId);
+    let response = await axios.get('https://corvusgenerators.herokuapp.com/main');
     if (response.status === 200) {
       const html = response.data;
       const $ = cheerio.load(html, {decodeEntities: false});

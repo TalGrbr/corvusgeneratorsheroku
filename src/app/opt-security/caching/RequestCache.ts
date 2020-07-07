@@ -22,8 +22,6 @@ export class RequestCache {
     if (!cachedBody) {
       return undefined;
     }
-    console.log('getting from cache');
-    this.logCache();
     if (cachedBody.lastRead < (Date.now() - maxAge)) {
       return undefined;
     }
@@ -42,9 +40,6 @@ export class RequestCache {
       entry.set(reqBody, mapEntry);
       this.cache.set(url, entry);
     }
-
-    console.log('putting in cache');
-    this.logCache();
 
     const expired = Date.now() - maxAge;
     this.cache.forEach(entryMap => {
