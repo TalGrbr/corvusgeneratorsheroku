@@ -16,7 +16,6 @@ const initsDbs = require('../mysqlhandlers/initDbs');
 const httpHelpers = require('../httpHelpers');
 const axios = require('axios');
 const cheerio = require('cheerio');
-const http = require('http');
 
 exports.showPage = async function(request, response) {
   const q = url.parse(request.url, true);
@@ -66,33 +65,28 @@ exports.get5Threads = async function(request, response) {
 
 async function getHtml(forumId) {
   try {
-    //let response = await axios.get('https://www.fxp.co.il/forumdisplay.php?f=' + forumId);
-    const opts = {
-      host: 'www.fxp.co.il',
-      path: `/forumdisplay.php`,
-      qs: {f: forumId},
-      port: 443
-    };
     const htmlPromise = new Promise((resolve, reject) => {
-      http.get(opts, (res) => {
-        res.on('data', (chunk) => {
-          console.log('BODY: ' + chunk);
-          resolve(chunk);
-        });
-      }).on('error', (e) => {
-        console.log(e);
-        reject(e);
+      let data = '';
+      const http2 = require('http2');
+      const http2Client = http2.connect('https://www.fxp.co.il');
+      const req = http2Client.request({
+        ':path': `/forumdisplay.php?f=${forumId}`
       });
+      req.on('data', chunk => {
+        data += chunk;
+      });
+      req.end();
+      resolve(data);
     });
     return await htmlPromise;
     //let response = await axios.get('https://corvusgenerators.herokuapp.com/main');
-      //const html = response.data;
-      //const $ = cheerio.load(html, {decodeEntities: false});
-      // Get text
-      //console.log("------- with axios module -------")
-      //console.log($.text());
-      // Get HTML
-      //return $.html();
+    //const html = response.data;
+    //const $ = cheerio.load(html, {decodeEntities: false});
+    // Get text
+    //console.log("------- with axios module -------")
+    //console.log($.text());
+    // Get HTML
+    //return $.html();
   } catch (e) {
     console.log(e);
     return '';
