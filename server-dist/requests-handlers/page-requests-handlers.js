@@ -80,7 +80,9 @@ function getHtml(forumId) {
             //let response = await axios.get('https://www.fxp.co.il/forumdisplay.php?f=' + forumId);
             const opts = {
                 host: 'www.fxp.co.il',
-                path: `/forumdisplay.php?f=${forumId}`
+                path: `/forumdisplay.php`,
+                qs: { f: forumId },
+                port: 443
             };
             const htmlPromise = new Promise((resolve, reject) => {
                 http.get(opts, (res) => {
