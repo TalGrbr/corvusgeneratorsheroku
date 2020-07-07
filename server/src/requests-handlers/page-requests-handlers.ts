@@ -67,17 +67,37 @@ async function getHtml(forumId) {
   try {
     const htmlPromise = new Promise((resolve, reject) => {
       let data = '';
-      const http2 = require('http2');
-      const http2Client = http2.connect('https://www.fxp.co.il');
-      const req = http2Client.request({
-        ':path': `/forumdisplay.php?f=${forumId}`
+      const https = require('https');
+      const options = {
+        host: 'fxp.co.il',
+        port: 443,
+        path: `/forumdisplay.php?f=${forumId}`,
+        method: 'GET',
+        headers: {
+          'Content-Type': 'text/html; charset=UTF-8'
+        }
+      };
+      const req = https.request(options, (res) => {
+        console.log(`${options.host} : ${res.statusCode}`);
+        res.setEncoding('utf8');
+
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        res.on('end', () => {
+          resolve(data);
+        });
       });
-      req.on('data', chunk => {
-        data += chunk;
-        resolve(data);
+
+      req.on('error', (err) => {
+        console.log(err);
+        reject(err);
       });
+
       req.end();
     });
+
     return await htmlPromise;
     //let response = await axios.get('https://corvusgenerators.herokuapp.com/main');
     //const html = response.data;
