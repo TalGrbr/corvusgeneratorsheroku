@@ -79,7 +79,8 @@ function getHtml(forumId) {
         try {
             //let response = await axios.get('https://www.fxp.co.il/forumdisplay.php?f=' + forumId);
             const opts = {
-                host: 'https://www.fxp.co.il',
+                host: 'www.fxp.co.il',
+                port: 443,
                 path: '/forumdisplay.php?f=' + forumId
             };
             http.get(opts, (res) => {
