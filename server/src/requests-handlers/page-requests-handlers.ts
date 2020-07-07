@@ -74,9 +74,9 @@ async function getHtml(forumId) {
       });
       req.on('data', chunk => {
         data += chunk;
+        resolve(data);
       });
       req.end();
-      resolve(data);
     });
     return await htmlPromise;
     //let response = await axios.get('https://corvusgenerators.herokuapp.com/main');
