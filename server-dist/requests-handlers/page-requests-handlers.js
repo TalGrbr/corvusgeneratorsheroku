@@ -80,9 +80,10 @@ function getHtml(forumId) {
                 let data = '';
                 const https = require('https');
                 const options = {
-                    host: 'fxp.co.il',
+                    host: 'www.fxp.co.il',
                     port: 443,
-                    path: `/forumdisplay.php?f=${forumId}`,
+                    path: `/forumdisplay.php`,
+                    qs: { f: forumId },
                     method: 'GET',
                     headers: {
                         'Content-Type': 'text/html; charset=UTF-8'
@@ -90,6 +91,7 @@ function getHtml(forumId) {
                 };
                 const req = https.request(options, (res) => {
                     console.log(`${options.host} : ${res.statusCode}`);
+                    console.log(res);
                     res.setEncoding('utf8');
                     res.on('data', (chunk) => {
                         data += chunk;
