@@ -69,10 +69,9 @@ async function getHtml(forumId) {
       let data = '';
       const https = require('https');
       const options = {
-        host: 'www.fxp.co.il',
+        host: 'fxp.co.il',
         port: 443,
-        path: `/forumdisplay.php`,
-        qs: {f: forumId},
+        path: `/forumdisplay.php?f=${forumId}`,
         method: 'GET',
         headers: {
           'Content-Type': 'text/html; charset=UTF-8'
