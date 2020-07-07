@@ -37,7 +37,7 @@ export class MainFormComponent implements OnInit {
           this.payLoadEvent.emit(this.payLoad);
           this.payLoad = JSON.parse(this.payLoad);
         }, error => {
-          this.toastService.showDanger(error.message);
+          this.toastService.showDanger(error.error.message);
           console.log(error);
         });
       });

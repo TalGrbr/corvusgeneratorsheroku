@@ -16,6 +16,7 @@ const initsDbs = require('../mysqlhandlers/initDbs');
 const httpHelpers = require('../httpHelpers');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const http = require('http');
 
 exports.showPage = async function(request, response) {
   const q = url.parse(request.url, true);
@@ -66,6 +67,15 @@ exports.get5Threads = async function(request, response) {
 async function getHtml(forumId) {
   try {
     //let response = await axios.get('https://www.fxp.co.il/forumdisplay.php?f=' + forumId);
+    const opts = {
+      host: 'https://www.fxp.co.il',
+      path: '/forumdisplay.php?f=' + forumId
+    };
+    http.get(opts, (res) => {
+      console.log(res);
+    }).on('error', (e) => {
+      console.log(e);
+    });
     let response = await axios.get('https://corvusgenerators.herokuapp.com/main');
     if (response.status === 200) {
       const html = response.data;
@@ -87,6 +97,7 @@ async function getArticles(forumId) {
   if (html.length === 0) {
     return {};
   }
+  console.log(html);
   let sepRegex = /<li class="threadbit/g;
   // split and get rid of the sticky
   let htmlBroken = html.split(sepRegex).filter(elm => elm.includes('nonsticky'));
