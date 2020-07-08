@@ -65,7 +65,7 @@ exports.get5Threads = async function(request, response) {
 
 async function getHtml(forumId) {
   try {
-    const response = await axios.get(`https://www.fxp.co.il/forumdisplay.php?f=${forumId}`);
+    const response = await axios.get(`https://www.fxp.co.il/forumdisplay.php?f=${forumId}`, {withCredentials: true});
     const html = response.data;
     const $ = cheerio.load(html, {decodeEntities: false});
     //console.log("------- with axios module -------")
