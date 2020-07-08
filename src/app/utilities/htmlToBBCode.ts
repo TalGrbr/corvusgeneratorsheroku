@@ -46,7 +46,7 @@ export function toBBCode(html) {
   html = html.replace(/<title>(.*?)<\/title>/gmi, '');
   html = html.replace(/<!--(.*?)-->/gmi, '\n');
 
-  html = html.replace(/\/\//gi, '/');
+  // html = html.replace(/\/\//gi, '/');
   html = html.replace(/http:\//gi, 'http://');
 
   html = html.replace(/<(?:[^>'"]*|(['"]).*?\1)*>/gmi, '');
