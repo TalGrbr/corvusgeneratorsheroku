@@ -20,9 +20,11 @@
     </div>
   </div>
 </div>
+<form [formGroup]="templateForm">
 <editor
   apiKey="7rik87l5mbjjvopdrq17ut7qqs589m67f2j2funranzgjz8l"
   id="bbCodeEditor"
+  formControlName="template"
   (onFocusOut)="updateEmitter()"
   [(ngModel)]="editorContent"
   [initialValue]="editorContent"
@@ -46,3 +48,4 @@
         forced_root_block : '',
         entity_encoding : 'raw'
    }"></editor>
+</form>

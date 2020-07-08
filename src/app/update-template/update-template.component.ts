@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {QuestionBase} from '../form/question-types/question-base';
 import {copy} from '../utilities/copyToClipBoard';
-import {FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {QuestionControlService} from '../form/form-services/question-control.service';
 import {toBBCode} from '../utilities/htmlToBBCode';
 import {Utils} from '../utilities/Utils';
@@ -17,8 +17,12 @@ export class UpdateTemplateComponent implements OnInit, AfterViewInit {
   editorContent = '';
   @Output() editorContentEvent = new EventEmitter<string>();
   loadingEditor = true;
+  templateForm: FormGroup;
 
-  constructor() {
+  constructor(private fb: FormBuilder) {
+    this.templateForm = this.fb.group({
+      template: ''
+    });
   }
 
   ngOnInit(): void {
@@ -50,6 +54,6 @@ export class UpdateTemplateComponent implements OnInit, AfterViewInit {
   }
 
   updateEmitter() {
-    this.editorContentEvent.emit(toBBCode(this.editorContent));
+    this.editorContentEvent.emit(toBBCode(this.templateForm.getRawValue().template));
   }
 }

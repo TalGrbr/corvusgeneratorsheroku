@@ -24,14 +24,14 @@
           <td class="w-75" [@smoothCollapse]="(isCollapsed !== i)? 'initial' : 'final'">
             <div [formGroupName]="i">
               <div class="form-group row">
-                <label class="col-sm-3 col-form-label ml-4 pr-1">Question Name:<span
+                <label class="col-sm-3 col-form-label ml-4 pr-1">Name:<span
                   class="text-danger">*</span></label>
                 <div class="col-sm-7 pl-0">
                   <input type="text" class="form-control" formControlName="questionName">
                 </div>
               </div>
               <div class="form-group row" [hidden]="q.get('questionType').value === 'threads'">
-                <label class="col-sm-3 col-form-label ml-4 pr-1">Question desc:<span
+                <label class="col-sm-3 col-form-label ml-4 pr-1">Description:<span
                   class="text-danger">*</span></label>
                 <div class="col-sm-7 pl-0">
                   <input formControlName="desc" class="form-control"/>

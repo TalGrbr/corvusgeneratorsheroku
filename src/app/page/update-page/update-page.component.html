@@ -39,7 +39,7 @@
         <label for="name" class="col-sm-2 col-form-label">Page name:</label>
         <div class="col-sm-10">
           <input type="text" id="name" class="form-control" formControlName="name">
-          <small class="text-muted">* Name can only be 3-15 chars and contain English and Hebrew chars.</small>
+          <small class="text-muted">* Name can only be 3-15 chars and contain English and Hebrew chars. (no spaces)</small>
           <div
             *ngIf="pageDataForm.invalid && pageDataForm.get('name').errors && pageDataForm.get('name').errors.availability"
             class="invalid-feedback"
