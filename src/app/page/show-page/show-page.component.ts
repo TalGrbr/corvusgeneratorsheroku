@@ -12,6 +12,7 @@ import {Utils} from '../../utilities/Utils';
 import {AuthService} from '../../users/Auth/auth.service';
 import {QuestionControlService} from '../../form/form-services/question-control.service';
 import {ToastService} from '../../logging/toast.service';
+import {toBBCode} from '../../utilities/htmlToBBCode';
 
 @Component({
   selector: 'app-show-page',
@@ -94,7 +95,7 @@ export class ShowPageComponent implements OnInit, AfterViewInit, OnDestroy {
     Object.keys(translationDict).forEach(key => {
       this.result = this.result.replace(key, translationDict[key]);
     });
-    this.result = this.result.split('<br>').join('\n');
+    this.result = toBBCode(this.result.split('<br>').join('\n'));
   }
 
   private getTranslationDict() {
