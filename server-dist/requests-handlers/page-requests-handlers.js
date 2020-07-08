@@ -76,21 +76,12 @@ exports.get5Threads = function (request, response) {
 function getHtml(forumId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const htmlPromise = new Promise((resolve, reject) => {
-                const request = require('request');
-                request(`https://www.fxp.co.il/forumdisplay.php?f=${forumId}`, (error, response, body) => {
-                    resolve(body);
-                });
-            });
-            return yield htmlPromise;
-            //let response = await axios.get('https://corvusgenerators.herokuapp.com/main');
-            //const html = response.data;
-            //const $ = cheerio.load(html, {decodeEntities: false});
-            // Get text
+            const response = yield axios.get(`https://www.fxp.co.il/forumdisplay.php?f=${forumId}`);
+            const html = response.data;
+            const $ = cheerio.load(html, { decodeEntities: false });
             //console.log("------- with axios module -------")
             //console.log($.text());
-            // Get HTML
-            //return $.html();
+            return $.html();
         }
         catch (e) {
             console.log('error:');
